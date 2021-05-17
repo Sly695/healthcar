@@ -107,41 +107,57 @@ router.post("/sign-up-ambulance", async function (req, res, next) {
   res.json({ result, saveUser, error, token });
 });
 
-<<<<<<< HEAD
 //----------------------------------------
-//          UPDATE         |
+//          UPDATE PROFIL  |
 //----------------------------------------
 
-router.post('/update', async (req, res, next) =>{
-  let userFind = await userModel.findOne({
-    email: req.body.email,
-  })
+router.put("/update-profil-carestaff", async (req, res, next) =>{
 
-  for (let i = 0; i < userFind.length; i++) {
-    
+  let token = 'gx38g6PBoxyMMVn2sstOUQvlIj7iOGUr'
 
-    await userModel.updateOne({
-      token: userModel[i].token,},
+  const userProfil = await userModel.updateOne({
+      token: token,},
       {
-      lastname: userModel[i].lastname,
-      firstname: userModel[i].firstname,
-      email: userModel[i].email,
-      avatar: userModel[i].avatar,
-      adresse: [AddressSchema],
-      password: userModel[i].password,
-      phone: userModel[i].phone,
-      nomEntreprise: userModel[i].nomEntreprise,
-      siret: userModel[i].siret,
+      lastname: req.body.lastname,
+      firstname: req.body.firstname,
+      email: req.body.email,
+      avatar: req.body.avatar,
+      password: req.body.password,
+      phone: req.body.phone,
+      adresse: {
+        adresse: req.body.adresse,
+        postalCode: req.body.postalCode,
+        city: req.body.city,
+      },
+    }
+    );
+  res.json({userProfil});
+});
+
+router.put("/update-profil-ambulance", async (req, res, next) =>{
+
+  let token = 'afWbpZPvEdHsrBpi1AFYi6ccmcspU648'
+
+  const userProfil = await userModel.updateOne({
+      token: token,},
+      {
+      monEntreprise: req.body.nomEntreprise,
+      siret: req.body.siret,
+      lastname: req.body.lastname,
+      firstname: req.body.firstname,
+      email: req.body.email,
+      phone: req.body.phone,
+      avatar: req.body.avatar,
+      password: req.body.password,
+      adresse: {
+        adresse: req.body.adresse,
+        postalCode: req.body.postalCode,
+        city: req.body.city,
+      },
     }
     );
 
-  }
-
-  res.json({result});
-
+  res.json({userProfil});
 });
 
-
-=======
->>>>>>> armand
 module.exports = router;
