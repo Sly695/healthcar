@@ -5,17 +5,52 @@ var request = require("sync-request");
 var uid2 = require("uid2");
 const usersModel = require("../models/users");
 var transportModel = require("../models/transport");
-var patientData = require("../models/patients");
-var transportData = require("../models/patients");
-var UserModel = require("../models/users");
-
-
-var count = 0;
-
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
   res.render("index", { title: "Express" });
+});
+
+// route acceptation / changement de status d'un transport
+router.get("/transport-validation", async (req, res, next) => {
+  var result;
+  if (req.query.status === "annulé") {
+    await transportModel.updateOne(
+      { _id: req.query._id },
+      {
+        status: "annulé",
+      }
+    );
+    result = "annulé";
+  }
+  if (req.query.status === "dispo") {
+    await transportModel.updateOne(
+      { _id: req.query._id },
+      {
+        status: "dispo",
+      }
+    );
+    result = "dispo";
+  }
+  if (req.query.status === "encours") {
+    await transportModel.updateOne(
+      { _id: req.query._id },
+      {
+        status: "encours",
+      }
+    );
+    result = "encours";
+  }
+  if (req.query.status === "cloturé") {
+    await transportModel.updateOne(
+      { _id: req.query._id },
+      {
+        status: "cloturé",
+      }
+    );
+    result = "cloturé";
+  }
+  res.json({ result });
 });
 
 router.get("/feedback", async (req, res, next) => {
@@ -94,19 +129,25 @@ router.post("/booking", async function (req, res, next) {
   res.json({ result, saveTransport, error });
 });
 
-router.get('/map', function(req, res, next){
-  var address = req.query.address
-  var data = request("GET", `https://api.opencagedata.com/geocode/v1/json?q=${address}&key=e40b9c1452fe4b29997b6f91eb035202`) 
-  var dataAPI = JSON.parse(data.body)
-  console.log(dataAPI)
+router.get("/map", function (req, res, next) {
+  var address = req.query.address;
+  var data = request(
+    "GET",
+    `https://api.opencagedata.com/geocode/v1/json?q=${address}&key=e40b9c1452fe4b29997b6f91eb035202`
+  );
+  var dataAPI = JSON.parse(data.body);
+  console.log(dataAPI);
   console.log("oui");
   //Si on trouve une adresse qui correspond
-  if(dataAPI.total_results == 1){
-    res.json({result : true, latitude : dataAPI.results[0].geometry.lat, longitude : dataAPI.results[0].geometry.lng})
+  if (dataAPI.total_results == 1) {
+    res.json({
+      result: true,
+      latitude: dataAPI.results[0].geometry.lat,
+      longitude: dataAPI.results[0].geometry.lng,
+    });
   } else {
-    res.json({result : false})
+    res.json({ result: false });
   }
-
 });
 
 module.exports = router;

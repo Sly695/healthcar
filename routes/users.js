@@ -1,5 +1,4 @@
 var express = require("express");
-const { updateMany } = require("../models/users");
 var router = express.Router();
 var userModel = require("../models/users");
 var uid2 = require("uid2");
