@@ -1,6 +1,7 @@
 var mongoose = require("mongoose");
 
 var transportSchema = mongoose.Schema({
+  ref: String,
   departureLocation: String,
   arrivalLocation: String,
   dateInitial: Date,
