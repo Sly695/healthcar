@@ -3,17 +3,15 @@ const { updateMany } = require("../models/users");
 var router = express.Router();
 
 var userModel = require("../models/users");
+var uid2 = require("uid2");
+var bcrypt = require("bcrypt");
 
 /* GET users listing. */
 router.get("/", function (req, res, next) {
   res.send("respond with a resource");
 });
 
-//----------------------------------------
-//          EXEMPLE DE ROUTE             |
-//----------------------------------------
-
-router.post("/sign-up", async function (req, res, next) {
+router.post("/sign-up-nurse", async function (req, res, next) {
   var error = [];
   var result = false;
   var saveUser = null;
@@ -28,8 +26,10 @@ router.post("/sign-up", async function (req, res, next) {
   }
 
   if (
-    req.body.usernameFromFront == "" ||
+    req.body.lastnameFromFront == "" ||
+    req.body.firstnameFromFront == "" ||
     req.body.emailFromFront == "" ||
+    req.body.phoneFromFront == "" ||
     req.body.passwordFromFront == ""
   ) {
     error.push("champs vides");
@@ -38,10 +38,14 @@ router.post("/sign-up", async function (req, res, next) {
   if (error.length == 0) {
     var hash = bcrypt.hashSync(req.body.passwordFromFront, 10);
     var newUser = new userModel({
-      username: req.body.usernameFromFront,
+      lastname: req.body.lastnameFromFront,
+      firstname: req.body.firstnameFromFront,
       email: req.body.emailFromFront,
+      phone: req.body.phoneFromFront,
+      role: "soignant",
       password: hash,
       token: uid2(32),
+      date_inscrit: new Date(),
     });
 
     saveUser = await newUser.save();
@@ -55,37 +59,55 @@ router.post("/sign-up", async function (req, res, next) {
   res.json({ result, saveUser, error, token });
 });
 
-router.post("/sign-in", async function (req, res, next) {
-  var result = false;
-  var user = null;
+router.post("/sign-up-ambulance", async function (req, res, next) {
   var error = [];
+  var result = false;
+  var saveUser = null;
   var token = null;
 
-  if (req.body.emailFromFront == "" || req.body.passwordFromFront == "") {
+  const data = await userModel.findOne({
+    email: req.body.emailFromFront,
+  });
+
+  if (data != null) {
+    error.push("utilisateur déjà présent");
+  }
+
+  if (
+    req.body.nomEntrepriseFromFront == "" ||
+    req.body.siretFromFront == "" ||
+    req.body.emailFromFront == "" ||
+    req.body.phoneFromFront == "" ||
+    req.body.passwordFromFront == ""
+  ) {
     error.push("champs vides");
   }
 
   if (error.length == 0) {
-    const user = await userModel.findOne({
+    var hash = bcrypt.hashSync(req.body.passwordFromFront, 10);
+    var newUser = new userModel({
+      nomEntreprise: req.body.nomEntrepriseFromFront,
+      siret: req.body.siretFromFront,
       email: req.body.emailFromFront,
+      phone: req.body.phoneFromFront,
+      role: "ambulance",
+      password: hash,
+      token: uid2(32),
+      date_inscrit: new Date(),
     });
 
-    if (user) {
-      if (bcrypt.compareSync(req.body.passwordFromFront, user.password)) {
-        result = true;
-        token = user.token;
-      } else {
-        result = false;
-        error.push("mot de passe incorrect");
-      }
-    } else {
-      error.push("email incorrect");
+    saveUser = await newUser.save();
+
+    if (saveUser) {
+      result = true;
+      token = saveUser.token;
     }
   }
 
-  res.json({ result, user, error, token });
+  res.json({ result, saveUser, error, token });
 });
 
+<<<<<<< HEAD
 //----------------------------------------
 //          UPDATE         |
 //----------------------------------------
@@ -120,4 +142,6 @@ router.post('/update', async (req, res, next) =>{
 });
 
 
+=======
+>>>>>>> armand
 module.exports = router;
