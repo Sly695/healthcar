@@ -21,7 +21,7 @@ var userSchema = mongoose.Schema({
 
   nomEntreprise: String,
   siret: String,
-  note: Number,
+  note: Array,
 });
 
 var UserModel = mongoose.model("users", userSchema);

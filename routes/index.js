@@ -3,12 +3,28 @@ var router = express.Router();
 
 var request = require("sync-request");
 var uid2 = require("uid2");
+const usersModel = require("../models/users");
 
 var transportModel = require("../models/transport");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
   res.render("index", { title: "Express" });
+});
+
+router.get("/feedback", async (req, res, next) => {
+  var user = await usersModel.findById(req.query.idEntreprise);
+  var noteCopy = [...user.note];
+  noteCopy.push(req.query.note);
+  await usersModel.updateOne(
+    { _id: req.query.idEntreprise },
+    {
+      note: noteCopy,
+    }
+  );
+  saveNote = await user.save();
+
+  res.json({ noteCopy, saveNote });
 });
 
 router.post("/booking", async function (req, res, next) {
