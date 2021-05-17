@@ -1,7 +1,9 @@
 var express = require("express");
 var router = express.Router();
 
-var userModel = require("../models/users");
+var UserModel = require("../models/users");
+
+const bcrypt = require('bcrypt');
 
 /* GET users listing. */
 router.get("/", function (req, res, next) {
@@ -55,22 +57,23 @@ router.post("/sign-up", async function (req, res, next) {
 });
 
 router.post("/sign-in", async function (req, res, next) {
+
   var result = false;
   var user = null;
   var error = [];
   var token = null;
 
-  if (req.body.emailFromFront == "" || req.body.passwordFromFront == "") {
+  if (req.body.email == "" || req.body.password == "") {
     error.push("champs vides");
   }
 
   if (error.length == 0) {
-    const user = await userModel.findOne({
-      email: req.body.emailFromFront,
+    const user = await UserModel.findOne({
+      email: req.body.email,
     });
 
     if (user) {
-      if (bcrypt.compareSync(req.body.passwordFromFront, user.password)) {
+      if (bcrypt.compareSync(req.body.password, user.password)) {
         result = true;
         token = user.token;
       } else {
@@ -83,7 +86,8 @@ router.post("/sign-in", async function (req, res, next) {
   }
 
   res.json({ result, user, error, token });
-});
+
+})
 
 //----------------------------------------
 //          FIN EXEMPLE DE ROUTE         |
