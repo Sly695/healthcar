@@ -7,7 +7,7 @@ var options = {
 };
 
 mongoose.connect(process.env.BDD_LINK, options, function (err) {
-  console.log(err);
+  err ? console.log(err) : console.log("BDD OK");
 });
 
 module.exports = mongoose;

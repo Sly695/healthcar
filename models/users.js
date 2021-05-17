@@ -9,10 +9,10 @@ var AddressSchema = mongoose.Schema({
 var userSchema = mongoose.Schema({
   lastname: String,
   firstname: String,
-  email: String,
   avatar: String,
 
-  role: String, // infirmiere, pro
+  email: String,
+  role: String, // soignant, transporteur
   adresse: [AddressSchema],
   password: String,
   token: String,
@@ -21,7 +21,7 @@ var userSchema = mongoose.Schema({
 
   nomEntreprise: String,
   siret: String,
-  note: Number,
+  note: Array,
 });
 
 var UserModel = mongoose.model("users", userSchema);
