@@ -1,10 +1,12 @@
 var express = require("express");
 const { updateMany } = require("../models/users");
 var router = express.Router();
-
 var userModel = require("../models/users");
 var uid2 = require("uid2");
 var bcrypt = require("bcrypt");
+var UserModel = require("../models/users");
+
+const bcrypt = require('bcrypt');
 
 /* GET users listing. */
 router.get("/", function (req, res, next) {
@@ -60,6 +62,10 @@ router.post("/sign-up-nurse", async function (req, res, next) {
 });
 
 router.post("/sign-up-ambulance", async function (req, res, next) {
+router.post("/sign-in", async function (req, res, next) {
+
+  var result = false;
+  var user = null;
   var error = [];
   var result = false;
   var saveUser = null;
@@ -80,6 +86,7 @@ router.post("/sign-up-ambulance", async function (req, res, next) {
     req.body.phoneFromFront == "" ||
     req.body.passwordFromFront == ""
   ) {
+  if (req.body.email == "" || req.body.password == "") {
     error.push("champs vides");
   }
 
@@ -106,6 +113,26 @@ router.post("/sign-up-ambulance", async function (req, res, next) {
 
   res.json({ result, saveUser, error, token });
 });
+    const user = await UserModel.findOne({
+      email: req.body.email,
+    });
+
+    if (user) {
+      if (bcrypt.compareSync(req.body.password, user.password)) {
+        result = true;
+        token = user.token;
+      } else {
+        result = false;
+        error.push("mot de passe incorrect");
+      }
+    } else {
+      error.push("email incorrect");
+    }
+  }
+
+  res.json({ result, user, error, token });
+
+})
 
 //----------------------------------------
 //          UPDATE PROFIL  |
