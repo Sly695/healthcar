@@ -4,7 +4,6 @@ var router = express.Router();
 var request = require("sync-request");
 var uid2 = require("uid2");
 
-var patientData = require("../models/patients");
 var transportModel = require("../models/transport");
 
 /* GET home page. */
