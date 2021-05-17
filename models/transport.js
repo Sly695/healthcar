@@ -39,5 +39,6 @@ var transportSchema = mongoose.Schema({
 });
 
 var transportModel = mongoose.model("transports", transportSchema);
+// var patientModel = mongoose.model("patients", patientSchema);
 
 module.exports = transportModel;
