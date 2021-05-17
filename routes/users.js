@@ -107,41 +107,35 @@ router.post("/sign-up-ambulance", async function (req, res, next) {
   res.json({ result, saveUser, error, token });
 });
 
-<<<<<<< HEAD
 //----------------------------------------
 //          UPDATE         |
 //----------------------------------------
 
-router.post('/update', async (req, res, next) =>{
+router.post("/update", async (req, res, next) => {
   let userFind = await userModel.findOne({
     email: req.body.email,
-  })
+  });
 
   for (let i = 0; i < userFind.length; i++) {
-    
-
-    await userModel.updateOne({
-      token: userModel[i].token,},
+    await userModel.updateOne(
       {
-      lastname: userModel[i].lastname,
-      firstname: userModel[i].firstname,
-      email: userModel[i].email,
-      avatar: userModel[i].avatar,
-      adresse: [AddressSchema],
-      password: userModel[i].password,
-      phone: userModel[i].phone,
-      nomEntreprise: userModel[i].nomEntreprise,
-      siret: userModel[i].siret,
-    }
+        token: userModel[i].token,
+      },
+      {
+        lastname: userModel[i].lastname,
+        firstname: userModel[i].firstname,
+        email: userModel[i].email,
+        avatar: userModel[i].avatar,
+        adresse: [AddressSchema],
+        password: userModel[i].password,
+        phone: userModel[i].phone,
+        nomEntreprise: userModel[i].nomEntreprise,
+        siret: userModel[i].siret,
+      }
     );
-
   }
 
-  res.json({result});
-
+  res.json({ result });
 });
 
-
-=======
->>>>>>> armand
 module.exports = router;
