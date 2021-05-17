@@ -1,4 +1,5 @@
 var express = require("express");
+const { updateMany } = require("../models/users");
 var router = express.Router();
 
 var userModel = require("../models/users");
@@ -86,7 +87,37 @@ router.post("/sign-in", async function (req, res, next) {
 });
 
 //----------------------------------------
-//          FIN EXEMPLE DE ROUTE         |
+//          UPDATE         |
 //----------------------------------------
+
+router.post('/update', async (req, res, next) =>{
+  let userFind = await userModel.findOne({
+    email: req.body.email,
+  })
+
+  for (let i = 0; i < userFind.length; i++) {
+    
+
+    await userModel.updateOne({
+      token: userModel[i].token,},
+      {
+      lastname: userModel[i].lastname,
+      firstname: userModel[i].firstname,
+      email: userModel[i].email,
+      avatar: userModel[i].avatar,
+      adresse: [AddressSchema],
+      password: userModel[i].password,
+      phone: userModel[i].phone,
+      nomEntreprise: userModel[i].nomEntreprise,
+      siret: userModel[i].siret,
+    }
+    );
+
+  }
+
+  res.json({result});
+
+});
+
 
 module.exports = router;
