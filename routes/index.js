@@ -20,6 +20,7 @@ router.get('/map', function(req, res, next){
   var data = request("GET", `https://api.opencagedata.com/geocode/v1/json?q=${address}&key=e40b9c1452fe4b29997b6f91eb035202`) 
   var dataAPI = JSON.parse(data.body)
   console.log(dataAPI)
+  console.log("oui");
   //Si on trouve une adresse qui correspond
   if(dataAPI.total_results == 1){
     res.json({result : true, latitude : dataAPI.results[0].geometry.lat, longitude : dataAPI.results[0].geometry.lng})
