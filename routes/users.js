@@ -1,10 +1,10 @@
 var express = require("express");
 const { updateMany } = require("../models/users");
 var router = express.Router();
-
 var userModel = require("../models/users");
 var uid2 = require("uid2");
 var bcrypt = require("bcrypt");
+var UserModel = require("../models/users");
 
 /* GET users listing. */
 router.get("/", function (req, res, next) {
@@ -59,9 +59,40 @@ router.post("/sign-up-nurse", async function (req, res, next) {
   res.json({ result, saveUser, error, token });
 });
 
-router.post("/sign-up-ambulance", async function (req, res, next) {
-  var error = [];
+router.post("/sign-in", async function (req, res, next) {
   var result = false;
+  var user = null;
+  var error = [];
+  var token = null;
+
+  if (req.body.email == "" || req.body.password == "") {
+    error.push("champs vides");
+  }
+
+  if (error.length == 0) {
+    const user = await UserModel.findOne({
+      email: req.body.email,
+    });
+
+    if (user) {
+      if (bcrypt.compareSync(req.body.password, user.password)) {
+        result = true;
+        token = user.token;
+      } else {
+        result = false;
+        error.push("mot de passe incorrect");
+      }
+    } else {
+      error.push("email incorrect");
+    }
+  }
+
+  res.json({ result, user, error, token });
+});
+
+router.post("/sign-up-ambulance", async function (req, res, next) {
+  var result = false;
+  var error = [];
   var saveUser = null;
   var token = null;
 
@@ -108,34 +139,58 @@ router.post("/sign-up-ambulance", async function (req, res, next) {
 });
 
 //----------------------------------------
-//          UPDATE         |
+//          UPDATE PROFIL  |
 //----------------------------------------
 
-router.post("/update", async (req, res, next) => {
-  let userFind = await userModel.findOne({
-    email: req.body.email,
-  });
+router.put("/update-profil-carestaff", async (req, res, next) => {
+  let token = "gx38g6PBoxyMMVn2sstOUQvlIj7iOGUr";
 
-  for (let i = 0; i < userFind.length; i++) {
-    await userModel.updateOne(
-      {
-        token: userModel[i].token,
+  const userProfil = await userModel.updateOne(
+    {
+      token: token,
+    },
+    {
+      lastname: req.body.lastname,
+      firstname: req.body.firstname,
+      email: req.body.email,
+      avatar: req.body.avatar,
+      password: req.body.password,
+      phone: req.body.phone,
+      adresse: {
+        adresse: req.body.adresse,
+        postalCode: req.body.postalCode,
+        city: req.body.city,
       },
-      {
-        lastname: userModel[i].lastname,
-        firstname: userModel[i].firstname,
-        email: userModel[i].email,
-        avatar: userModel[i].avatar,
-        adresse: [AddressSchema],
-        password: userModel[i].password,
-        phone: userModel[i].phone,
-        nomEntreprise: userModel[i].nomEntreprise,
-        siret: userModel[i].siret,
-      }
-    );
-  }
+    }
+  );
+  res.json({ userProfil });
+});
 
-  res.json({ result });
+router.put("/update-profil-ambulance", async (req, res, next) => {
+  let token = "afWbpZPvEdHsrBpi1AFYi6ccmcspU648";
+
+  const userProfil = await userModel.updateOne(
+    {
+      token: token,
+    },
+    {
+      monEntreprise: req.body.nomEntreprise,
+      siret: req.body.siret,
+      lastname: req.body.lastname,
+      firstname: req.body.firstname,
+      email: req.body.email,
+      phone: req.body.phone,
+      avatar: req.body.avatar,
+      password: req.body.password,
+      adresse: {
+        adresse: req.body.adresse,
+        postalCode: req.body.postalCode,
+        city: req.body.city,
+      },
+    }
+  );
+
+  res.json({ userProfil });
 });
 
 module.exports = router;
