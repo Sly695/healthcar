@@ -1,22 +1,7 @@
 import "../App.css";
 import React, { useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import {
-  Row,
-  Col,
-  Form,
-  Input,
-  Button,
-  Checkbox,
-  Modal,
-  Tabs,
-  Radio,
-  Select,
-  TreeSelect,
-  Cascader,
-  DatePicker,
-  InputNumber,
-} from "antd";
+import { Row, Col, Form, Input, Button, Checkbox, Modal, Tabs } from "antd";
 import "antd/dist/antd.css"; // or 'antd/dist/antd.less'
 
 const { TabPane } = Tabs;
@@ -38,6 +23,39 @@ const tailLayout = {
 
 function SignIn() {
   const [visible, setVisible] = useState(false);
+
+  // Pour le signup soignant
+  const [signUpNameS, setSignUpNameS] = useState("");
+  const [signUpPrenomS, setSignUpPrenomS] = useState("");
+  const [signUpPhoneS, setSignUpPhoneS] = useState("");
+  const [signUpemailS, setSignUpemailS] = useState("");
+  const [signUpPasswordS, setSignUpPasswordS] = useState("");
+  // pour le signup ambulance
+  const [signUpNameA, setSignUpNameA] = useState("");
+  const [signUpSiretA, setSignUpSiretA] = useState("");
+  const [signUpPhoneA, setSignUpPhoneA] = useState("");
+  const [signUpemailA, setSignUpemailA] = useState("");
+  const [signUpPasswordA, setSignUpPasswordA] = useState("");
+
+  async function signUpSoignant() {
+    var request = await fetch("users/sign-up-nurse", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `lastnameFromFront=${signUpNameS}&firstnameFromFront=${signUpPrenomS}&emailFromFront=${signUpemailS}&phoneFromFront=${signUpPhoneS}&passwordFromFront=${signUpPasswordS}`,
+    });
+    let response = await request.json();
+    console.log(response);
+  }
+
+  async function signUpAmbulance() {
+    var request = await fetch("users/sign-up-ambulance", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `nomEntrepriseFromFront=${signUpNameA}&siretFromFront=${signUpSiretA}&emailFromFront=${signUpemailA}&phoneFromFront=${signUpPhoneA}&passwordFromFront=${signUpPasswordA}`,
+    });
+    let response = await request.json();
+    console.log(response);
+  }
 
   const onFinish = (values) => {
     console.log("Success:", values);
@@ -145,25 +163,24 @@ function SignIn() {
               size="large"
             >
               <Form.Item label="Nom">
-                <Input />
+                <Input onChange={(e) => setSignUpNameS(e.target.value)} />
               </Form.Item>
               <Form.Item label="Prénom">
-                <Input />
+                <Input onChange={(e) => setSignUpPrenomS(e.target.value)} />
               </Form.Item>
               <Form.Item label="Téléphone">
-                <Input />
+                <Input onChange={(e) => setSignUpPhoneS(e.target.value)} />
               </Form.Item>
               <Form.Item label="E-mail">
-                <Input />
+                <Input onChange={(e) => setSignUpemailS(e.target.value)} />
               </Form.Item>
               <Form.Item label="Mot de passe">
-                <Input />
-              </Form.Item>
-              <Form.Item hidden value="soignant" label="catégorie">
-                <Input />
+                <Input onChange={(e) => setSignUpPasswordS(e.target.value)} />
               </Form.Item>
               <Form.Item>
-                <Button type="primary">Valider</Button>
+                <Button type="primary" onClick={() => signUpSoignant()}>
+                  Valider
+                </Button>
               </Form.Item>
             </Form>
           </TabPane>
@@ -182,25 +199,24 @@ function SignIn() {
               size="large"
             >
               <Form.Item label="Nom de la société">
-                <Input />
+                <Input onChange={(e) => setSignUpNameA(e.target.value)} />
               </Form.Item>
               <Form.Item label="Siret">
-                <Input />
+                <Input onChange={(e) => setSignUpSiretA(e.target.value)} />
               </Form.Item>
               <Form.Item label="Téléphone">
-                <Input />
+                <Input onChange={(e) => setSignUpPhoneA(e.target.value)} />
               </Form.Item>
               <Form.Item label="E-mail">
-                <Input />
+                <Input onChange={(e) => setSignUpemailA(e.target.value)} />
               </Form.Item>
               <Form.Item label="Mot de passe">
-                <Input />
-              </Form.Item>
-              <Form.Item hidden value="ambulance" label="catégorie">
-                <Input />
+                <Input onChange={(e) => setSignUpPasswordA(e.target.value)} />
               </Form.Item>
               <Form.Item>
-                <Button type="primary">Valider</Button>
+                <Button type="primary" onClick={() => signUpAmbulance()}>
+                  Valider
+                </Button>
               </Form.Item>
             </Form>
           </TabPane>
