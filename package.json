@@ -18,5 +18,9 @@
     "morgan": "~1.9.1",
     "sync-request": "^6.1.0",
     "uid2": "^0.0.3"
+  },
+  "devDependencies": {
+    "css-loader": "^5.2.4",
+    "style-loader": "^2.0.0"
   }
 }
