@@ -1,7 +1,25 @@
 import "../App.css";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { Row, Col, Form, Input, Button, Checkbox } from "antd";
+import {
+  Row,
+  Col,
+  Form,
+  Input,
+  Button,
+  Checkbox,
+  Modal,
+  Tabs,
+  Radio,
+  Select,
+  TreeSelect,
+  Cascader,
+  DatePicker,
+  InputNumber,
+} from "antd";
 import "antd/dist/antd.css"; // or 'antd/dist/antd.less'
+
+const { TabPane } = Tabs;
 
 const layout = {
   labelCol: {
@@ -19,6 +37,8 @@ const tailLayout = {
 };
 
 function SignIn() {
+  const [visible, setVisible] = useState(false);
+
   const onFinish = (values) => {
     console.log("Success:", values);
   };
@@ -90,12 +110,102 @@ function SignIn() {
           </Form>
         </center>
         <div className="buttonSignUp">
-          <Button shape="round" type="primary" htmlType="submit">
+          <Button
+            shape="round"
+            type="primary"
+            htmlType="submit"
+            onClick={() => setVisible(true)}
+          >
             Créer un compte
           </Button>
         </div>
         <div className="terms">Terms and conditions</div>
       </Col>
+      <Modal
+        title="Inscription à HealthCar"
+        centered
+        visible={visible}
+        width={1000}
+        footer={null}
+        onCancel={() => setVisible(false)}
+      >
+        <Tabs defaultActiveKey="1">
+          <TabPane tab="Personnel soignant" key="1">
+            <Form
+              labelCol={{
+                span: 4,
+              }}
+              wrapperCol={{
+                span: 14,
+              }}
+              layout="horizontal"
+              initialValues={{
+                size: "large",
+              }}
+              size="large"
+            >
+              <Form.Item label="Nom">
+                <Input />
+              </Form.Item>
+              <Form.Item label="Prénom">
+                <Input />
+              </Form.Item>
+              <Form.Item label="Téléphone">
+                <Input />
+              </Form.Item>
+              <Form.Item label="E-mail">
+                <Input />
+              </Form.Item>
+              <Form.Item label="Mot de passe">
+                <Input />
+              </Form.Item>
+              <Form.Item hidden value="soignant" label="catégorie">
+                <Input />
+              </Form.Item>
+              <Form.Item>
+                <Button type="primary">Valider</Button>
+              </Form.Item>
+            </Form>
+          </TabPane>
+          <TabPane tab="Ambulances" key="2">
+            <Form
+              labelCol={{
+                span: 4,
+              }}
+              wrapperCol={{
+                span: 14,
+              }}
+              layout="horizontal"
+              initialValues={{
+                size: "large",
+              }}
+              size="large"
+            >
+              <Form.Item label="Nom de la société">
+                <Input />
+              </Form.Item>
+              <Form.Item label="Siret">
+                <Input />
+              </Form.Item>
+              <Form.Item label="Téléphone">
+                <Input />
+              </Form.Item>
+              <Form.Item label="E-mail">
+                <Input />
+              </Form.Item>
+              <Form.Item label="Mot de passe">
+                <Input />
+              </Form.Item>
+              <Form.Item hidden value="ambulance" label="catégorie">
+                <Input />
+              </Form.Item>
+              <Form.Item>
+                <Button type="primary">Valider</Button>
+              </Form.Item>
+            </Form>
+          </TabPane>
+        </Tabs>
+      </Modal>
     </Row>
   );
 }
