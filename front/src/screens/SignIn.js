@@ -25,6 +25,9 @@ const tailLayout = {
 function SignIn() {
   const [visible, setVisible] = useState(false);
 
+  // Pour le signin
+  const [signInEmail, setSignInEmail] = useState("");
+  const [signInPassword, setSignInPassword] = useState("");
   // Pour le signup soignant
   const [signUpNameS, setSignUpNameS] = useState("");
   const [signUpPrenomS, setSignUpPrenomS] = useState("");
@@ -53,6 +56,16 @@ function SignIn() {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `nomEntrepriseFromFront=${signUpNameA}&siretFromFront=${signUpSiretA}&emailFromFront=${signUpemailA}&phoneFromFront=${signUpPhoneA}&passwordFromFront=${signUpPasswordA}`,
+    });
+    let response = await request.json();
+    console.log(response);
+  }
+
+  async function signIn() {
+    var request = await fetch("/users/sign-in", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `email=${signInEmail}&password=${signInPassword}`,
     });
     let response = await request.json();
     console.log(response);
@@ -89,29 +102,31 @@ function SignIn() {
             onFinishFailed={onFinishFailed}
           >
             <Form.Item
-              label="Username"
+              label="E-mail"
               name="username"
               rules={[
                 {
                   required: true,
-                  message: "Please input your username!",
+                  message: "Veuillez entrer votre email!",
                 },
               ]}
             >
-              <Input />
+              <Input onChange={(e) => setSignInEmail(e.target.value)} />
             </Form.Item>
 
             <Form.Item
-              label="Password"
+              label="Mot de passe"
               name="password"
               rules={[
                 {
                   required: true,
-                  message: "Please input your password!",
+                  message: "Veuillez entrer votre mot de passe!",
                 },
               ]}
             >
-              <Input.Password />
+              <Input.Password
+                onChange={(e) => setSignInPassword(e.target.value)}
+              />
             </Form.Item>
 
             <Form.Item {...tailLayout} name="remember" valuePropName="checked">
@@ -122,7 +137,12 @@ function SignIn() {
               <span style={{ marginRight: "20px" }}>
                 <u>Mot de passe oublié</u>
               </span>
-              <Button shape="round" type="primary" htmlType="submit">
+              <Button
+                onClick={() => signIn()}
+                shape="round"
+                type="primary"
+                htmlType="submit"
+              >
                 Connexion
               </Button>
             </Form.Item>
