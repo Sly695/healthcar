@@ -44,4 +44,11 @@
     display: none;
     background-color: tomato;
   }
+  .top {
+    margin-top: 0rem;
+    margin-bottom: 0rem;
+  }
+  .buttonSignUp {
+    margin-top: 3rem;
+  }
 }
