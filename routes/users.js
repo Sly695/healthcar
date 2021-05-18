@@ -10,6 +10,10 @@ router.get("/", function (req, res, next) {
   res.send("respond with a resource");
 });
 
+//----------------------------------------
+//          SIGNUP/SIGNIN
+//----------------------------------------
+
 router.post("/sign-up-nurse", async function (req, res, next) {
   var error = [];
   var result = false;
