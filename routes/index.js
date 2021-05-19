@@ -52,7 +52,7 @@ router.get("/transport-validation", async (req, res, next) => {
     );
     result = "cloturé";
   }
-  res.json({ result });
+  res.json({ result, transportModel });
 });
 
 //----------------------------------------------------------
@@ -168,9 +168,9 @@ router.get("/map", function (req, res, next) {
 //         LISTE TRANSPORTS
 //----------------------------------------------------------
 
-router.post("/course-list", async (req, res, next) => {
+router.get("/course-list", async (req, res, next) => {
   let courseList = await transportModel.find();
-  res.json({courseList})
-})
+  res.json({ courseList });
+});
 
 module.exports = router;
