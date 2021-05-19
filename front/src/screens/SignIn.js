@@ -1,4 +1,4 @@
-import "../App.css";
+import "../App.less";
 import React, { useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Row, Col, Form, Input, Button, Checkbox, Modal, Tabs } from "antd";

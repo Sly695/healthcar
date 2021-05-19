@@ -1,28 +1,13 @@
 import React, { useState } from "react";
 
 import {
-  Avatar,
-  List,
   Card,
   Layout,
-  Row,
-  Col,
-  Image,
   Menu,
-  Button,
-  DatePicker,
+  Row,
 } from "antd";
-import "antd/dist/antd.css"; // or 'antd/dist/antd.less'
+import "antd/dist/antd.css"; 
 import {
-  CarOutlined,
-  CheckOutlined,
-  DashboardOutlined,
-  UserOutlined,
-  PieChartOutlined,
-  LogoutOutlined,
-  FileOutlined,
-  TeamOutlined,
-  DesktopOutlined,
   FieldTimeOutlined,
   ReloadOutlined,
   CheckCircleTwoTone,
@@ -30,16 +15,13 @@ import {
   CloseCircleOutlined,
 } from "@ant-design/icons";
 
-// import logobleu from "../../public/images/Logobleu.svg";
 
 function Header() {
   const { Meta } = Card;
 
-  const { SubMenu } = Menu;
 
-  const { Header, Footer, Sider, Content } = Layout;
+  const { Header } = Layout;
   return (
-    <div>
       <Header
         style={{
           height: "15vh",
@@ -49,6 +31,7 @@ function Header() {
           backgroundColor: "#F0F2F5",
         }}
       >
+        <Row>
         <Card
           style={{
             width: "23%",
@@ -60,7 +43,7 @@ function Header() {
         >
           <Meta
             avatar={
-              <CheckOutlined style={{ fontSize: "200%", color: "#52c41a" }} />
+              <CheckCircleTwoTone style={{ fontSize: "200%", color: "#52c41a" }} />
             }
             title="Prise en charge confirmée"
             description="M.Robert"
@@ -78,17 +61,16 @@ function Header() {
             fontSize: "300%",
           }}
         />
-      </Header>
+        </Row>
 
-      <Header
-        style={{
+        <Row
+          style={{
           height: "20vh",
           display: "flex",
           flexDirection: "row",
           justifyContent: "center",
           backgroundColor: "#F0F2F5",
-        }}
-      >
+        }} >
         <Card
           style={{
             width: "25%",
@@ -157,8 +139,9 @@ function Header() {
             description="105"
           />
         </Card>
+        </Row>
+        
       </Header>
-    </div>
   );
 }
 

@@ -1,52 +1,15 @@
 import React, { useState } from "react";
 
 import {
-  Avatar,
-  List,
   Card,
   Layout,
-  Row,
-  Col,
-  Image,
   Menu,
-  Button,
-  DatePicker,
 } from "antd";
-import "antd/dist/antd.css"; // or 'antd/dist/antd.less'
-import {
-  CarOutlined,
-  CheckOutlined,
-  DashboardOutlined,
-  UserOutlined,
-  PieChartOutlined,
-  LogoutOutlined,
-  FileOutlined,
-  TeamOutlined,
-  DesktopOutlined,
-  FieldTimeOutlined,
-  ReloadOutlined,
-  CheckCircleTwoTone,
-  BellOutlined,
-  CloseCircleOutlined,
-} from "@ant-design/icons";
+import "antd/dist/antd.css"; 
 
-// import logobleu from "../../public/images/Logobleu.svg";
-// import googleplaylogo from "../../public/images/app-store-logo.svg";
-// import appstorelogo from "../../public/images/google-play-logo.svg";
+export default function FooterDash() {
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  useRouteMatch,
-} from "react-router-dom";
-
-function Footer() {
-  const { Meta } = Card;
-
-  const { SubMenu } = Menu;
-
-  const { Header, Footer, Sider, Content } = Layout;
+  const { Footer } = Layout;
   return (
     <Footer
       style={{
@@ -58,8 +21,9 @@ function Footer() {
       }}
     >
       <Card
+        
         title="Centre d'aide"
-        style={{ width: "20%", border: "none", color: "#7B61FF" }}
+        style={{border: "none", color: "#7B61FF" }}
       >
         <p>Questions fréquentes</p>
         <p>En savoir plus</p>
@@ -67,7 +31,7 @@ function Footer() {
       </Card>
       <Card
         title="HealthCar"
-        style={{ width: "20%", border: "none", color: "#7B61FF" }}
+        style={{}}
       >
         <p>C.G.U</p>
         <p>Privacy</p>
@@ -99,11 +63,9 @@ function Footer() {
       </Card>
       <img
         style={{ width: "30%", padding: "10px" }}
-        // src={logobleu}
+        src='../../public/images/logo.svg'
         alt="React Logo"
       />
     </Footer>
   );
 }
-
-export default Footer;
