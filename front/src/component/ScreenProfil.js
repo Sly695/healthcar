@@ -85,7 +85,7 @@ function UploadAvatar() {
     const [componentSize, setComponentSize] = useState('default');
     const [value, setValue] = React.useState(1);
 
-    const []
+    // const []
 
     const onChange = e => {
       console.log('radio checked', e.target.value);
