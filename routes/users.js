@@ -10,6 +10,10 @@ router.get("/", function (req, res, next) {
   res.send("respond with a resource");
 });
 
+//----------------------------------------
+//          SIGNUP/SIGNIN
+//----------------------------------------
+
 router.post("/sign-up-nurse", async function (req, res, next) {
   var error = [];
   var result = false;
@@ -60,7 +64,7 @@ router.post("/sign-up-nurse", async function (req, res, next) {
 
 router.post("/sign-in", async function (req, res, next) {
   var result = false;
-  var user = null;
+
   var error = [];
   var token = null;
 
@@ -86,7 +90,7 @@ router.post("/sign-in", async function (req, res, next) {
     }
   }
 
-  res.json({ result, user, error, token });
+  res.json({ result, error, token });
 });
 
 router.post("/sign-up-ambulance", async function (req, res, next) {

@@ -11,7 +11,9 @@ router.get("/", function (req, res, next) {
   res.render("index", { title: "Express" });
 });
 
-// route acceptation / changement de status d'un transport
+//----------------------------------------------------------
+//          VALIDATION TRANSPORT ET CHANGEMENT DE STATUS
+//----------------------------------------------------------
 router.get("/transport-validation", async (req, res, next) => {
   var result;
   if (req.query.status === "annulé") {
@@ -53,6 +55,10 @@ router.get("/transport-validation", async (req, res, next) => {
   res.json({ result });
 });
 
+//----------------------------------------------------------
+//          NOTATION
+//----------------------------------------------------------
+
 router.get("/feedback", async (req, res, next) => {
   var user = await usersModel.findById(req.query.idEntreprise);
   var noteCopy = [...user.note];
@@ -67,6 +73,10 @@ router.get("/feedback", async (req, res, next) => {
 
   res.json({ noteCopy, saveNote });
 });
+
+//----------------------------------------------------------
+//          RÉSERVATION VÉHICULE
+//----------------------------------------------------------
 
 router.post("/booking", async function (req, res, next) {
   var error = [];
@@ -129,6 +139,10 @@ router.post("/booking", async function (req, res, next) {
   res.json({ result, saveTransport, error });
 });
 
+//----------------------------------------------------------
+//          MAP
+//----------------------------------------------------------
+
 router.get("/map", function (req, res, next) {
   var address = req.query.address;
   var data = request(
@@ -149,5 +163,14 @@ router.get("/map", function (req, res, next) {
     res.json({ result: false });
   }
 });
+
+//----------------------------------------------------------
+//         LISTE TRANSPORTS
+//----------------------------------------------------------
+
+router.post("/course-list", async (req, res, next) => {
+  let courseList = await transportModel.find();
+  res.json({courseList})
+})
 
 module.exports = router;
