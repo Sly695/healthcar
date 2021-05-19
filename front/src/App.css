@@ -16,14 +16,14 @@
   padding: 15px;
 }
 .top {
-  margin-top: 5rem;
-  margin-bottom: 5rem;
+  margin-top: 3rem;
+  margin-bottom: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 .buttonSignUp {
-  margin-top: 10rem;
+  margin-top: 5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -33,15 +33,28 @@
   bottom: 0;
   text-align: center;
 }
-/* .form {
+.form {
+  text-align: center;
+}
+.contentForm {
   display: flex;
-  align-items: center;
   flex-direction: column;
-} */
+  justify-content: space-between;
+  height: 100%;
+}
 /* SIGNIN --------------------- */
 @media screen and (max-width: 850px) {
   .bgsignin {
     display: none;
-    background-color: tomato;
+  }
+  .top {
+    margin-top: 0rem;
+    margin-bottom: 0rem;
+  }
+  .buttonSignUp {
+    margin-top: 3rem;
+  }
+  .blocform {
+    border-top: solid #6693fe 3px;
   }
 }

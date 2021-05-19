@@ -1,4 +1,3 @@
-import React from 'react';
 import "../App.css";
 import React, { useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -25,6 +24,9 @@ const tailLayout = {
 function SignIn() {
   const [visible, setVisible] = useState(false);
 
+  // Pour le signin
+  const [signInEmail, setSignInEmail] = useState("");
+  const [signInPassword, setSignInPassword] = useState("");
   // Pour le signup soignant
   const [signUpNameS, setSignUpNameS] = useState("");
   const [signUpPrenomS, setSignUpPrenomS] = useState("");
@@ -58,6 +60,16 @@ function SignIn() {
     console.log(response);
   }
 
+  async function signIn() {
+    var request = await fetch("/users/sign-in", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `email=${signInEmail}&password=${signInPassword}`,
+    });
+    let response = await request.json();
+    console.log(response);
+  }
+
   const onFinish = (values) => {
     console.log("Success:", values);
   };
@@ -70,75 +82,100 @@ function SignIn() {
     <Row className="screenSignIn">
       <Col md={16} xs={24} className="bgsignin"></Col>
       <Col md={8} xs={24} className="blocform">
-        <div className="top">
-          <img src="../images/Logo.svg" />
-          <h1 style={{ color: "#6793FF" }}>Bienvenue sur HealthCar</h1>
-          <h2 style={{ color: "#B170FF" }}>
-            Réservez votre ambulance ou trouvez des patients à transporter.
-          </h2>
-        </div>
-        <center>
-          <Form
-            className="form"
-            {...layout}
-            name="basic"
-            initialValues={{
-              remember: true,
-            }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-          >
-            <Form.Item
-              label="Username"
-              name="username"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your username!",
-                },
-              ]}
+        <div className="contentForm">
+          <div className="top">
+            <img src="../images/Logo.svg" />
+            <h1 style={{ color: "#6793FF" }}>Bienvenue sur HealthCar</h1>
+            <h2 style={{ color: "#B170FF" }}>
+              Réservez votre ambulance ou trouvez des patients à transporter.
+            </h2>
+          </div>
+          <center>
+            <Form
+              {...layout}
+              name="basic"
+              initialValues={{
+                remember: true,
+              }}
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
             >
-              <Input />
-            </Form.Item>
+              <Form.Item
+                label="E-mail"
+                name="username"
+                rules={[
+                  {
+                    required: true,
+                    message: "Veuillez entrer votre email!",
+                  },
+                ]}
+              >
+                <Input
+                  onChange={(e) => setSignInEmail(e.target.value)}
+                  style={styleInput}
+                />
+              </Form.Item>
 
-            <Form.Item
-              label="Password"
-              name="password"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your password!",
-                },
-              ]}
-            >
-              <Input.Password />
-            </Form.Item>
+              <Form.Item
+                label="Mot de passe"
+                name="password"
+                rules={[
+                  {
+                    required: true,
+                    message: "Veuillez entrer votre mot de passe!",
+                  },
+                ]}
+              >
+                <Input.Password
+                  onChange={(e) => setSignInPassword(e.target.value)}
+                  style={styleInput}
+                />
+              </Form.Item>
 
-            <Form.Item {...tailLayout} name="remember" valuePropName="checked">
-              <Checkbox>Remember me</Checkbox>
-            </Form.Item>
+              <Form.Item
+                {...tailLayout}
+                name="remember"
+                valuePropName="checked"
+              >
+                <span>
+                  <u>Mot de passe oublié</u>
+                </span>
+                <Checkbox style={{ marginLeft: "30px" }}>Remember me</Checkbox>{" "}
+              </Form.Item>
 
-            <Form.Item {...tailLayout}>
-              <span style={{ marginRight: "20px" }}>
-                <u>Mot de passe oublié</u>
-              </span>
-              <Button shape="round" type="primary" htmlType="submit">
-                Connexion
-              </Button>
-            </Form.Item>
-          </Form>
-        </center>
-        <div className="buttonSignUp">
-          <Button
-            shape="round"
-            type="primary"
-            htmlType="submit"
-            onClick={() => setVisible(true)}
-          >
-            Créer un compte
-          </Button>
+              <Form.Item {...tailLayout}>
+                <Button
+                  type="primary"
+                  onClick={() => setVisible(true)}
+                  style={{
+                    borderRadius: "10px",
+                    background: "#FFAE80",
+                    borderColor: "#FFAE80",
+                    fontSize: "15px",
+                    height: "40px",
+                  }}
+                >
+                  Créer un compte
+                </Button>
+                <Button
+                  onClick={() => signIn()}
+                  type="primary"
+                  htmlType="submit"
+                  style={{
+                    fontSize: "15px",
+                    height: "40px",
+                    borderRadius: "10px",
+                    marginLeft: "20px",
+                  }}
+                >
+                  Connexion
+                </Button>
+              </Form.Item>
+            </Form>
+          </center>
+          <div className="buttonSignUp"></div>
+          <div className="terms">Terms and conditions</div>
         </div>
-        <div className="terms">Terms and conditions</div>
       </Col>
       <Modal
         title="Inscription à HealthCar"
@@ -151,6 +188,7 @@ function SignIn() {
         <Tabs defaultActiveKey="1">
           <TabPane tab="Personnel soignant" key="1">
             <Form
+              className="form"
               labelCol={{
                 span: 4,
               }}
@@ -164,22 +202,46 @@ function SignIn() {
               size="large"
             >
               <Form.Item label="Nom">
-                <Input onChange={(e) => setSignUpNameS(e.target.value)} />
+                <Input
+                  style={styleInput}
+                  onChange={(e) => setSignUpNameS(e.target.value)}
+                />
               </Form.Item>
               <Form.Item label="Prénom">
-                <Input onChange={(e) => setSignUpPrenomS(e.target.value)} />
+                <Input
+                  style={styleInput}
+                  onChange={(e) => setSignUpPrenomS(e.target.value)}
+                />
               </Form.Item>
               <Form.Item label="Téléphone">
-                <Input onChange={(e) => setSignUpPhoneS(e.target.value)} />
+                <Input
+                  style={styleInput}
+                  onChange={(e) => setSignUpPhoneS(e.target.value)}
+                />
               </Form.Item>
               <Form.Item label="E-mail">
-                <Input onChange={(e) => setSignUpemailS(e.target.value)} />
+                <Input
+                  style={styleInput}
+                  onChange={(e) => setSignUpemailS(e.target.value)}
+                />
               </Form.Item>
               <Form.Item label="Mot de passe">
-                <Input onChange={(e) => setSignUpPasswordS(e.target.value)} />
+                <Input
+                  style={styleInput}
+                  onChange={(e) => setSignUpPasswordS(e.target.value)}
+                />
               </Form.Item>
               <Form.Item>
-                <Button type="primary" onClick={() => signUpSoignant()}>
+                <Button
+                  type="primary"
+                  onClick={() => signUpSoignant()}
+                  style={{
+                    fontSize: "17px",
+                    height: "40px",
+                    borderRadius: "10px",
+                    marginLeft: "20px",
+                  }}
+                >
                   Valider
                 </Button>
               </Form.Item>
@@ -187,6 +249,7 @@ function SignIn() {
           </TabPane>
           <TabPane tab="Ambulances" key="2">
             <Form
+              className="form"
               labelCol={{
                 span: 4,
               }}
@@ -200,22 +263,46 @@ function SignIn() {
               size="large"
             >
               <Form.Item label="Nom de la société">
-                <Input onChange={(e) => setSignUpNameA(e.target.value)} />
+                <Input
+                  style={styleInput}
+                  onChange={(e) => setSignUpNameA(e.target.value)}
+                />
               </Form.Item>
               <Form.Item label="Siret">
-                <Input onChange={(e) => setSignUpSiretA(e.target.value)} />
+                <Input
+                  style={styleInput}
+                  onChange={(e) => setSignUpSiretA(e.target.value)}
+                />
               </Form.Item>
               <Form.Item label="Téléphone">
-                <Input onChange={(e) => setSignUpPhoneA(e.target.value)} />
+                <Input
+                  style={styleInput}
+                  onChange={(e) => setSignUpPhoneA(e.target.value)}
+                />
               </Form.Item>
               <Form.Item label="E-mail">
-                <Input onChange={(e) => setSignUpemailA(e.target.value)} />
+                <Input
+                  style={styleInput}
+                  onChange={(e) => setSignUpemailA(e.target.value)}
+                />
               </Form.Item>
               <Form.Item label="Mot de passe">
-                <Input onChange={(e) => setSignUpPasswordA(e.target.value)} />
+                <Input
+                  style={styleInput}
+                  onChange={(e) => setSignUpPasswordA(e.target.value)}
+                />
               </Form.Item>
               <Form.Item>
-                <Button type="primary" onClick={() => signUpAmbulance()}>
+                <Button
+                  style={{
+                    fontSize: "17px",
+                    height: "40px",
+                    borderRadius: "10px",
+                    marginLeft: "20px",
+                  }}
+                  type="primary"
+                  onClick={() => signUpAmbulance()}
+                >
                   Valider
                 </Button>
               </Form.Item>
@@ -228,3 +315,9 @@ function SignIn() {
 }
 
 export default SignIn;
+
+const styleInput = {
+  fontSize: "15px",
+  color: "#B170FF",
+  borderRadius: "2rem",
+};
