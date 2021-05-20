@@ -42,13 +42,13 @@ export default function Header() {
 
       <List
           grid={{
-            gutter: 16,
+            gutter: 10,
             xs: 1,
             sm: 2,
             md: 3,
-            lg: 3,
-            xl: 6,
-            xxl: 3,
+            lg: 4,
+            xl: 4,
+            xxl: 4,
           }}
           dataSource={data}
           renderItem={item => (

@@ -28,8 +28,6 @@ function Dashboard(props) {
       <Affix>
         <Nav/>
       </Affix>
-      
-
       <Layout>
         <Header/>
       <Content>
