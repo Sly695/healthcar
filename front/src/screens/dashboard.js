@@ -5,6 +5,7 @@ import Nav from '../component/Nav'
 import Profil from '../component/ScreenProfil'
 import Header from "../component/Header";
 import FooterDash from '../component/Footer';
+import Map from '../component/Map';
 
 
 import {
@@ -29,6 +30,7 @@ function Dashboard(props) {
         <Header/>
       <Content>
         <Profil/>
+        <Map/>
       </Content>
 
       <FooterDash/>
