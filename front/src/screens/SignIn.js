@@ -84,7 +84,7 @@ function SignIn() {
       <Col md={8} xs={24} className="blocform">
         <div className="contentForm">
           <div className="top">
-            <img src="../images/LogoBleu.svg" style={{ width: "15rem" }} />
+            <img src="../images/Logo.svg" style={{ width: "15rem" }} />
             <h1 style={{ color: "#6793FF" }}>Bienvenue sur HealthCar</h1>
             <h2 style={{ color: "#B170FF" }}>
               Réservez votre ambulance ou trouvez des patients à transporter.

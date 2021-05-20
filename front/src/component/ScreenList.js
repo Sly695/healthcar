@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "../App.css";
+import "../App.less";
 import { Layout, Modal, Table, Space, Button } from "antd";
 
 const { Content } = Layout;
