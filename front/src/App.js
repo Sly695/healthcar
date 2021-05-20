@@ -5,8 +5,7 @@ import "antd/dist/antd.css"; // or 'antd/dist/antd.less'
 
 import Dashboard from "./screens/dashboard";
 import SignIn from "./screens/SignIn";
-// import BoardSoignant from "./screens/BoardSoignant";
-// import BoardAmbulance from "./screens/BoardAmbulance";
+import Booking from "./component/Booking";
 import Profil from "./component/ScreenProfil";
 // import profilEditSoignant from "./screens/profilEditSoignant";
 import ListeTransport from "./component/ScreenList";
@@ -21,6 +20,7 @@ function App() {
         <Route exact path="/account-edit-client" component={Profil} />
         <Route exact path="/dashboard" component={Dashboard} />
         <Route exact path="/list" component={ListeTransport} />
+        <Route exact path="/booking" component={Booking} />
         {/* <Route exact path="/account-client" component={BoardSoignant} />
       
         <Route exact path="/account-ambulance" component={BoardAmbulance} />

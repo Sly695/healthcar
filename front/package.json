@@ -15,6 +15,7 @@
     "filename-regex": "^2.0.1",
     "inquirer": "^8.0.0",
     "leaflet": "^1.7.1",
+    "moment": "^2.29.1",
     "object.omit": "^3.0.0",
     "parse-glob": "^3.0.4",
     "react": "^17.0.2",
