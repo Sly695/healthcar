@@ -125,6 +125,7 @@ router.post("/sign-up-ambulance", async function (req, res, next) {
       email: req.body.emailFromFront,
       phone: req.body.phoneFromFront,
       role: "ambulance",
+      note: [],
       password: hash,
       token: uid2(32),
       date_inscrit: new Date(),

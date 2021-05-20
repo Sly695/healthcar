@@ -60,18 +60,24 @@ router.get("/transport-validation", async (req, res, next) => {
 //----------------------------------------------------------
 
 router.get("/feedback", async (req, res, next) => {
-  var user = await usersModel.findById(req.query.idEntreprise);
+  var user = await usersModel.findById(req.query.idpro);
   var noteCopy = [...user.note];
   noteCopy.push(req.query.note);
   await usersModel.updateOne(
-    { _id: req.query.idEntreprise },
+    { _id: req.query.idpro },
     {
       note: noteCopy,
     }
   );
-  saveNote = await user.save();
+  console.log(req.query.alreadynote);
+  await transportModel.updateOne(
+    { _id: req.query.alreadynote },
+    {
+      alreadyNote: true,
+    }
+  );
 
-  res.json({ noteCopy, saveNote });
+  res.json({ noteCopy });
 });
 
 //----------------------------------------------------------
@@ -101,6 +107,7 @@ router.post("/booking", async function (req, res, next) {
   if (error.length == 0) {
     var newTransport = new transportModel({
       ref: uid2(5),
+      alreadyNote: false,
       departureLocation: req.body.departureName,
       addressDeparture: {
         address: req.body.addressDeparture,
