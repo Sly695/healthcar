@@ -67,6 +67,7 @@ router.post("/sign-in", async function (req, res, next) {
 
   var error = [];
   var token = null;
+  var role;
 
   if (req.body.email == "" || req.body.password == "") {
     error.push("champs vides");
@@ -81,6 +82,7 @@ router.post("/sign-in", async function (req, res, next) {
       if (bcrypt.compareSync(req.body.password, user.password)) {
         result = true;
         token = user.token;
+        role = user.role;
       } else {
         result = false;
         error.push("mot de passe incorrect");
@@ -90,7 +92,7 @@ router.post("/sign-in", async function (req, res, next) {
     }
   }
 
-  res.json({ result, error, token });
+  res.json({ result, error, token, role });
 });
 
 router.post("/sign-up-ambulance", async function (req, res, next) {
