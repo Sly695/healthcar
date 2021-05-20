@@ -31,6 +31,7 @@ var transportSchema = mongoose.Schema({
   timeDeparture: String,
   timeArrival: String, // DATE en string pour test
   type: Boolean,
+  alreadyNote: Boolean, // Si le transport a déjà été noté
   message: String,
   status: String, // disponible, en cours, cloturé
   idUser: String, // clé étrangère _id
