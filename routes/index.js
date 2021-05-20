@@ -116,7 +116,7 @@ router.post("/booking", async function (req, res, next) {
       dateInitial: new Date(),
       dateArrival: req.body.dateArrival,
       timeArrival: req.body.timeArrival,
-      type: req.body.type, // true = ambulance / false = VSL
+      type: Boolean(req.body.type), // true = ambulance / false = VSL
       message: req.body.message,
       status: "dispo", // dispo, encours, cloturé
       idUser: req.body._id, // clé étrangère _id
