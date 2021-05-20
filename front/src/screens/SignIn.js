@@ -1,6 +1,5 @@
 import "../App.less";
 import React, { useState } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Row, Col, Form, Input, Button, Checkbox, Modal, Tabs } from "antd";
 import "antd/dist/antd.css"; // or 'antd/dist/antd.less'
 
@@ -85,8 +84,8 @@ function SignIn() {
         <div className="contentForm">
           <div className="top">
             <img src="../images/LogoBleu.svg" style={{ width: "15rem" }} />
-            <h1 style={{ color: "#6793FF" }}>Bienvenue sur HealthCar</h1>
-            <h2 style={{ color: "#B170FF" }}>
+            <h1>Bienvenue sur HealthCar</h1>
+            <h2>
               Réservez votre ambulance ou trouvez des patients à transporter.
             </h2>
           </div>

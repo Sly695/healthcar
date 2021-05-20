@@ -2,147 +2,66 @@ import React, { useState } from "react";
 
 import {
   Card,
-  Layout,
-  Menu,
-  Row,
+  PageHeader,
+  List, 
+  Button
+
 } from "antd";
 import "antd/dist/antd.css"; 
 import {
   FieldTimeOutlined,
   ReloadOutlined,
-  CheckCircleTwoTone,
+  CheckCircleOutlined,
   BellOutlined,
   CloseCircleOutlined,
 } from "@ant-design/icons";
 
+const { Meta } = Card;
 
-function Header() {
-  const { Meta } = Card;
+const data = [
+  {
+    title: 'Transports en attente',
+  },
+  {
+    title: 'Transport en cours',
+  },
+  {
+    title: 'Transports terminés',
+  },
+  {
+    title: 'Transports annulés',
+  },
 
+];
 
-  const { Header } = Layout;
+export default function Header() {
+
   return (
-      <Header
-        style={{
-          height: "15vh",
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          backgroundColor: "#F0F2F5",
-        }}
-      >
-        <Row>
-        <Card
-          style={{
-            width: "23%",
-            height: "12vh",
-            margin: "1%",
-            borderRadius: "30px",
-            border: "1px solid #52c41a",
-          }}
-        >
-          <Meta
-            avatar={
-              <CheckCircleTwoTone style={{ fontSize: "200%", color: "#52c41a" }} />
-            }
-            title="Prise en charge confirmée"
-            description="M.Robert"
-          />
-        </Card>
-        <BellOutlined
-          style={{
-            color: "orange",
-            height: "100vh",
-            textAlign: "middle",
-            display: "flex",
-            justifyContent: "flex-end",
-            marginRight: "10%",
-            marginTop: "3%",
-            fontSize: "300%",
-          }}
-        />
-        </Row>
+    <PageHeader
+    className="site-page-header-responsive" >
 
-        <Row
-          style={{
-          height: "20vh",
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "center",
-          backgroundColor: "#F0F2F5",
-        }} >
-        <Card
-          style={{
-            width: "25%",
-            height: "12vh",
-            margin: "1%",
-            borderRadius: "30px",
+      <List
+          grid={{
+            gutter: 16,
+            xs: 1,
+            sm: 2,
+            md: 3,
+            lg: 3,
+            xl: 6,
+            xxl: 3,
           }}
-        >
-          <Meta
-            avatar={
-              <FieldTimeOutlined style={{ color: "blue", fontSize: "300%" }} />
-            }
-            title="Transport en attente"
-            description="213"
-          />
-        </Card>
-        <Card
-          style={{
-            width: "25%",
-            height: "12vh",
-            margin: "1%",
-            borderRadius: "30px",
-          }}
-        >
-          <Meta
-            avatar={
-              <ReloadOutlined style={{ color: "orange", fontSize: "300%" }} />
-            }
-            title="Transport en cours"
-            description="24"
-          />
-        </Card>
-        <Card
-          style={{
-            width: "25%",
-            height: "12vh",
-            margin: "1%",
-            borderRadius: "30px",
-            textAlign: "middle",
-          }}
-        >
-          <Meta
-            avatar={
-              <CheckCircleTwoTone
-                twoToneColor="#52c41a"
-                style={{ fontSize: "300%" }}
-              />
-            }
-            title="Transports terminés"
-            description="104"
-          />
-        </Card>
-        <Card
-          style={{
-            width: "25%",
-            height: "12vh",
-            margin: "1%",
-            borderRadius: "30px",
-          }}
-        >
-          <Meta
-            avatar={
-              <CloseCircleOutlined style={{ color: "red", fontSize: "300%" }} />
-            }
-            title="Transports annulés"
-            description="105"
-          />
-        </Card>
-        </Row>
-        
-      </Header>
+          dataSource={data}
+          renderItem={item => (
+            <List.Item>
+              <Card title={item.title} >
+                <Card.Meta avatar={<CheckCircleOutlined />}/>
+
+                 Card content</Card>
+              
+            </List.Item>
+          )}
+        />
+
+  </PageHeader>
   );
 }
-
-export default Header;

@@ -5,7 +5,6 @@ import {
   Layout,
   Image,
   Menu,
-  Space,
 } from "antd";
 import "antd/dist/antd.css"; // or 'antd/dist/antd.less'
 import {
