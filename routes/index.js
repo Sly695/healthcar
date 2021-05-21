@@ -39,6 +39,7 @@ router.get("/transport-validation", async (req, res, next) => {
       { _id: req.query._id },
       {
         status: "encours",
+        idPro: req.query.iduser,
       }
     );
     result = "encours";
@@ -174,7 +175,7 @@ router.post("/booking", async function (req, res, next) {
 //   if (dataAPI.total_results > 0) {
 
 //     var transport = await transportModel.findOne(addressDeparture , req.query.address);
-    
+
 //     res.json({
 //       result: true,
 //       transport : transport,
