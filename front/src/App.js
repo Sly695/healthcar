@@ -16,10 +16,10 @@ function App() {
     <Router>
       <Switch>
         <Route exact path="/" component={SignIn} />
-        <Route exact path="/account-edit-client" component={Profil} />
+        <Route exact path="/dashboard/account-edit-client" component={Profil} />
         <Route exact path="/dashboard" component={Dashboard} />
-        <Route exact path="/list" component={ListeTransport} />
-        <Route exact path="/booking" component={Booking} />
+        <Route exact path="/dashboard/list" component={ListeTransport} />
+        <Route exact path="/dashboard/booking" component={Booking} />
         <Route
           exact
           path="/list-soignants"

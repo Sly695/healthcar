@@ -14,13 +14,12 @@ import {
   Affix,
 } from "antd";
 
+const { Meta } = Card;
+const { SubMenu } = Menu;
+const { Content } = Layout;
 
 function Dashboard(props) {
-  const { Meta } = Card;
 
-  const { SubMenu } = Menu;
-
-  const { Content } = Layout;
 
   return (
     <Layout>
