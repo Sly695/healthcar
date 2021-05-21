@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import {
   Card,
@@ -35,6 +35,21 @@ const data = [
 ];
 
 export default function Header() {
+
+  const [list, setList] = useState([]);
+
+
+  useEffect(() => {
+    const findList = async () => {
+      const data = await fetch(`/course-list`);
+      const body = await data.json();
+      console.log(body.courseList);
+      setList(body);
+      console.log(body);
+    };
+
+    findList();
+  }, []);
 
   return (
     <PageHeader
