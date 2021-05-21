@@ -61,11 +61,6 @@ export default function Booking(props) {
     }
   }
 
-  async function setLocation(){
-    var rawResponse = await fetch(`/map?address=${streetDeparture} ${cityDeparture} France`);
-    var response = await rawResponse.json();
-    console.log(response);
-  }
   const successSignUp = () => {
     message.success({
       content:
@@ -128,88 +123,105 @@ export default function Booking(props) {
             initialValues="default"
             size="default"
           >
-            <Select>
-            <Select.Option value="Homme">Homme</Select.Option>
-            <Select.Option value="Femme">Femme</Select.Option>
-          </Select>{" "}
-          <DatePicker
-            placeholder="Date de naissance"
-            onChange={onChangeDateNaissance}
-          />{" "}
-          <Form.Item>
-          <Input
-            style={{ width: 200 }}
-            placeholder="Numéro de sécurité sociale"
-            onChange={(e) => setSecu(e.target.value)}
-          />
-        </Form.Item>
-
-        <Form.Item label="Lieu de prise en charge">
-          <Input
-            style={{ width: 150 }}
-            placeholder="Domicile / EHPAD"
-            onChange={(e) => setNameDeparture(e.target.value)}
-          />{" "}
-          <Input
-            style={{ width: 200 }}
-            placeholder="Rue"
-            onChange={(e) => setStreetDeparture(e.target.value)}
-          />{" "}
-          <Input
-            style={{ width: 100 }}
-            placeholder="Code postal"
-            onChange={(e) => setZipDeparture(e.target.value)}
-          />{" "}
-          <Input
-            style={{ width: 100 }}
-            placeholder="Ville"
-            onChange={(e) => setCityDeparture(e.target.value)}
-          />{" "}
-        </Form.Item>
-        <Form.Item label="Lieu de la consultation">
-          <Input
-            style={{ width: 150 }}
-            placeholder="Etablissement"
-            onChange={(e) => setNameArrival(e.target.value)}
-          />{" "}
-          <Input
-            style={{ width: 200 }}
-            placeholder="Rue"
-            onChange={(e) => setStreetArrival(e.target.value)}
-          />{" "}
-          <Input
-            style={{ width: 100 }}
-            placeholder="Code postal"
-            onChange={(e) => setZipArrival(e.target.value)}
-          />{" "}
-          <Input
-            style={{ width: 100 }}
-            placeholder="Ville"
-            onChange={(e) => setCityArrival(e.target.value)}
-          />{" "}
-        </Form.Item>
-        <Form.Item label="Note à faire passer aux ambulanciers">
-          <Input.TextArea
-            style={{ width: 300 }}
-            onChange={(e) => setMessageR(e.target.value)}
-          />{" "}
-        </Form.Item>
-        <Form.Item label="Date et heure du RDV">
-          <DatePicker placeholder="Date" onChange={onChangeDateTransport} />{" "}
-          <TimePicker
-            defaultValue={moment("12:08", format)}
-            format={format}
-            placeholder="Heure"
-            onChange={onChangeTime}
-          />{" "}
-          <Button onClick={() => booking(), setLocation()}>Valider la réservation</Button>
-        </Form.Item>
-        
-      </Form>
-      
-    </Content>
-    <FooterDash/>
-    </Layout>
+            <Form.Item label="Type de transport" name="size">
+              <Radio.Group onChange={(e) => setType(e.target.value)}>
+                <Radio.Button value={true}>Ambulance</Radio.Button>
+                <Radio.Button value={false}>VSL</Radio.Button>
+              </Radio.Group>
+            </Form.Item>
+            <Form.Item label="Le patient">
+              <Input
+                style={{ width: 100 }}
+                placeholder="Nom"
+                onChange={(e) => setLastname(e.target.value)}
+              />{" "}
+              <Input
+                style={{ width: 100 }}
+                placeholder="Prénom"
+                onChange={(e) => setFirstname(e.target.value)}
+              />{" "}
+              <Select
+                style={{ width: 100 }}
+                placeholder="Sexe"
+                onChange={handleChangeSexe}
+              >
+                <Select.Option value="Homme">Homme</Select.Option>
+                <Select.Option value="Femme">Femme</Select.Option>
+              </Select>{" "}
+              <DatePicker
+                placeholder="Date de naissance"
+                onChange={onChangeDateNaissance}
+              />{" "}
+              <Input
+                style={{ width: 200 }}
+                placeholder="Numéro de sécurité sociale"
+                onChange={(e) => setSecu(e.target.value)}
+              />
+            </Form.Item>
+            <Form.Item label="Lieu de prise en charge">
+              <Input
+                style={{ width: 150 }}
+                placeholder="Domicile / EHPAD"
+                onChange={(e) => setNameDeparture(e.target.value)}
+              />{" "}
+              <Input
+                style={{ width: 200 }}
+                placeholder="Rue"
+                onChange={(e) => setStreetDeparture(e.target.value)}
+              />{" "}
+              <Input
+                style={{ width: 100 }}
+                placeholder="Code postal"
+                onChange={(e) => setZipDeparture(e.target.value)}
+              />{" "}
+              <Input
+                style={{ width: 100 }}
+                placeholder="Ville"
+                onChange={(e) => setCityDeparture(e.target.value)}
+              />{" "}
+            </Form.Item>
+            <Form.Item label="Lieu de la consultation">
+              <Input
+                style={{ width: 150 }}
+                placeholder="Etablissement"
+                onChange={(e) => setNameArrival(e.target.value)}
+              />{" "}
+              <Input
+                style={{ width: 200 }}
+                placeholder="Rue"
+                onChange={(e) => setStreetArrival(e.target.value)}
+              />{" "}
+              <Input
+                style={{ width: 100 }}
+                placeholder="Code postal"
+                onChange={(e) => setZipArrival(e.target.value)}
+              />{" "}
+              <Input
+                style={{ width: 100 }}
+                placeholder="Ville"
+                onChange={(e) => setCityArrival(e.target.value)}
+              />{" "}
+            </Form.Item>
+            <Form.Item label="Note à faire passer aux ambulanciers">
+              <Input.TextArea
+                style={{ width: 300 }}
+                onChange={(e) => setMessageR(e.target.value)}
+              />{" "}
+            </Form.Item>
+            <Form.Item label="Date et heure du RDV">
+              <DatePicker placeholder="Date" onChange={onChangeDateTransport} />{" "}
+              <TimePicker
+                defaultValue={moment("12:08", format)}
+                format={format}
+                placeholder="Heure"
+                onChange={onChangeTime}
+              />{" "}
+              <Button onClick={() => booking()}>Valider la réservation</Button>
+            </Form.Item>
+          </Form>
+        </Content>
+        <FooterDash />
+      </Layout>
     </Layout>
   );
 }
