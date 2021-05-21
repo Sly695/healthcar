@@ -5,6 +5,7 @@ import Nav from '../component/Nav'
 import Header from "../component/Header";
 import FooterDash from '../component/Footer';
 import Profil from '../component/ScreenProfil'
+import Booking from '../component/Booking'
 
 
 import {
@@ -20,20 +21,15 @@ const { Content } = Layout;
 
 function Dashboard(props) {
 
-
   return (
     <Layout>
 
-      <Affix>
-        <Nav/>
-      </Affix>
       <Layout>
-        <Header/>
-      <Content>
-        <Profil/>
-      </Content>
+ 
 
-      <FooterDash/>
+      <Content>
+        <Booking/>
+      </Content>
 
       </Layout>
 
