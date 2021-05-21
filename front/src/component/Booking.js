@@ -62,13 +62,12 @@ export default function Booking(props) {
     }
   }
 
-<<<<<<< HEAD
   async function setLocation(){
     var rawResponse = await fetch(`/map?address=${streetDeparture} ${cityDeparture} France`);
     var response = await rawResponse.json();
     console.log(response);
   }
-=======
+
   const successSignUp = () => {
     message.success({
       content:
@@ -79,6 +78,7 @@ export default function Booking(props) {
       },
     });
   };
+  
   const errorSignUp = () => {
     message.error({
       content: "Il y a eu un problème, vérifiez et réessayez...",
@@ -88,7 +88,6 @@ export default function Booking(props) {
       },
     });
   };
->>>>>>> 3098ee99d2777a845bc5e9999fe22feead067846
 
   function handleChangeSexe(value) {
     setSexe(value);
@@ -112,7 +111,7 @@ export default function Booking(props) {
   return (
     <Layout>
       <Affix>
-        <Nav />
+        <Nav/>
       </Affix>
 
       <Layout>
