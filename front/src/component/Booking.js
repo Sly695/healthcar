@@ -192,7 +192,7 @@ export default function Booking(props) {
         <Form.Item label="Note à faire passer aux ambulanciers">
           <Input.TextArea
             style={{ width: 300 }}
-            onChange={(e) => setMessage(e.target.value)}
+            onChange={(e) => setMessageR(e.target.value)}
           />{" "}
         </Form.Item>
         <Form.Item label="Date et heure du RDV">

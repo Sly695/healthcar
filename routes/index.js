@@ -88,6 +88,14 @@ router.post("/booking", async function (req, res, next) {
   var error = [];
   var result = false;
   var saveTransport = null;
+  var address = req.query.addressDeparture;
+
+  var data = request(
+    "GET",
+    `https://api.opencagedata.com/geocode/v1/json?q=${address}&key=e40b9c1452fe4b29997b6f91eb035202`
+  );
+
+  var dataAPI = JSON.parse(data.body);
 
   if (
     req.body.departureName == "" ||
@@ -104,9 +112,11 @@ router.post("/booking", async function (req, res, next) {
     error.push("champs vides");
   }
 
-  if (error.length == 0) {
+  if (error.length == 0 && dataAPI.total_results > 0) {
     var newTransport = new transportModel({
       ref: uid2(5),
+      latitude: dataAPI.results[0].geometry.lat,
+      longitude: dataAPI.results[0].geometry.lng,
       alreadyNote: false,
       departureLocation: req.body.departureName,
       addressDeparture: {
@@ -150,31 +160,30 @@ router.post("/booking", async function (req, res, next) {
 //          MAP
 //----------------------------------------------------------
 
-router.get("/map", async function (req, res, next) {
-  var address = req.query.address;
-  console.log(req.query.address);
-  var data = request(
-    "GET",
-    `https://api.opencagedata.com/geocode/v1/json?q=${address}&key=e40b9c1452fe4b29997b6f91eb035202`
-  );
-  var dataAPI = JSON.parse(data.body);
-  //Si on trouve une adresse qui correspond
-  if (dataAPI.total_results > 0) {
+// router.get("/map", async function (req, res, next) {
+//   var address = req.query.address;
+//   console.log(req.query.address);
+//   var data = request(
+//     "GET",
+//     `https://api.opencagedata.com/geocode/v1/json?q=${address}&key=e40b9c1452fe4b29997b6f91eb035202`
+//   );
+//   var dataAPI = JSON.parse(data.body);
+//   //Si on trouve une adresse qui correspond
+//   if (dataAPI.total_results > 0) {
 
-    var transport = await transportModel.findOne({addressDeparture : req.query.address});
+//     var transport = await transportModel.findOne(addressDeparture , req.query.address);
     
-
-    res.json({
-      result: true,
-      transport : transport,
-      address: dataAPI.results[0].formatted,
-      latitude: dataAPI.results[0].geometry.lat,
-      longitude: dataAPI.results[0].geometry.lng,
-    });
-  } else {
-    res.json({ result: false });
-  }
-});
+//     res.json({
+//       result: true,
+//       transport : transport,
+//       address: dataAPI.results[0].formatted,
+//       latitude: dataAPI.results[0].geometry.lat,
+//       longitude: dataAPI.results[0].geometry.lng,
+//     });
+//   } else {
+//     res.json({ result: false });
+//   }
+// });
 
 //----------------------------------------------------------
 //         LISTE TRANSPORTS

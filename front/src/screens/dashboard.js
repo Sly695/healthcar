@@ -25,10 +25,8 @@ function Dashboard(props) {
 
   return (
     <Layout>
-      <Nav />
-
       <Affix>
-        <Nav/>
+        <Nav />
       </Affix>
       <Layout>
         <Header />
