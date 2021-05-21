@@ -1,5 +1,5 @@
 import "../App";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Nav from '../component/Nav'
 import Profil from '../component/ScreenProfil'
@@ -24,16 +24,16 @@ function Dashboard(props) {
 
   return (
     <Layout>
-      <Nav/>
+      <Nav />
 
       <Layout>
-        <Header/>
-      <Content>
-        <Profil/>
-        <Map/>
-      </Content>
+        <Header />
+        <Content>
+          <Profil />
+          <Map />
+        </Content>
 
-      <FooterDash/>
+        <FooterDash />
 
       </Layout>
 

@@ -49,6 +49,12 @@ export default function Booking(props) {
     console.log(response);
   }
 
+  async function setLocation(){
+    var rawResponse = await fetch(`/map?address=${streetDeparture} ${cityDeparture} France`);
+    var response = await rawResponse.json();
+    console.log(response);
+  }
+
   function handleChangeSexe(value) {
     setSexe(value);
   }
@@ -177,9 +183,11 @@ export default function Booking(props) {
             placeholder="Heure"
             onChange={onChangeTime}
           />{" "}
-          <Button onClick={() => booking()}>Valider la réservation</Button>
+          <Button onClick={() => booking(), setLocation()}>Valider la réservation</Button>
         </Form.Item>
+        
       </Form>
+      
     </Content>
   );
 }
