@@ -150,19 +150,24 @@ router.post("/booking", async function (req, res, next) {
 //          MAP
 //----------------------------------------------------------
 
-router.get("/map", function (req, res, next) {
+router.get("/map", async function (req, res, next) {
   var address = req.query.address;
+  console.log(req.query.address);
   var data = request(
     "GET",
     `https://api.opencagedata.com/geocode/v1/json?q=${address}&key=e40b9c1452fe4b29997b6f91eb035202`
   );
   var dataAPI = JSON.parse(data.body);
-  console.log(dataAPI);
-  console.log("oui");
   //Si on trouve une adresse qui correspond
-  if (dataAPI.total_results == 1) {
+  if (dataAPI.total_results > 0) {
+
+    var transport = await transportModel.findOne({addressDeparture : req.query.address});
+    
+
     res.json({
       result: true,
+      transport : transport,
+      address: dataAPI.results[0].formatted,
       latitude: dataAPI.results[0].geometry.lat,
       longitude: dataAPI.results[0].geometry.lng,
     });

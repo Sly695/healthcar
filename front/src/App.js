@@ -11,6 +11,8 @@ import Profil from "./component/ScreenProfil";
 import ListeTransport from "./component/ScreenList";
 import ListeTransportSoignants from "./component/ScreenListSoignants";
 
+import Map from "./component/Map";
+
 function App() {
   return (
     <Router>
