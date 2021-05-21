@@ -6,6 +6,7 @@ import Header from "../component/Header";
 import FooterDash from '../component/Footer';
 import Profil from '../component/ScreenProfil'
 import Booking from '../component/Booking'
+import Map from '../component/Map'
 
 
 import {
@@ -23,16 +24,12 @@ function Dashboard(props) {
 
   return (
     <Layout>
-
       <Layout>
- 
-
       <Content>
         <Booking/>
+        <Map/>
       </Content>
-
       </Layout>
-
     </Layout>
   );
 }

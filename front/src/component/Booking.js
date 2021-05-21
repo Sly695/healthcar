@@ -19,6 +19,7 @@ import {
 import moment from "moment";
 
 import Nav from "../component/Nav";
+import Profil from "../component/ScreenProfil";
 import Header from "../component/Header";
 import FooterDash from "../component/Footer";
 
@@ -61,6 +62,13 @@ export default function Booking(props) {
     }
   }
 
+  async function setLocation(){
+    var rawResponse = await fetch(`/map?address=${streetDeparture} ${cityDeparture} France`);
+    var response = await rawResponse.json();
+    console.log(response);
+  }
+
+
   const successSignUp = () => {
     message.success({
       content:
@@ -71,6 +79,7 @@ export default function Booking(props) {
       },
     });
   };
+  
   const errorSignUp = () => {
     message.error({
       content: "Il y a eu un problème, vérifiez et réessayez...",
@@ -103,7 +112,7 @@ export default function Booking(props) {
   return (
     <Layout>
       <Affix>
-        <Nav />
+        <Nav/>
       </Affix>
 
       <Layout>
