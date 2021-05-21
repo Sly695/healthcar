@@ -1,10 +1,11 @@
 import "../App";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Nav from '../component/Nav'
 import Profil from '../component/ScreenProfil'
 import Header from "../component/Header";
 import FooterDash from '../component/Footer';
+import Map from '../component/Map';
 
 
 import {
@@ -24,17 +25,19 @@ function Dashboard(props) {
 
   return (
     <Layout>
+      <Nav />
 
       <Affix>
         <Nav/>
       </Affix>
       <Layout>
-        <Header/>
-      <Content>
-        <Profil/>
-      </Content>
+        <Header />
+        <Content>
+          <Profil />
+          <Map />
+        </Content>
 
-      <FooterDash/>
+        <FooterDash />
 
       </Layout>
 
