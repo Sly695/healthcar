@@ -1,7 +1,17 @@
 import "../App.less";
 import React, { useState } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { Row, Col, Form, Input, Button, Checkbox, Modal, Tabs } from "antd";
+import {
+  Row,
+  Col,
+  Form,
+  Input,
+  Button,
+  Checkbox,
+  Modal,
+  Tabs,
+  Alert,
+  message,
+} from "antd";
 import "antd/dist/antd.css"; // or 'antd/dist/antd.less'
 
 const { TabPane } = Tabs;
@@ -21,7 +31,7 @@ const tailLayout = {
   },
 };
 
-function SignIn() {
+function SignIn(props) {
   const [visible, setVisible] = useState(false);
 
   // Pour le signin
@@ -48,6 +58,12 @@ function SignIn() {
     });
     let response = await request.json();
     console.log(response);
+    if (response.result == true) {
+      successSignUp();
+      setVisible(false);
+    } else {
+      errorSignUp();
+    }
   }
 
   async function signUpAmbulance() {
@@ -58,6 +74,12 @@ function SignIn() {
     });
     let response = await request.json();
     console.log(response);
+    if (response.result == true) {
+      successSignUp();
+      setVisible(false);
+    } else {
+      errorSignUp();
+    }
   }
 
   async function signIn() {
@@ -68,6 +90,15 @@ function SignIn() {
     });
     let response = await request.json();
     console.log(response);
+    if (response.result == false) {
+      errorSignUp();
+    }
+
+    if (response.role == "soignant") {
+      return props.history.push("/booking");
+    } else if (response.role == "ambulance") {
+      return props.history.push("/list");
+    }
   }
 
   const onFinish = (values) => {
@@ -76,6 +107,25 @@ function SignIn() {
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
+  };
+
+  const successSignUp = () => {
+    message.success({
+      content: "Bravo ! Vous pouvez maintenant vous connecter.",
+      className: "custom-class",
+      style: {
+        marginTop: "20vh",
+      },
+    });
+  };
+  const errorSignUp = () => {
+    message.error({
+      content: "Il y a eu un problème, vérifiez et réessayez...",
+      className: "custom-class",
+      style: {
+        marginTop: "20vh",
+      },
+    });
   };
 
   return (

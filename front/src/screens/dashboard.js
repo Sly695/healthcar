@@ -12,6 +12,7 @@ import {
   Card,
   Layout,
   Menu,
+  Affix,
 } from "antd";
 
 
@@ -26,6 +27,9 @@ function Dashboard(props) {
     <Layout>
       <Nav />
 
+      <Affix>
+        <Nav/>
+      </Affix>
       <Layout>
         <Header />
         <Content>

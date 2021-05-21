@@ -9,6 +9,7 @@ import Booking from "./component/Booking";
 import Profil from "./component/ScreenProfil";
 // import profilEditSoignant from "./screens/profilEditSoignant";
 import ListeTransport from "./component/ScreenList";
+import ListeTransportSoignants from "./component/ScreenListSoignants";
 
 import Map from "./component/Map";
 
@@ -21,6 +22,11 @@ function App() {
         <Route exact path="/dashboard" component={Dashboard} />
         <Route exact path="/list" component={ListeTransport} />
         <Route exact path="/booking" component={Booking} />
+        <Route
+          exact
+          path="/list-soignants"
+          component={ListeTransportSoignants}
+        />
         {/* <Route exact path="/account-client" component={BoardSoignant} />
       
         <Route exact path="/account-ambulance" component={BoardAmbulance} />
