@@ -22,9 +22,13 @@ import {
 
 // import logobleu from "../../public/images/Logobleu.svg";
 const { Meta } = Card;
-const { SubMenu } = Menu;
 const { Sider } = Layout;
 const {Title, Text} = Typography;
+
+const users = {
+    lastname: 'Michou',
+    firstname: 'Robert'
+}
 
 export default function Nav(props) {
 
@@ -54,7 +58,7 @@ export default function Nav(props) {
       preview='false'
       />
 
-      <Title level={5}>Nom entreprise</Title>
+      <Title level={5}>{users.firstname} {users.lastname}</Title>
 
       <Divider/>
 

@@ -20,17 +20,27 @@ const { Meta } = Card;
 const { SubMenu } = Menu;
 const { Content } = Layout;
 
-function Dashboard(props) {
+export default function Dashboard(props) {
 
   return (
     <Layout>
       <Layout>
+<<<<<<< HEAD
+        <Content>
+          <Booking/>
+        </Content>
+=======
       <Content>
         <Booking/>
+<<<<<<< HEAD
       </Content>     
+=======
+        <Map/>
+      </Content>
+>>>>>>> 72848e87101fd27724b04f1cf889e7b7ee953d91
+>>>>>>> olivier
       </Layout>
     </Layout>
   );
 }
 
-export default Dashboard;
