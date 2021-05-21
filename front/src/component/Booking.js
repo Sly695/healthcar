@@ -61,13 +61,6 @@ export default function Booking(props) {
     }
   }
 
-  async function setLocation() {
-    var rawResponse = await fetch(
-      `/map?address=${streetDeparture} ${cityDeparture} France`
-    );
-    var response = await rawResponse.json();
-    console.log(response);
-  }
   const successSignUp = () => {
     message.success({
       content:
@@ -223,9 +216,7 @@ export default function Booking(props) {
                 placeholder="Heure"
                 onChange={onChangeTime}
               />{" "}
-              <Button onClick={(() => booking(), setLocation())}>
-                Valider la réservation
-              </Button>
+              <Button onClick={() => booking()}>Valider la réservation</Button>
             </Form.Item>
           </Form>
         </Content>
