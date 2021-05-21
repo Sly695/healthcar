@@ -3,6 +3,7 @@ import "../style/App.less";
 
 import "../App.less";
 import { Layout, Modal, Table, Space, Button, Affix } from "antd";
+import { useSelector } from "react-redux";
 
 import Nav from "../component/Nav";
 import Header from "../component/Header";
@@ -55,12 +56,18 @@ export default function ScreenList(props) {
 
   const { Column, ColumnGroup } = Table;
 
+  const iduser = useSelector((state) => state.iduser);
+
   useEffect(() => {
     const findList = async () => {
       const data = await fetch(`/course-list`);
       const body = await data.json();
       console.log(body.courseList);
-      setList(body);
+      const filtre = body.courseList.filter(
+        (id) => id.idPro == iduser || id.status == "dispo"
+      );
+      console.log(filtre);
+      setList(filtre);
       if (dataModal._id == "fake") {
         setDataModal(body.courseList[0]);
       }
@@ -72,10 +79,9 @@ export default function ScreenList(props) {
 
   const validation = async (id, status) => {
     const result = await fetch(
-      `/transport-validation?_id=${id}&status=${status}`
+      `/transport-validation?_id=${id}&status=${status}&iduser=${iduser}`
     );
     const body = await result.json();
-
     //setSourceList(body.result);
   };
 
@@ -95,7 +101,7 @@ export default function ScreenList(props) {
             minHeight: 280,
           }}
         >
-          <Table dataSource={list.courseList}>
+          <Table dataSource={list}>
             <Column
               title="Nom"
               key="lastname"
