@@ -18,25 +18,15 @@ import {
 
 const { Meta } = Card;
 
-const data = [
-  {
-    title: 'Transports en attente',
-  },
-  {
-    title: 'Transport en cours',
-  },
-  {
-    title: 'Transports terminés',
-  },
-  {
-    title: 'Transports annulés',
-  },
 
-];
 
 export default function Header() {
 
   const [list, setList] = useState([]);
+  const [waitingTransport, setWaitingTransport] = useState(0);
+  const [processTransport, setProcessTransport] = useState(0);
+  const [endTransport, setEndTransport] = useState(0);
+  const [cancelTransport, setCancelTransport] = useState(0);
 
 
   useEffect(() => {
@@ -44,12 +34,64 @@ export default function Header() {
       const data = await fetch(`/course-list`);
       const body = await data.json();
       console.log(body.courseList);
-      setList(body);
-      console.log(body);
+      setList(body.courseList);
+
     };
 
     findList();
+
+
   }, []);
+
+  let  counter = list.map(function(course, i){
+    return course.status === 'dispo' ? setWaitingTransport(+1) : 0;
+  })
+
+  // list == 'attente' ? setWaitingTransport(+1) : 0;
+  // list == 'en cours' ? setProcessTransport(+1) : 0;
+  // list == 'end' ? setEndTransport(+1) : 0;
+  // list == 'cancel' ? setCancelTransport(+1) : 0;
+
+  // if (list[0].status == 'dispo'){
+  //   setWaitingTransport(waitingTransport+1)
+  // } if (list.status == 'dispo'){
+  //   setWaitingTransport(+1)
+
+  // }
+  // if (list.status == 'dispo'){
+  //   setWaitingTransport(+1)
+
+  //   }
+  //   if (list.status == 'dispo'){
+  //     setWaitingTransport(+1)
+
+  //   }
+  
+
+
+  console.log(list);
+  
+    const data = [
+      {
+        title: 'Transports en attente',
+        status: waitingTransport,
+      },
+      {
+        title: 'Transport en cours',
+        status: processTransport,
+      },
+      {
+        title: 'Transports terminés',
+        status: endTransport,
+      },
+      {
+        title: 'Transports annulés',
+        status: cancelTransport,
+      },
+    
+    ];
+
+  
 
   return (
     <PageHeader
@@ -71,7 +113,7 @@ export default function Header() {
               <Card title={item.title} >
                 <Card.Meta avatar={<CheckCircleOutlined />}/>
 
-                 Card content</Card>
+                {item.status}</Card>
               
             </List.Item>
           )}
