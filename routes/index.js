@@ -52,7 +52,7 @@ router.get("/transport-validation", async (req, res, next) => {
     );
     result = "cloturé";
   }
-  res.json({ result });
+  res.json({ result, transportModel });
 });
 
 //----------------------------------------------------------
@@ -60,18 +60,24 @@ router.get("/transport-validation", async (req, res, next) => {
 //----------------------------------------------------------
 
 router.get("/feedback", async (req, res, next) => {
-  var user = await usersModel.findById(req.query.idEntreprise);
+  var user = await usersModel.findById(req.query.idpro);
   var noteCopy = [...user.note];
   noteCopy.push(req.query.note);
   await usersModel.updateOne(
-    { _id: req.query.idEntreprise },
+    { _id: req.query.idpro },
     {
       note: noteCopy,
     }
   );
-  saveNote = await user.save();
+  console.log(req.query.alreadynote);
+  await transportModel.updateOne(
+    { _id: req.query.alreadynote },
+    {
+      alreadyNote: true,
+    }
+  );
 
-  res.json({ noteCopy, saveNote });
+  res.json({ noteCopy });
 });
 
 //----------------------------------------------------------
@@ -101,6 +107,7 @@ router.post("/booking", async function (req, res, next) {
   if (error.length == 0) {
     var newTransport = new transportModel({
       ref: uid2(5),
+      alreadyNote: false,
       departureLocation: req.body.departureName,
       addressDeparture: {
         address: req.body.addressDeparture,
@@ -116,7 +123,7 @@ router.post("/booking", async function (req, res, next) {
       dateInitial: new Date(),
       dateArrival: req.body.dateArrival,
       timeArrival: req.body.timeArrival,
-      type: req.body.type, // true = ambulance / false = VSL
+      type: Boolean(req.body.type), // true = ambulance / false = VSL
       message: req.body.message,
       status: "dispo", // dispo, encours, cloturé
       idUser: req.body._id, // clé étrangère _id
@@ -143,19 +150,24 @@ router.post("/booking", async function (req, res, next) {
 //          MAP
 //----------------------------------------------------------
 
-router.get("/map", function (req, res, next) {
+router.get("/map", async function (req, res, next) {
   var address = req.query.address;
+  console.log(req.query.address);
   var data = request(
     "GET",
     `https://api.opencagedata.com/geocode/v1/json?q=${address}&key=e40b9c1452fe4b29997b6f91eb035202`
   );
   var dataAPI = JSON.parse(data.body);
-  console.log(dataAPI);
-  console.log("oui");
   //Si on trouve une adresse qui correspond
-  if (dataAPI.total_results == 1) {
+  if (dataAPI.total_results > 0) {
+
+    var transport = await transportModel.findOne({addressDeparture : req.query.address});
+    
+
     res.json({
       result: true,
+      transport : transport,
+      address: dataAPI.results[0].formatted,
       latitude: dataAPI.results[0].geometry.lat,
       longitude: dataAPI.results[0].geometry.lng,
     });
@@ -168,9 +180,9 @@ router.get("/map", function (req, res, next) {
 //         LISTE TRANSPORTS
 //----------------------------------------------------------
 
-router.post("/course-list", async (req, res, next) => {
+router.get("/course-list", async (req, res, next) => {
   let courseList = await transportModel.find();
-  res.json({courseList})
-})
+  res.json({ courseList });
+});
 
 module.exports = router;

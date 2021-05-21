@@ -1,26 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import {Link} from 'react-router-dom';
+
 
 import {
   Card,
   Layout,
   Image,
   Menu,
-  Space,
+  Divider,
+  Typography,
+  Rate,
 } from "antd";
 import "antd/dist/antd.css"; // or 'antd/dist/antd.less'
 import {
   UserOutlined,
   CheckCircleTwoTone,
+  LogoutOutlined
 } from "@ant-design/icons";
 
 // import logobleu from "../../public/images/Logobleu.svg";
+const { Meta } = Card;
+const { SubMenu } = Menu;
+const { Sider } = Layout;
+const {Title, Text} = Typography;
+
+export default function Nav(props) {
 
 
-export default function Nav() {
-
-  const { Meta } = Card;
-  const { SubMenu } = Menu;
-  const { Sider } = Layout;
 
   return (
 
@@ -46,17 +52,33 @@ export default function Nav() {
       preview='false'
       />
 
+      <Title level={5}>Nom entreprise</Title>
+
+      <Divider/>
+
         <Menu  mode="inline" defaultSelectedKeys={['1']}>
-            <Menu.Item key="1" icon={<UserOutlined />}>
-              nav 1
+
+              <Menu.Item
+                key="1" 
+                icon={<UserOutlined />}>
+                <Link to="/dashboard/booking">Réservation</Link>
+              </Menu.Item>
+            <Menu.Item key="2" icon={<UserOutlined />}>
+              <Link to="/dashboard/list">List transport</Link>
             </Menu.Item>
             <Menu.Item key="2" icon={<CheckCircleTwoTone />}>
-              nav 2
+              <Link to="/dashboard/account-edit-client">Profil</Link>
             </Menu.Item>
-            <Menu.Item key="3" icon={<CheckCircleTwoTone />}>
-              nav 3
-            </Menu.Item>
-          </Menu>          
+          </Menu>      
+
+          <Divider/>    
+
+          <Rate allowHalf defaultValue={2.5} />
+
+          <Divider/>    
+
+          <LogoutOutlined />
+          <Text>Deconnexion</Text>
 
       </Sider>
 
