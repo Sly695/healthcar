@@ -2,7 +2,14 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import React, { useEffect, useState } from "react";
 import 'leaflet/dist/leaflet.css';
 import { icon, Icon, defaultMarker} from "leaflet";
-import { DatePicker } from 'antd';
+import { DatePicker, Layout, Affix } from 'antd';
+
+import Nav from './Nav'
+import FooterDash from "./Footer";
+import Header from "./Header";
+
+
+const { Content } = Layout;
 
 function Map(props) {
 
@@ -35,7 +42,14 @@ function Map(props) {
     })
 
     return (
-        <div >
+        <Layout >
+            
+        <Affix>
+            <Nav />
+        </Affix>
+        <Layout >
+        <Header />
+        <Content>
             <MapContainer style={{ height: "100vh", width: "100vw", padding : "1%"}} center={[45.764043, 4.835659]} zoom={13} scrollWheelZoom={false}>
                 <TileLayer
                     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -48,7 +62,10 @@ function Map(props) {
                 </Marker>
                 {markerList}
             </MapContainer>
-        </div>
+            </Content>
+        <FooterDash />
+      </Layout>
+    </Layout>
     )
 }
 

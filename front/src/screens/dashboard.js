@@ -27,8 +27,7 @@ function Dashboard(props) {
       <Layout>
       <Content>
         <Booking/>
-        <Map/>
-      </Content>
+      </Content>     
       </Layout>
     </Layout>
   );

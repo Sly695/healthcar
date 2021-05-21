@@ -22,6 +22,7 @@ function App() {
         <Route exact path="/dashboard" component={Dashboard} />
         <Route exact path="/dashboard/list" component={ListeTransport} />
         <Route exact path="/dashboard/booking" component={Booking} />
+        <Route exact path="/dashboard/map" component={Map} />
         <Route
           exact
           path="/list-soignants"

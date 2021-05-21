@@ -15,7 +15,9 @@ import "antd/dist/antd.css"; // or 'antd/dist/antd.less'
 import {
   UserOutlined,
   CheckCircleTwoTone,
-  LogoutOutlined
+  LogoutOutlined,
+  EnvironmentOutlined,
+  UnorderedListOutlined
 } from "@ant-design/icons";
 
 // import logobleu from "../../public/images/Logobleu.svg";
@@ -48,7 +50,7 @@ export default function Nav(props) {
 
       <Image 
       className="logo" 
-      src='../../public/images/logo.svg'
+      src='./img/logo.svg'
       preview='false'
       />
 
@@ -60,15 +62,21 @@ export default function Nav(props) {
 
               <Menu.Item
                 key="1" 
-                icon={<UserOutlined />}>
+                icon={<CheckCircleTwoTone />}>
                 <Link to="/dashboard/booking">Réservation</Link>
               </Menu.Item>
-            <Menu.Item key="2" icon={<UserOutlined />}>
+              <Menu.Item
+                key="2" 
+                icon={<EnvironmentOutlined />}>
+                <Link to="/dashboard/map">Map</Link>
+              </Menu.Item>
+            <Menu.Item key="3" icon={<UnorderedListOutlined />}>
               <Link to="/dashboard/list">List transport</Link>
             </Menu.Item>
-            <Menu.Item key="2" icon={<CheckCircleTwoTone />}>
+            <Menu.Item key="4" icon={<UserOutlined />}>
               <Link to="/dashboard/account-edit-client">Profil</Link>
             </Menu.Item>
+         
           </Menu>      
 
           <Divider/>    
@@ -76,9 +84,14 @@ export default function Nav(props) {
           <Rate allowHalf defaultValue={2.5} />
 
           <Divider/>    
-
-          <LogoutOutlined />
-          <Text>Deconnexion</Text>
+          <Menu>  
+            <Menu.Item
+                key="1" 
+                icon={<LogoutOutlined />}>
+                <Link to="/dashboard/booking">Deconnexion</Link>
+              </Menu.Item>
+          
+              </Menu>    
 
       </Sider>
 
