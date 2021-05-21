@@ -88,11 +88,13 @@ router.post("/booking", async function (req, res, next) {
   var error = [];
   var result = false;
   var saveTransport = null;
-  var address = req.query.addressDeparture;
+  var addressDeparture = req.query.addressDeparture;
+  var postalCodeDeparture = req.query.postalCodeDeparture;
+  var cityDeparture = req.query.cityDeparture;
 
   var data = request(
     "GET",
-    `https://api.opencagedata.com/geocode/v1/json?q=${address}&key=e40b9c1452fe4b29997b6f91eb035202`
+    `https://api.opencagedata.com/geocode/v1/json?q=${addressDeparture} ${postalCodeDeparture} ${cityDeparture} France&key=e40b9c1452fe4b29997b6f91eb035202`
   );
 
   var dataAPI = JSON.parse(data.body);
