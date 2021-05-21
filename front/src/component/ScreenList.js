@@ -5,7 +5,6 @@ import "../App.less";
 import { Layout, Modal, Table, Space, Button, Affix } from "antd";
 
 import Nav from "../component/Nav";
-import Profil from "../component/ScreenProfil";
 import Header from "../component/Header";
 import FooterDash from "../component/Footer";
 

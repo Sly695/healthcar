@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import "../App.less";
 import {
+  Affix,
   Form,
   Input,
   Button,
@@ -14,6 +15,10 @@ import {
   message,
 } from 'antd';
 import { LoadingOutlined, PlusOutlined, UploadOutlined } from '@ant-design/icons';
+
+import Nav from '../component/Nav'
+import Header from "../component/Header";
+import FooterDash from '../component/Footer';
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -97,6 +102,13 @@ function UploadAvatar() {
   };
 
     return(
+      <Layout>
+      <Affix>
+        <Nav />
+      </Affix>
+
+      <Layout>
+        <Header />
       <Content
         className="site-layout-background"
         style={{
@@ -196,6 +208,9 @@ function UploadAvatar() {
         </Form>
       
     </Content>
+    <FooterDash />
+      </Layout>
+    </Layout>
     )
 
   }
