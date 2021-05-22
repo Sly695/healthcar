@@ -68,6 +68,8 @@ router.post("/sign-in", async function (req, res, next) {
   var error = [];
   var token = null;
   var role;
+  var id;
+  var userData;
 
   if (req.body.email == "" || req.body.password == "") {
     error.push("champs vides");
@@ -83,6 +85,8 @@ router.post("/sign-in", async function (req, res, next) {
         result = true;
         token = user.token;
         role = user.role;
+        iduser = user._id;
+        userData = user;
       } else {
         result = false;
         error.push("mot de passe incorrect");
@@ -92,7 +96,7 @@ router.post("/sign-in", async function (req, res, next) {
     }
   }
 
-  res.json({ result, error, token, role });
+  res.json({ result, error, token, role, iduser, userData });
 });
 
 router.post("/sign-up-ambulance", async function (req, res, next) {

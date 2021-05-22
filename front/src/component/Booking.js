@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "../App.less";
 import {
   Layout,
@@ -9,17 +9,14 @@ import {
   Select,
   TimePicker,
   DatePicker,
-  InputNumber,
-  TreeSelect,
-  Switch,
-  Space,
   Affix,
   message,
 } from "antd";
 import moment from "moment";
+import { useSelector } from "react-redux";
 
 import Nav from "../component/Nav";
-import Profil from "../component/ScreenProfil";
+
 import Header from "../component/Header";
 import FooterDash from "../component/Footer";
 
@@ -44,13 +41,16 @@ export default function Booking(props) {
   const [time, setTime] = useState("");
   const [messageR, setMessageR] = useState("");
 
+  const data = useSelector((state) => state.iduser);
+  console.log(data);
+
   const format = "HH:mm";
 
   async function booking() {
     var request = await fetch("/booking", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `departureName=${nameDeparture}&addressDeparture=${streetDeparture}&postalCodeDeparture=${zipDeparture}&cityDeparture=${cityDeparture}&arrivalLocationName=${nameArrival}&addressArrival=${streetArrival}&postalCodeArrival=${zipArrival}&cityArrival=${cityArrival}&dateArrival=${date}&timeArrival=${time}&type=${type}&message=${messageR}&_id=${"ID-FAKE"}&lastnamePatient=${lastname}&firstnamePatient=${firstname}&sexePatient=${sexe}&birthdate=${naissance}&secu=${secu}`,
+      body: `departureName=${nameDeparture}&addressDeparture=${streetDeparture}&postalCodeDeparture=${zipDeparture}&cityDeparture=${cityDeparture}&arrivalLocationName=${nameArrival}&addressArrival=${streetArrival}&postalCodeArrival=${zipArrival}&cityArrival=${cityArrival}&dateArrival=${date}&timeArrival=${time}&type=${type}&message=${messageR}&_id=${data}&lastnamePatient=${lastname}&firstnamePatient=${firstname}&sexePatient=${sexe}&birthdate=${naissance}&secu=${secu}`,
     });
     let response = await request.json();
     console.log(response);
@@ -62,12 +62,13 @@ export default function Booking(props) {
     }
   }
 
-  async function setLocation(){
-    var rawResponse = await fetch(`/map?address=${streetDeparture} ${cityDeparture} France`);
+  async function setLocation() {
+    var rawResponse = await fetch(
+      `/map?address=${streetDeparture} ${cityDeparture} France`
+    );
     var response = await rawResponse.json();
     console.log(response);
   }
-
 
   const successSignUp = () => {
     message.success({
@@ -79,7 +80,7 @@ export default function Booking(props) {
       },
     });
   };
-  
+
   const errorSignUp = () => {
     message.error({
       content: "Il y a eu un problème, vérifiez et réessayez...",
@@ -112,7 +113,7 @@ export default function Booking(props) {
   return (
     <Layout>
       <Affix>
-        <Nav/>
+        <Nav />
       </Affix>
 
       <Layout>
@@ -211,7 +212,7 @@ export default function Booking(props) {
                 onChange={(e) => setCityArrival(e.target.value)}
               />{" "}
             </Form.Item>
-            <Form.Item label="Note à faire passer aux ambulanciers">
+            <Form.Item label="Note">
               <Input.TextArea
                 style={{ width: 300 }}
                 onChange={(e) => setMessageR(e.target.value)}

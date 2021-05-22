@@ -5,6 +5,7 @@ import Nav from "../component/Nav";
 import Profil from "../component/ScreenProfil";
 import Header from "../component/Header";
 import FooterDash from "../component/Footer";
+import { useSelector } from "react-redux";
 const { Content } = Layout;
 
 export default function ScreenListSoignants(props) {
@@ -14,13 +15,17 @@ export default function ScreenListSoignants(props) {
   const [note, setNote] = useState(Number);
 
   const { Column, ColumnGroup } = Table;
+  const iduser = useSelector((state) => state.iduser);
+  const userData = useSelector((state) => state.userData);
 
   useEffect(() => {
     const findList = async () => {
       const data = await fetch(`/course-list`);
       const body = await data.json();
-      console.log(body.courseList);
-      setList(body);
+
+      const filtre = body.courseList.filter((id) => id.idUser == iduser);
+      console.log(filtre);
+      setList(filtre);
     };
 
     findList();
@@ -32,6 +37,7 @@ export default function ScreenListSoignants(props) {
     );
     var response = await rawResponse.json();
     console.log(response);
+    setVisible(false);
   };
 
   function noteChange(value) {
@@ -55,7 +61,7 @@ export default function ScreenListSoignants(props) {
             minHeight: 280,
           }}
         >
-          <Table dataSource={list.courseList}>
+          <Table dataSource={list}>
             <Column
               title="Nom"
               key="lastname"

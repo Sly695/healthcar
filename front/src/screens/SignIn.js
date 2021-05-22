@@ -14,6 +14,8 @@ import {
 } from "antd";
 import "antd/dist/antd.css"; // or 'antd/dist/antd.less'
 
+import { useDispatch } from "react-redux";
+
 const { TabPane } = Tabs;
 
 const layout = {
@@ -49,6 +51,8 @@ function SignIn(props) {
   const [signUpPhoneA, setSignUpPhoneA] = useState("");
   const [signUpemailA, setSignUpemailA] = useState("");
   const [signUpPasswordA, setSignUpPasswordA] = useState("");
+
+  const dispatch = useDispatch();
 
   async function signUpSoignant() {
     var request = await fetch("users/sign-up-nurse", {
@@ -90,6 +94,10 @@ function SignIn(props) {
     });
     let response = await request.json();
     console.log(response);
+    dispatch({ type: "addToken", token: response.token });
+    dispatch({ type: "addRole", role: response.role });
+    dispatch({ type: "addIduser", iduser: response.iduser });
+    dispatch({ type: "addUserData", userData: response.userData });
     if (response.result == false) {
       errorSignUp();
     }
