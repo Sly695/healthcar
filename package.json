@@ -13,11 +13,13 @@
     "dotenv": "^9.0.2",
     "ejs": "~2.6.1",
     "express": "~4.16.1",
+    "geoportal-access-lib": "^2.1.8",
     "http-errors": "~1.6.3",
     "mongoose": "^5.12.9",
     "morgan": "~1.9.1",
     "sync-request": "^6.1.0",
-    "uid2": "^0.0.3"
+    "uid2": "^0.0.3",
+    "xmldom": "^0.6.0"
   },
   "devDependencies": {
     "css-loader": "^5.2.4",

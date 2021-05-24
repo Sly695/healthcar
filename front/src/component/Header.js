@@ -56,7 +56,6 @@ export default function Header() {
 
   //   }
 
-  console.log(list);
 
   const data = [
     {

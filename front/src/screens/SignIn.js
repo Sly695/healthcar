@@ -47,6 +47,9 @@ function SignIn(props) {
   const [signUpPasswordS, setSignUpPasswordS] = useState("");
   // pour le signup ambulance
   const [signUpNameA, setSignUpNameA] = useState("");
+  const [signUpAdresse, setSignUpAdresse] = useState("");
+  const [signUpCodePostal, setSignUpCodePostal] = useState("");
+  const [signUpCity, setSignUpCity] = useState("");
   const [signUpSiretA, setSignUpSiretA] = useState("");
   const [signUpPhoneA, setSignUpPhoneA] = useState("");
   const [signUpemailA, setSignUpemailA] = useState("");
@@ -74,9 +77,10 @@ function SignIn(props) {
     var request = await fetch("users/sign-up-ambulance", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `nomEntrepriseFromFront=${signUpNameA}&siretFromFront=${signUpSiretA}&emailFromFront=${signUpemailA}&phoneFromFront=${signUpPhoneA}&passwordFromFront=${signUpPasswordA}`,
+      body: `nomEntrepriseFromFront=${signUpNameA}&siretFromFront=${signUpSiretA}&emailFromFront=${signUpemailA}&phoneFromFront=${signUpPhoneA}&passwordFromFront=${signUpPasswordA}&addressFromFront=${signUpAdresse}&postalCodeFromFront=${signUpCodePostal}&cityFromFront=${signUpCity}`,
     });
     let response = await request.json();
+
     console.log(response);
     if (response.result == true) {
       successSignUp();
@@ -326,6 +330,24 @@ function SignIn(props) {
                   onChange={(e) => setSignUpNameA(e.target.value)}
                 />
               </Form.Item>
+                <Form.Item label="Adresse">
+                  <Input
+                    style={styleInput}
+                    onChange={(e) => setSignUpAdresse(e.target.value)}
+                  />
+                </Form.Item>
+                <Form.Item label="Code Postal">
+                  <Input
+                    style={styleInput}
+                    onChange={(e) => setSignUpCodePostal(e.target.value)}
+                  />
+                </Form.Item>
+                <Form.Item label="Ville">
+                  <Input
+                    style={styleInput}
+                    onChange={(e) => setSignUpCity(e.target.value)}
+                  />
+                </Form.Item>
               <Form.Item label="Siret">
                 <Input
                   style={styleInput}

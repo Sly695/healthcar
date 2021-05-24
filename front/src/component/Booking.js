@@ -62,13 +62,6 @@ export default function Booking(props) {
     }
   }
 
-  async function setLocation() {
-    var rawResponse = await fetch(
-      `/map?address=${streetDeparture} ${cityDeparture} France`
-    );
-    var response = await rawResponse.json();
-    console.log(response);
-  }
 
   const successSignUp = () => {
     message.success({
