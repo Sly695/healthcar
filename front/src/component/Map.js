@@ -130,10 +130,10 @@ function Map(props) {
         return (
             <Marker position={[marker.addressArrival[0].latitude, marker.addressArrival[0].longitude]} icon={location}>
                 <Popup>
-                    <Card size="Default size card" title={<Text style={{ color: "#FFAE80" }} type="success">Détail - Lieu d'arrivé</Text>} extra={<a href="#">Itinéraire</a>} style={{ width: 300 }}>
+                    <Card size="Default size card" title={<Text style={{ color: "#FFAE80" }} type="success">Détail - Lieu d'arrivé</Text>} extra={<a href="#">Itinéraire</a>}>
                         <div style={{ display: "flex", flexDirection: "column" }}>
                             <Text type="warning">Lieu de prise en charge : </Text>
-                            {marker.arrivalLocation}<br/>
+                            {marker.arrivalLocation}<br />
                             {marker.addressArrival[0].address}
                         </div >
                         <div style={{ display: "flex", flexDirection: "column" }}>
@@ -143,7 +143,7 @@ function Map(props) {
                         <div style={{ display: "flex", flexDirection: "column" }}>
                             <Text type="warning">Distance: </Text>
                             {totalDistanceArrival}
-                        </div >
+                        </div>
                     </Card>
                 </Popup>
             </Marker>
@@ -160,7 +160,7 @@ function Map(props) {
             <Layout >
                 <Header />
                 <Content>
-                    <MapContainer style={{ height: "90vh", margin: "1%", border: "1px solid #FFAE80" }} center={[45.764043, 4.835659]} zoom={11} scrollWheelZoom={false}>
+                    <MapContainer style={{ height: "70vh", margin: "1%", border: "1px solid #FFAE80" }} center={[45.764043, 4.835659]} zoom={11} scrollWheelZoom={false}>
                         <TileLayer
                             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -188,13 +188,8 @@ const LinesOptionsBlue = {
 }
 
 const LinesOptionsGreen = {
-    color: "green"
+    color: "#b170ff",
 }
-
-
-
-
-
 
 
 export default Map;
