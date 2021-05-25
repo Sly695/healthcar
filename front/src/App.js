@@ -13,12 +13,14 @@ import ListeTransportSoignants from "./component/ScreenListSoignants";
 import Map from "./component/Map";
 
 import { createStore, combineReducers } from "redux";
+import {reducer as formReducer} from 'redux-form';
 import { Provider } from "react-redux";
 import token from "./reducers/token";
 import role from "./reducers/role";
 import iduser from "./reducers/iduser";
 import userData from "./reducers/userData";
-const store = createStore(combineReducers({ token, role, iduser, userData }));
+const formEdit = {form: formReducer};
+const store = createStore(combineReducers({ token, role, iduser, userData, form: formReducer }));
 
 function App() {
   return (
