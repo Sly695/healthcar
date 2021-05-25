@@ -12,12 +12,16 @@ var AddressDepartureSchema = mongoose.Schema({
   address: String,
   postalCode: String,
   city: String,
+  latitude : String,
+  longitude : String,
 });
 
 var AddressArrivalSchema = mongoose.Schema({
   address: String,
   postalCode: String,
   city: String,
+  latitude : String,
+  longitude : String,
 });
 
 var transportSchema = mongoose.Schema({

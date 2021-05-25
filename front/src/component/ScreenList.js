@@ -62,16 +62,13 @@ export default function ScreenList(props) {
     const findList = async () => {
       const data = await fetch(`/course-list`);
       const body = await data.json();
-      console.log(body.courseList);
       const filtre = body.courseList.filter(
         (id) => id.idPro == iduser || id.status == "dispo"
       );
-      console.log(filtre);
       setList(filtre);
       if (dataModal._id == "fake") {
         setDataModal(body.courseList[0]);
       }
-      console.log(body);
     };
 
     findList();

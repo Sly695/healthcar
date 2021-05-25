@@ -26,8 +26,7 @@ export default function Header() {
     const findList = async () => {
       const data = await fetch(`/course-list`);
       const body = await data.json();
-      console.log(body.courseList);
-      // setList(body.courseList);
+
     };
 
     findList();
@@ -57,7 +56,6 @@ export default function Header() {
 
   //   }
 
-  console.log(list);
 
   const data = [
     {

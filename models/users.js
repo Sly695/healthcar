@@ -4,6 +4,8 @@ var AddressSchema = mongoose.Schema({
   address: String,
   postalCode: String,
   city: String,
+  latitude : String, 
+  longitude : String,
 });
 
 var userSchema = mongoose.Schema({
@@ -22,6 +24,7 @@ var userSchema = mongoose.Schema({
   nomEntreprise: String,
   siret: String,
   note: Array,
+
 });
 
 var UserModel = mongoose.model("users", userSchema);
