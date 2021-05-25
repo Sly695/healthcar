@@ -109,7 +109,6 @@ router.post("/sign-up-ambulance", async function (req, res, next) {
   var postalCode = req.body.postalCodefromFront;
   var city = req.body.cityFromFront;
 
-
   const data = await userModel.findOne({
     email: req.body.emailFromFront,
   });
@@ -127,7 +126,6 @@ router.post("/sign-up-ambulance", async function (req, res, next) {
     req.body.addressFromFront == "" ||
     req.body.postalCodeFromFront == "" ||
     req.body.cityFromFront == ""
-
   ) {
     error.push("champs vides");
   }
@@ -151,13 +149,12 @@ router.post("/sign-up-ambulance", async function (req, res, next) {
       token: uid2(32),
       date_inscrit: new Date(),
       adresse: {
-        address : req.body.addressFromFront,
-        postalCode : req.body.postalCodefromFront,
-        city : req.body.cityFromFront,
+        address: req.body.addressFromFront,
+        postalCode: req.body.postalCodefromFront,
+        city: req.body.cityFromFront,
         latitude: dataAPIparsed.results[0].geometry.lat,
         longitude: dataAPIparsed.results[0].geometry.lng,
-      }
-
+      },
     });
 
     saveUser = await newUser.save();
@@ -175,45 +172,44 @@ router.post("/sign-up-ambulance", async function (req, res, next) {
 //          UPDATE PROFIL  |
 //----------------------------------------
 
-router.put("/update-profil-carestaff", async (req, res, next) => {
-  let token = "gx38g6PBoxyMMVn2sstOUQvlIj7iOGUr";
+// router.put("/update-profil-carestaff", async (req, res, next) => {
+//   let token = "gx38g6PBoxyMMVn2sstOUQvlIj7iOGUr";
 
+//   const userProfil = await userModel.updateOne(
+//     {
+//       token: token,
+//     },
+//     {
+//       lastname: req.body.lastname,
+//       firstname: req.body.firstname,
+//       email: req.body.email,
+//       avatar: req.body.avatar,
+//       password: req.body.password,
+//       phone: req.body.phone,
+//       adresse: {
+//         adresse: req.body.adresse,
+//         postalCode: req.body.postalCode,
+//         city: req.body.city,
+//       },
+//     }
+//   );
+//   res.json({ userProfil });
+// });
+
+router.put("/update-profil", async (req, res, next) => {
   const userProfil = await userModel.updateOne(
     {
-      token: token,
+      token: req.body.token,
     },
     {
       lastname: req.body.lastname,
       firstname: req.body.firstname,
-      email: req.body.email,
-      avatar: req.body.avatar,
-      password: req.body.password,
-      phone: req.body.phone,
-      adresse: {
-        adresse: req.body.adresse,
-        postalCode: req.body.postalCode,
-        city: req.body.city,
-      },
-    }
-  );
-  res.json({ userProfil });
-});
-
-router.put("/update-profil-ambulance", async (req, res, next) => {
-  let token = "afWbpZPvEdHsrBpi1AFYi6ccmcspU648";
-
-  const userProfil = await userModel.updateOne(
-    {
-      token: token,
-    },
-    {
       monEntreprise: req.body.nomEntreprise,
       siret: req.body.siret,
       responsable_name: req.body.responableName,
       firstname: req.body.firstname,
       email: req.body.email,
       phone: req.body.phone,
-      avatar: req.body.avatar,
       password: req.body.password,
       adresse: {
         adresse: req.body.adresse,
@@ -230,10 +226,8 @@ router.put("/update-profil-ambulance", async (req, res, next) => {
 //         Sélectionner dans la DB l'ambulancier qui est connecté
 //----------------------------------------------------------
 router.get("/user-list", async (req, res, next) => {
-  let user = await userModel.findOne({nomEntreprise : req.query.userData });
+  let user = await userModel.findOne({ nomEntreprise: req.query.userData });
   res.json({ user });
 });
-
-
 
 module.exports = router;
