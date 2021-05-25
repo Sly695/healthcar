@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../style/App.less";
-
+import moment from "moment";
+import "moment/locale/fr";
 import "../App.less";
 import { Layout, Modal, Table, Space, Button, Affix } from "antd";
 import { useSelector } from "react-redux";
@@ -134,8 +135,13 @@ export default function ScreenList(props) {
             <Column title="Arrivée" dataIndex="arrivalLocation" key="arrival" />
             <Column
               title="Date et heure"
-              dataIndex="dateArrival"
+              dataIndex=""
               key="dateArrival"
+              render={(text, record) => (
+                <Space size="middle">
+                  {moment(record.dateArrival).locale("fr").format("LLL")}
+                </Space>
+              )}
             />
             <Column
               title="Date et heure"
