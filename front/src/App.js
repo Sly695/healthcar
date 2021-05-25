@@ -12,15 +12,20 @@ import ListeTransport from "./component/ScreenList";
 import ListeTransportSoignants from "./component/ScreenListSoignants";
 import Map from "./component/Map";
 
-import { createStore, combineReducers } from "redux";
-import {reducer as formReducer} from 'redux-form';
+import { createStore, combineReducers, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
+
 import token from "./reducers/token";
 import role from "./reducers/role";
 import iduser from "./reducers/iduser";
 import userData from "./reducers/userData";
-const formEdit = {form: formReducer};
-const store = createStore(combineReducers({ token, role, iduser, userData, form: formReducer }));
+
+const store = createStore(combineReducers({ 
+  token, 
+  role, 
+  iduser, 
+  userData,
+}));
 
 function App() {
   return (
@@ -28,11 +33,7 @@ function App() {
       <Router>
         <Switch>
           <Route exact path="/" component={SignIn} />
-          <Route
-            exact
-            path="/dashboard/account-edit-client"
-            component={Profil}
-          />
+          <Route exact path="/dashboard/account-edit-client" component={Profil} />
           <Route exact path="/dashboard" component={Dashboard} />
           <Route exact path="/dashboard/list" component={ListeTransport} />
           <Route exact path="/dashboard/booking" component={Booking} />
