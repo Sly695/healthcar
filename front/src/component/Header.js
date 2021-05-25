@@ -25,20 +25,16 @@ export default function Header() {
       const data = await fetch(`/course-list`);
       const body = await data.json();
 
-      const filtreDispo = body.courseList.filter(
-        (id) => id.idPro == iduser || id.status == "dispo"
-      );
+      const filtreDispo = body.courseList.filter((id) => id.status == "dispo");
       setWaitingTransport(filtreDispo.length);
       const filtreEncours = body.courseList.filter(
-        (id) => id.idPro == iduser || id.status == "encours"
+        (id) => id.status == "encours"
       );
       setProcessTransport(filtreEncours.length);
-      const filtreEnd = body.courseList.filter(
-        (id) => id.idPro == iduser || id.status == "cloturé"
-      );
+      const filtreEnd = body.courseList.filter((id) => id.status == "cloturé");
       setEndTransport(filtreEnd.length);
       const filtreCancel = body.courseList.filter(
-        (id) => id.idPro == iduser || id.status == "annulé"
+        (id) => id.status == "annulé"
       );
       setCancelTransport(filtreCancel.length);
     }
