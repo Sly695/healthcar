@@ -12,30 +12,43 @@ import {
 
 export default function Header() {
   const [list, setList] = useState([]);
-  const [waitingTransport, setWaitingTransport] = useState(0);
+  const [waitingTransport, setWaitingTransport] = useState();
   const [processTransport, setProcessTransport] = useState(0);
   const [endTransport, setEndTransport] = useState(0);
   const [cancelTransport, setCancelTransport] = useState(0);
 
   const userData = useSelector((state) => state.userData);
+  const iduser = useSelector((state) => state.iduser);
 
   useEffect(() => {
-    async function findList () {
+    async function findList() {
       const data = await fetch(`/course-list`);
       const body = await data.json();
-    };
+
+      const filtreDispo = body.courseList.filter((id) => id.status == "dispo");
+      setWaitingTransport(filtreDispo.length);
+      const filtreEncours = body.courseList.filter(
+        (id) => id.status == "encours"
+      );
+      setProcessTransport(filtreEncours.length);
+      const filtreEnd = body.courseList.filter((id) => id.status == "cloturé");
+      setEndTransport(filtreEnd.length);
+      const filtreCancel = body.courseList.filter(
+        (id) => id.status == "annulé"
+      );
+      setCancelTransport(filtreCancel.length);
+    }
     findList();
-    
   }, []);
 
   console.log(list[0]);
 
-    //   let counterByTyppe = list.map(function (course, i) {
-    //     return course.status === "encours" ? setWaitingTransport(+1) : 0;
-    //     return course.status === "encours" ? setWaitingTransport(+1) : 0;
-    //     return course.status === "encours" ? setWaitingTransport(+1) : 0;
-    //     return course.status === "encours" ? setWaitingTransport(+1) : 0;
-    // });
+  //   let counterByTyppe = list.map(function (course, i) {
+  //     return course.status === "encours" ? setWaitingTransport(+1) : 0;
+  //     return course.status === "encours" ? setWaitingTransport(+1) : 0;
+  //     return course.status === "encours" ? setWaitingTransport(+1) : 0;
+  //     return course.status === "encours" ? setWaitingTransport(+1) : 0;
+  // });
 
   // list == 'attente' ? setWaitingTransport(+1) : 0;
   // list == 'encours' ? setProcessTransport(+1) : 0;
@@ -45,7 +58,7 @@ export default function Header() {
   // for (let i = 0; i < list.length; i++){
   //   if (list[0].status == 'dispo'){
   //     setWaitingTransport(waitingTransport+1)
-  //   } 
+  //   }
   //   if (list[0].status == 'encours'){
   //     setProcessTransport(processTransport+1)
   //   }
@@ -58,10 +71,6 @@ export default function Header() {
   //     return 0
   //   }
   // }
-
-  
-
-
 
   const data = [
     {
@@ -85,7 +94,6 @@ export default function Header() {
   return (
     <PageHeader className="site-page-header-responsive">
       <List
-      hidden={userData.role == "ambulance" ? false : true}
         grid={{
           gutter: 10,
           xs: 1,
@@ -106,10 +114,6 @@ export default function Header() {
           </List.Item>
         )}
       />
-      <p hidden={userData.role == "soignant" ? false : true}>
-        Bienvenue sur HealthCar, vous pouvez maintenant réserver votre transport
-        ou consulter vos commandes. // c'est le header du soignant
-      </p>
     </PageHeader>
   );
 }

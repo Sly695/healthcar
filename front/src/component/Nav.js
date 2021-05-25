@@ -106,11 +106,7 @@ export default function Nav(props) {
           <Link to="/dashboard/list">Transports</Link>
         </Menu.Item>
 
-        <Menu.Item
-          hidden={userData.role == "ambulance" ? false : true}
-          key="5"
-          icon={<UserOutlined />}
-        >
+        <Menu.Item key="5" icon={<UserOutlined />}>
           <Link to="/dashboard/account-edit-client">Profil</Link>
         </Menu.Item>
       </Menu>

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../App.less";
+import moment from "moment";
+import "moment/locale/fr";
 import { Layout, Modal, Table, Space, Button, Rate, Affix } from "antd";
 import Nav from "../component/Nav";
 import Profil from "../component/ScreenProfil";
@@ -96,8 +98,13 @@ export default function ScreenListSoignants(props) {
             <Column title="Arrivée" dataIndex="arrivalLocation" key="arrival" />
             <Column
               title="Date et heure"
-              dataIndex="dateArrival"
+              dataIndex=""
               key="dateArrival"
+              render={(text, record) => (
+                <Space size="middle">
+                  {moment(record.dateArrival).locale("fr").format("LLL")}
+                </Space>
+              )}
             />
             <Column
               title="Date et heure"
