@@ -12,17 +12,35 @@ import {
 
 export default function Header() {
   const [list, setList] = useState([]);
-  const [waitingTransport, setWaitingTransport] = useState(0);
+  const [waitingTransport, setWaitingTransport] = useState();
   const [processTransport, setProcessTransport] = useState(0);
   const [endTransport, setEndTransport] = useState(0);
   const [cancelTransport, setCancelTransport] = useState(0);
 
   const userData = useSelector((state) => state.userData);
+  const iduser = useSelector((state) => state.iduser);
 
   useEffect(() => {
     async function findList() {
       const data = await fetch(`/course-list`);
       const body = await data.json();
+
+      const filtreDispo = body.courseList.filter(
+        (id) => id.idPro == iduser || id.status == "dispo"
+      );
+      setWaitingTransport(filtreDispo.length);
+      const filtreEncours = body.courseList.filter(
+        (id) => id.idPro == iduser || id.status == "encours"
+      );
+      setProcessTransport(filtreEncours.length);
+      const filtreEnd = body.courseList.filter(
+        (id) => id.idPro == iduser || id.status == "cloturé"
+      );
+      setEndTransport(filtreEnd.length);
+      const filtreCancel = body.courseList.filter(
+        (id) => id.idPro == iduser || id.status == "annulé"
+      );
+      setCancelTransport(filtreCancel.length);
     }
     findList();
   }, []);
