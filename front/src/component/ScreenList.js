@@ -87,9 +87,9 @@ export default function ScreenList(props) {
 
   return (
     <Layout>
-      <Affix>
+      {/* <Affix>
         <Nav />
-      </Affix>
+      </Affix> */}
 
       <Layout>
         <Header />

@@ -186,7 +186,7 @@ router.put("/update-profil-ambulance", async (req, res, next) => {
     {
       monEntreprise: req.body.nomEntreprise,
       siret: req.body.siret,
-      lastname: req.body.lastname,
+      responsable_name: req.body.responableName,
       firstname: req.body.firstname,
       email: req.body.email,
       phone: req.body.phone,
