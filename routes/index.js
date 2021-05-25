@@ -6,7 +6,7 @@ var uid2 = require("uid2");
 const usersModel = require("../models/users");
 var transportModel = require("../models/transport");
 
-var Gp = require("/Users/sly/Documents/lacapsule/healthcar/front/node_modules/geoportal-access-lib/dist/GpServices.js");
+var Gp = require("../node_modules/geoportal-access-lib/dist/GpServices.js");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {

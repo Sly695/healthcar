@@ -10,6 +10,8 @@ import Nav from './Nav'
 import FooterDash from "./Footer";
 import Header from "./Header";
 
+import moment from 'moment';
+
 
 const { Content } = Layout;
 
@@ -52,10 +54,10 @@ function Map(props) {
 
 
     //Route vers le back qui va requêter une API afin d'avoir des infos sur un trajet
-    async function getRoute(latitude, longitude, marker) {
+    async function getRoute(marker) {
 
         //Récupère des infos sur le trajet entre la société et l'adresse departure
-        var rawResponseDeparture = await fetch(`/getRoute?latitudeEndPoint=${latitude}&longitudeEndPoint=${longitude}&latitudeStartPoint=${userList[0].latitude}&longitudeStartPoint=${userList[0].longitude}`);
+        var rawResponseDeparture = await fetch(`/getRoute?latitudeEndPoint=${marker.addressDeparture[0].latitude}&longitudeEndPoint=${marker.addressDeparture[0].longitude}&latitudeStartPoint=${userList[0].latitude}&longitudeStartPoint=${userList[0].longitude}`);
         var responseDeparture = await rawResponseDeparture.json();
         setCoordsRouteDeparture(responseDeparture.result);
         setTotalTimeDeparture(responseDeparture.totalTime);
@@ -63,7 +65,7 @@ function Map(props) {
 
         //Récupère des infos sur le trajet entre la société et l'adresse departure
         setAddressArrival([marker])
-        var rawResponseArrival = await fetch(`/getRoute?latitudeEndPoint=${marker.addressArrival[0].latitude}&longitudeEndPoint=${marker.addressArrival[0].longitude}&latitudeStartPoint=${latitude}&longitudeStartPoint=${longitude}`)
+        var rawResponseArrival = await fetch(`/getRoute?latitudeEndPoint=${marker.addressArrival[0].latitude}&longitudeEndPoint=${marker.addressArrival[0].longitude}&latitudeStartPoint=${marker.addressDeparture[0].latitude}&longitudeStartPoint=${marker.addressDeparture[0].longitude}`)
         var responseArrival = await rawResponseArrival.json();
         setCoordsRouteArrival(responseArrival.result);
         setTotalTimeArrival(responseArrival.totalTime)
@@ -93,10 +95,11 @@ function Map(props) {
             type = ("Véhicule semi allongé")
         }
 
+
         return (
             <Marker position={[marker.addressDeparture[0].latitude, marker.addressDeparture[0].longitude]} icon={location}  >
                 <Popup>
-                    <Card size="Default size card" title={<Text style={{ color: "#FFAE80" }} type="success">Détail - {marker.patient[0].lastname} {marker.patient[0].firstname}</Text>} extra={<a onClick={() => getRoute(marker.addressDeparture[0].latitude, marker.addressDeparture[0].longitude, marker)} href="#">Itinéraire</a>} style={{ width: 300 }}>
+                    <Card size="Default size card" title={<Text style={{ color: "#FFAE80" }} type="success">{marker.patient[0].lastname} {marker.patient[0].firstname}</Text>} extra={<a onClick={() => getRoute(marker)} href="#">Itinéraire</a>} style={{ width: 300 }}>
                         <div style={{ display: "flex", flexDirection: "column" }}>
                             <Text type="warning">Lieu de prise en charge : </Text>
                             {marker.departureLocation}<br />
@@ -104,7 +107,7 @@ function Map(props) {
                         </div >
                         <div style={{ display: "flex", flexDirection: "column" }}>
                             <Text type="warning">Date de Naissance : </Text>
-                            {marker.patient[0].birthdate}
+                            {moment(marker.patient[0].birthdate).format('ll')}
                         </div>
                         <div style={{ display: "flex", flexDirection: "column" }}>
                             <Text type="warning">Type de transport : </Text><Text>{type}</Text>
