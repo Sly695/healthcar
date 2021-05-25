@@ -20,22 +20,21 @@ export default function Header() {
   const userData = useSelector((state) => state.userData);
 
   useEffect(() => {
-    async function findList () {
+    async function findList() {
       const data = await fetch(`/course-list`);
       const body = await data.json();
-    };
+    }
     findList();
-    
   }, []);
 
   console.log(list[0]);
 
-    //   let counterByTyppe = list.map(function (course, i) {
-    //     return course.status === "encours" ? setWaitingTransport(+1) : 0;
-    //     return course.status === "encours" ? setWaitingTransport(+1) : 0;
-    //     return course.status === "encours" ? setWaitingTransport(+1) : 0;
-    //     return course.status === "encours" ? setWaitingTransport(+1) : 0;
-    // });
+  //   let counterByTyppe = list.map(function (course, i) {
+  //     return course.status === "encours" ? setWaitingTransport(+1) : 0;
+  //     return course.status === "encours" ? setWaitingTransport(+1) : 0;
+  //     return course.status === "encours" ? setWaitingTransport(+1) : 0;
+  //     return course.status === "encours" ? setWaitingTransport(+1) : 0;
+  // });
 
   // list == 'attente' ? setWaitingTransport(+1) : 0;
   // list == 'encours' ? setProcessTransport(+1) : 0;
@@ -45,7 +44,7 @@ export default function Header() {
   // for (let i = 0; i < list.length; i++){
   //   if (list[0].status == 'dispo'){
   //     setWaitingTransport(waitingTransport+1)
-  //   } 
+  //   }
   //   if (list[0].status == 'encours'){
   //     setProcessTransport(processTransport+1)
   //   }
@@ -58,10 +57,6 @@ export default function Header() {
   //     return 0
   //   }
   // }
-
-  
-
-
 
   const data = [
     {
@@ -85,7 +80,6 @@ export default function Header() {
   return (
     <PageHeader className="site-page-header-responsive">
       <List
-      hidden={userData.role == "ambulance" ? false : true}
         grid={{
           gutter: 10,
           xs: 1,
@@ -106,10 +100,6 @@ export default function Header() {
           </List.Item>
         )}
       />
-      <p hidden={userData.role == "soignant" ? false : true}>
-        Bienvenue sur HealthCar, vous pouvez maintenant réserver votre transport
-        ou consulter vos commandes. // c'est le header du soignant
-      </p>
     </PageHeader>
   );
 }
