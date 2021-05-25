@@ -17,13 +17,12 @@ export default function Header() {
   const [endTransport, setEndTransport] = useState(0);
   const [cancelTransport, setCancelTransport] = useState(0);
 
-  // const userData = useSelector((state) => state.userData);
+  const userData = useSelector((state) => state.userData);
 
   useEffect(() => {
     async function findList () {
       const data = await fetch(`/course-list`);
       const body = await data.json();
-      setList(body.courseList);
     };
     findList();
     
@@ -86,7 +85,7 @@ export default function Header() {
   return (
     <PageHeader className="site-page-header-responsive">
       <List
-        // hidden={userData.role == "ambulance" ? false : true}
+      hidden={userData.role == "ambulance" ? false : true}
         grid={{
           gutter: 10,
           xs: 1,
@@ -107,10 +106,10 @@ export default function Header() {
           </List.Item>
         )}
       />
-      {/* <p hidden={userData.role == "soignant" ? false : true}>
+      <p hidden={userData.role == "soignant" ? false : true}>
         Bienvenue sur HealthCar, vous pouvez maintenant réserver votre transport
         ou consulter vos commandes. // c'est le header du soignant
-      </p> */}
+      </p>
     </PageHeader>
   );
 }

@@ -4,6 +4,7 @@ var userModel = require("../models/users");
 var uid2 = require("uid2");
 var bcrypt = require("bcrypt");
 var UserModel = require("../models/users");
+var request = require("sync-request");
 
 /* GET users listing. */
 router.get("/", function (req, res, next) {
@@ -104,6 +105,10 @@ router.post("/sign-up-ambulance", async function (req, res, next) {
   var error = [];
   var saveUser = null;
   var token = null;
+  var address = req.body.addressFromFront;
+  var postalCode = req.body.postalCodefromFront;
+  var city = req.body.cityFromFront;
+
 
   const data = await userModel.findOne({
     email: req.body.emailFromFront,
@@ -118,12 +123,22 @@ router.post("/sign-up-ambulance", async function (req, res, next) {
     req.body.siretFromFront == "" ||
     req.body.emailFromFront == "" ||
     req.body.phoneFromFront == "" ||
-    req.body.passwordFromFront == ""
+    req.body.passwordFromFront == "" ||
+    req.body.addressFromFront == "" ||
+    req.body.postalCodeFromFront == "" ||
+    req.body.cityFromFront == ""
+
   ) {
     error.push("champs vides");
   }
 
   if (error.length == 0) {
+    var dataAPI = request(
+      "GET",
+      `https://api.opencagedata.com/geocode/v1/json?q=${address},${postalCode} ${city}, France &key=e40b9c1452fe4b29997b6f91eb035202`
+    );
+    var dataAPIparsed = JSON.parse(dataAPI.body);
+
     var hash = bcrypt.hashSync(req.body.passwordFromFront, 10);
     var newUser = new userModel({
       nomEntreprise: req.body.nomEntrepriseFromFront,
@@ -135,6 +150,14 @@ router.post("/sign-up-ambulance", async function (req, res, next) {
       password: hash,
       token: uid2(32),
       date_inscrit: new Date(),
+      adresse: {
+        address : req.body.addressFromFront,
+        postalCode : req.body.postalCodefromFront,
+        city : req.body.cityFromFront,
+        latitude: dataAPIparsed.results[0].geometry.lat,
+        longitude: dataAPIparsed.results[0].geometry.lng,
+      }
+
     });
 
     saveUser = await newUser.save();
@@ -202,5 +225,15 @@ router.put("/update-profil-ambulance", async (req, res, next) => {
 
   res.json({ userProfil });
 });
+
+//----------------------------------------------------------
+//         Sélectionner dans la DB l'ambulancier qui est connecté
+//----------------------------------------------------------
+router.get("/user-list", async (req, res, next) => {
+  let user = await userModel.findOne({nomEntreprise : req.query.userData });
+  res.json({ user });
+});
+
+
 
 module.exports = router;

@@ -218,9 +218,9 @@ const [nomEntreprise, setEntreprise] = useState("");
     // if (userData.role == "ambulance") {
       return(
         <Layout>
-          {/* <Affix>
+          <Affix>
             <Nav />
-          </Affix> */}
+          </Affix>
         <Layout>
           <Header />
         <Content

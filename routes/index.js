@@ -1,10 +1,13 @@
 var express = require("express");
 var router = express.Router();
 
+
 var request = require("sync-request");
 var uid2 = require("uid2");
 const usersModel = require("../models/users");
 var transportModel = require("../models/transport");
+
+var Gp = require("../node_modules/geoportal-access-lib/dist/GpServices");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -70,7 +73,6 @@ router.get("/feedback", async (req, res, next) => {
       note: noteCopy,
     }
   );
-  console.log(req.query.alreadynote);
   await transportModel.updateOne(
     { _id: req.query.alreadynote },
     {
@@ -89,16 +91,27 @@ router.post("/booking", async function (req, res, next) {
   var error = [];
   var result = false;
   var saveTransport = null;
+
   var addressDeparture = req.body.addressDeparture;
   var postalCodeDeparture = req.body.postalCodeDeparture;
   var cityDeparture = req.body.cityDeparture;
 
-  var data = request(
+  var addressArrival = req.body.addressArrival;
+  var postalCodeArrival = req.body.postalCodeArrival;
+  var cityArrival = req.body.cityArrival;
+
+  var dataDeparture = request(
     "GET",
     `https://api.opencagedata.com/geocode/v1/json?q=${addressDeparture},${postalCodeDeparture} ${cityDeparture}, France &key=e40b9c1452fe4b29997b6f91eb035202`
   );
 
-  var dataAPI = JSON.parse(data.body);
+  var dataArrival = request(
+    "GET",
+    `https://api.opencagedata.com/geocode/v1/json?q=${addressArrival},${postalCodeArrival} ${cityArrival}, France &key=e40b9c1452fe4b29997b6f91eb035202`
+  );
+
+  var dataDepartureAPI = JSON.parse(dataDeparture.body);
+  var dataArrivalAPI = JSON.parse(dataArrival.body);
 
   if (
     req.body.departureName == "" ||
@@ -115,23 +128,26 @@ router.post("/booking", async function (req, res, next) {
     error.push("champs vides");
   }
 
-  if (error.length == 0 && dataAPI.total_results > 0) {
+  if (error.length == 0 && dataDepartureAPI.total_results > 0 && dataArrivalAPI.total_results > 0) {
     var newTransport = new transportModel({
       ref: uid2(5),
-      latitude: dataAPI.results[0].geometry.lat,
-      longitude: dataAPI.results[0].geometry.lng,
+      
       alreadyNote: false,
       departureLocation: req.body.departureName,
       addressDeparture: {
         address: req.body.addressDeparture,
         postalCode: req.body.postalCodeDeparture,
         city: req.body.cityDeparture,
+        latitude: dataDepartureAPI.results[0].geometry.lat,
+        longitude: dataDepartureAPI.results[0].geometry.lng,
       },
       arrivalLocation: req.body.arrivalLocationName,
       addressArrival: {
         address: req.body.addressArrival,
         postalCode: req.body.postalCodeArrival,
         city: req.body.cityArrival,
+        latitude: dataArrivalAPI.results[0].geometry.lat,
+        longitude: dataArrivalAPI.results[0].geometry.lng,
       },
       dateInitial: new Date(),
       dateArrival: req.body.dateArrival,
@@ -159,42 +175,32 @@ router.post("/booking", async function (req, res, next) {
   res.json({ result, saveTransport, error });
 });
 
-//----------------------------------------------------------
-//          MAP
-//----------------------------------------------------------
-
-// router.get("/map", async function (req, res, next) {
-//   var address = req.query.address;
-//   console.log(req.query.address);
-//   var data = request(
-//     "GET",
-//     `https://api.opencagedata.com/geocode/v1/json?q=${address}&key=e40b9c1452fe4b29997b6f91eb035202`
-//   );
-//   var dataAPI = JSON.parse(data.body);
-//   //Si on trouve une adresse qui correspond
-//   if (dataAPI.total_results > 0) {
-
-//     var transport = await transportModel.findOne(addressDeparture , req.query.address);
-
-//     res.json({
-//       result: true,
-//       transport : transport,
-//       address: dataAPI.results[0].formatted,
-//       latitude: dataAPI.results[0].geometry.lat,
-//       longitude: dataAPI.results[0].geometry.lng,
-//     });
-//   } else {
-//     res.json({ result: false });
-//   }
-// });
-
-//----------------------------------------------------------
-//         LISTE TRANSPORTS
-//----------------------------------------------------------
-
 router.get("/course-list", async (req, res, next) => {
   let courseList = await transportModel.find();
   res.json({ courseList });
 });
+
+//----------------------------------------------------------
+// REQUÊTE API POUR ACCEDER A DES INFOS PAR RAPPORT A UN TRAJET
+//----------------------------------------------------------
+router.get("/getRoute", async (req, res, next) => {
+  Gp.Services.route({
+    apiKey : "jhyvi0fgmnuxvfv0zjzorvdn", // clef d'accès à la plateforme
+    startPoint : { x: req.query.longitudeStartPoint, y: req.query.latitudeStartPoint},       // point de départ
+    endPoint : { x: req.query.longitudeEndPoint, y: req.query.latitudeEndPoint},          // point d'arrivée
+    graph : "Voiture",                 // grapĥe utilisé
+    onSuccess : function (result) {
+      let finalCoords = [];
+      for (let step of result.routeGeometry.coordinates){
+        let point = step.reverse();
+        finalCoords.push(point)
+      } 
+      res.json({totalTime : result.totalTime, totalDistance : result.totalDistance, result: finalCoords, });
+        // exploitation des resultats : "result" est de type Gp.Services.RouteResponse
+    }
+});
+})
+
+
 
 module.exports = router;
