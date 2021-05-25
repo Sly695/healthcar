@@ -6,7 +6,7 @@ var uid2 = require("uid2");
 const usersModel = require("../models/users");
 var transportModel = require("../models/transport");
 
-var Gp = require("/Users/sly/Documents/lacapsule/healthcar/front/node_modules/geoportal-access-lib/dist/GpServices.js");
+var Gp = require("../node_modules/geoportal-access-lib/dist/GpServices");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -127,10 +127,14 @@ router.post("/booking", async function (req, res, next) {
     error.push("champs vides");
   }
 
-  if (error.length == 0 && dataDepartureAPI.total_results > 0 && dataArrivalAPI.total_results > 0) {
+  if (
+    error.length == 0 &&
+    dataDepartureAPI.total_results > 0 &&
+    dataArrivalAPI.total_results > 0
+  ) {
     var newTransport = new transportModel({
       ref: uid2(5),
-      
+
       alreadyNote: false,
       departureLocation: req.body.departureName,
       addressDeparture: {
@@ -184,22 +188,27 @@ router.get("/course-list", async (req, res, next) => {
 //----------------------------------------------------------
 router.get("/getRoute", async (req, res, next) => {
   Gp.Services.route({
-    apiKey : "jhyvi0fgmnuxvfv0zjzorvdn", // clef d'accès à la plateforme
-    startPoint : { x: req.query.longitudeStartPoint, y: req.query.latitudeStartPoint},       // point de départ
-    endPoint : { x: req.query.longitudeEndPoint, y: req.query.latitudeEndPoint},          // point d'arrivée
-    graph : "Voiture",                 // grapĥe utilisé
-    onSuccess : function (result) {
+    apiKey: "jhyvi0fgmnuxvfv0zjzorvdn", // clef d'accès à la plateforme
+    startPoint: {
+      x: req.query.longitudeStartPoint,
+      y: req.query.latitudeStartPoint,
+    }, // point de départ
+    endPoint: { x: req.query.longitudeEndPoint, y: req.query.latitudeEndPoint }, // point d'arrivée
+    graph: "Voiture", // grapĥe utilisé
+    onSuccess: function (result) {
       let finalCoords = [];
-      for (let step of result.routeGeometry.coordinates){
+      for (let step of result.routeGeometry.coordinates) {
         let point = step.reverse();
-        finalCoords.push(point)
-      } 
-      res.json({totalTime : result.totalTime, totalDistance : result.totalDistance, result: finalCoords, });
-        // exploitation des resultats : "result" est de type Gp.Services.RouteResponse
-    }
+        finalCoords.push(point);
+      }
+      res.json({
+        totalTime: result.totalTime,
+        totalDistance: result.totalDistance,
+        result: finalCoords,
+      });
+      // exploitation des resultats : "result" est de type Gp.Services.RouteResponse
+    },
+  });
 });
-})
-
-
 
 module.exports = router;
