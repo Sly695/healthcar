@@ -45,12 +45,14 @@ function Map(props) {
             var rawResponse = await fetch(`/users/user-list?userData=${userData}`);
             var response = await rawResponse.json();
             setUserList([{ latitude: response.user.adresse[0].latitude, longitude: response.user.adresse[0].longitude }])
+            
         }
 
         listCourse();
         listUser();
 
     }, []);
+
 
 
     //Route vers le back qui va requêter une API afin d'avoir des infos sur un trajet
@@ -96,6 +98,7 @@ function Map(props) {
         }
 
 
+
         return (
             <Marker position={[marker.addressDeparture[0].latitude, marker.addressDeparture[0].longitude]} icon={location}  >
                 <Popup>
@@ -107,13 +110,13 @@ function Map(props) {
                         </div >
                         <div style={{ display: "flex", flexDirection: "column" }}>
                             <Text type="warning">Date de Naissance : </Text>
-                            {moment(marker.patient[0].birthdate).format('ll')}
+                            {moment(marker.patient[0].birthdate).locale("fr").format("LL")}
                         </div>
                         <div style={{ display: "flex", flexDirection: "column" }}>
                             <Text type="warning">Type de transport : </Text><Text>{type}</Text>
                         </div>
                         <div style={{ display: "flex", flexDirection: "column" }}>
-                            <Text type="warning">Temps de trajet : </Text><Text>{totalTimeDeparture / 60} minutes</Text>
+                            <Text type="warning">Temps de trajet : </Text><Text>{Math.floor(totalTimeDeparture / 60)} minutes</Text>
                         </div>
                         <div style={{ display: "flex", flexDirection: "column" }}>
                             <Text type="warning">Distance : </Text><Text>{totalDistanceDeparture}</Text>
@@ -133,7 +136,7 @@ function Map(props) {
         return (
             <Marker position={[marker.addressArrival[0].latitude, marker.addressArrival[0].longitude]} icon={location}>
                 <Popup>
-                    <Card size="Default size card" title={<Text style={{ color: "#FFAE80" }} type="success">Détail - Lieu d'arrivé</Text>} extra={<a href="#">Itinéraire</a>}>
+                    <Card size="Default size card" title={<Text style={{ color: "#FFAE80" }} type="success">Lieu d'arrivé</Text>} extra={<a href="#">Itinéraire</a>}>
                         <div style={{ display: "flex", flexDirection: "column" }}>
                             <Text type="warning">Lieu de prise en charge : </Text>
                             {marker.arrivalLocation}<br />
@@ -141,7 +144,7 @@ function Map(props) {
                         </div >
                         <div style={{ display: "flex", flexDirection: "column" }}>
                             <Text type="warning">Temps de trajet: </Text>
-                            {totalTimeArrival / 60} minutes
+                            {Math.floor(totalTimeArrival / 60)} minutes
                         </div >
                         <div style={{ display: "flex", flexDirection: "column" }}>
                             <Text type="warning">Distance: </Text>
@@ -163,7 +166,7 @@ function Map(props) {
             <Layout >
                 <Header />
                 <Content>
-                    <MapContainer style={{ height: "70vh", margin: "1%", border: "1px solid #FFAE80" }} center={[45.764043, 4.835659]} zoom={11} scrollWheelZoom={false}>
+                    <MapContainer style={{ height: "70vh", margin: "1%", border: "1px solid #FFAE80" }} center={[45.764043,4.835659]} zoom={5} scrollWheelZoom={false}>
                         <TileLayer
                             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -180,6 +183,8 @@ function Map(props) {
         </Layout>
     )
 }
+
+//45.764043,4.835659
 
 const location = new Icon({
     iconUrl: ("../Images/Logo.svg"),

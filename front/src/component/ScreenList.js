@@ -9,7 +9,6 @@ import { useSelector } from "react-redux";
 import Nav from "../component/Nav";
 import Header from "../component/Header";
 import FooterDash from "../component/Footer";
-import moment from 'moment';
 
 const { Content } = Layout;
 
