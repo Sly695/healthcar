@@ -24,7 +24,7 @@ export default function Nav(props) {
 
   useEffect(() => {
     moyenne();
-  }, []);
+  }, [rate]);
 
   function moyenne() {
     var n = userData.note.length;
