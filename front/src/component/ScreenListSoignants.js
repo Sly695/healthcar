@@ -102,7 +102,8 @@ export default function ScreenListSoignants(props) {
               key="dateArrival"
               render={(text, record) => (
                 <Space size="middle">
-                  {moment(record.dateArrival).locale("fr").format("LLL")}
+                  {moment(record.dateArrival).locale("fr").format("L")}
+                  {moment(record.timeArrival).locale("fr").format("LT")}
                 </Space>
               )}
             />
