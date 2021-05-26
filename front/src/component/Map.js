@@ -54,7 +54,7 @@ function Map(props) {
   const [coordsRouteArrival, setCoordsRouteArrival] = useState([]);
   const [totalTimeArrival, setTotalTimeArrival] = useState([]);
   const [totalDistanceArrival, setTotalDistanceArrival] = useState([]);
-  const [notificationMessage, setNotificationMessage] = useState([]);
+  const [notificationMessage, setNotificationMessage] = useState();
 
   const userData = useSelector((state) => state.userData.nomEntreprise);
   const iduser = useSelector((state) => state.iduser);
