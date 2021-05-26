@@ -287,17 +287,17 @@ function Map(props) {
 }
 
 const location = new Icon({
-  iconUrl: "../Images/Logo.svg",
+  iconUrl: "../img/Logo.svg",
   iconSize: [50, 50],
 });
 
 const office = new Icon({
-  iconUrl: "../Images/location.svg",
+  iconUrl: "../img/location.svg",
   iconSize: [50, 50],
 });
 
 const gps = new Icon({
-  iconUrl: "../Images/gps.svg",
+  iconUrl: "../img/gps.svg",
   iconSize: [50, 50],
 });
 
