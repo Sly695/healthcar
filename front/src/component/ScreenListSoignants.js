@@ -17,6 +17,7 @@ import {
   Rate,
   Affix,
   notification,
+  Typography
 } from "antd";
 import Nav from "../component/Nav";
 import Profil from "../component/ScreenProfil";
@@ -26,9 +27,11 @@ import { useSelector } from "react-redux";
 import socketIOClient from "socket.io-client";
 import { SmileOutlined } from "@ant-design/icons";
 
+
 var socket = socketIOClient("https://healthcar31.herokuapp.com/");
 
 const { Content } = Layout;
+const { Title } = Typography;
 
 export default function ScreenListSoignants(props) {
   const [list, setList] = useState([]);
@@ -98,14 +101,8 @@ export default function ScreenListSoignants(props) {
 
       <Layout>
         <Header />
-        <Content
-          className="site-layout-background"
-          style={{
-            margin: "24px 16px",
-            padding: 24,
-            minHeight: 280,
-          }}
-        >
+        <Content className="site-layout-background" >
+        <Title level={2}>Vos réservations</Title>
           <Table dataSource={list}>
             <Column
               title="Status"
