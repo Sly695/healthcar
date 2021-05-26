@@ -9,7 +9,7 @@ import {
 import moment from "moment";
 import "moment/locale/fr";
 import "../App.less";
-import { Layout, Modal, Table, Space, Button, Affix, notification } from "antd";
+import { Layout, Modal, Table, Space, Button, Affix, notification, Typography} from "antd";
 import { useSelector } from "react-redux";
 import { SmileOutlined } from '@ant-design/icons';
 

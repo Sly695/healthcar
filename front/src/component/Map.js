@@ -21,7 +21,6 @@ import Nav from "./Nav";
 import FooterDash from "./Footer";
 import Header from "./Header";
 import socketIOClient from "socket.io-client";
-import moment from 'moment';
 
 var socket = socketIOClient("http://192.168.254.15:3000");
 
@@ -42,6 +41,7 @@ function Map(props) {
     const [coordsRouteArrival, setCoordsRouteArrival] = useState([]);
     const [totalTimeArrival, setTotalTimeArrival] = useState([]);
     const [totalDistanceArrival, setTotalDistanceArrival] = useState([]);
+    const [notificationMessage, setNotificationMessage] = useState([]);
 
     const userData = useSelector((state) => state.userData.nomEntreprise);
     const iduser = useSelector((state) => state.iduser);
@@ -103,10 +103,10 @@ function Map(props) {
     };
 
     //Route vers le back qui va requêter une API afin d'avoir des infos sur un trajet
-    async function getRoute(latitude, longitude, marker) {
+    async function getRoute(marker) {
         //Récupère des infos sur le trajet entre la société et l'adresse departure
         var rawResponseDeparture = await fetch(
-            `/getRoute?latitudeEndPoint=${latitude}&longitudeEndPoint=${longitude}&latitudeStartPoint=${userList[0].latitude}&longitudeStartPoint=${userList[0].longitude}`
+            `/getRoute?latitudeEndPoint=${marker.addressDeparture[0].latitude}&longitudeEndPoint=${marker.addressDeparture[0].longitude}&latitudeStartPoint=${userList[0].latitude}&longitudeStartPoint=${userList[0].longitude}`
         );
         var responseDeparture = await rawResponseDeparture.json();
         setCoordsRouteDeparture(responseDeparture.result);
@@ -116,7 +116,7 @@ function Map(props) {
         //Récupère des infos sur le trajet entre la société et l'adresse departure
         setAddressArrival([marker]);
         var rawResponseArrival = await fetch(
-            `/getRoute?latitudeEndPoint=${marker.addressArrival[0].latitude}&longitudeEndPoint=${marker.addressArrival[0].longitude}&latitudeStartPoint=${latitude}&longitudeStartPoint=${longitude}`
+            `/getRoute?latitudeEndPoint=${marker.addressArrival[0].latitude}&longitudeEndPoint=${marker.addressArrival[0].longitude}&latitudeStartPoint=${marker.addressDeparture[0].latitude}&longitudeStartPoint=${marker.addressDeparture[0].longitude}`
         );
         var responseArrival = await rawResponseArrival.json();
         setCoordsRouteArrival(responseArrival.result);
