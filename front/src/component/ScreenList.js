@@ -3,7 +3,7 @@ import "../style/App.less";
 import moment from "moment";
 import "moment/locale/fr";
 import "../App.less";
-import { Layout, Modal, Table, Space, Button, Affix } from "antd";
+import { Layout, Modal, Table, Space, Button, Affix, Typography } from "antd";
 import { useSelector } from "react-redux";
 
 import Nav from "../component/Nav";
@@ -11,6 +11,7 @@ import Header from "../component/Header";
 import FooterDash from "../component/Footer";
 
 const { Content } = Layout;
+const { Title } = Typography;
 
 export default function ScreenList(props) {
   const [list, setList] = useState([]);
@@ -93,12 +94,9 @@ export default function ScreenList(props) {
         <Header />
         <Content
           className="site-layout-background"
-          style={{
-            margin: "24px 16px",
-            padding: 24,
-            minHeight: 280,
-          }}
         >
+          <Title level={2} >Liste des transports</Title>
+
           <Table dataSource={list}>
             <Column
               title="Nom"

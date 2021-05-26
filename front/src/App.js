@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.less";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import "antd/dist/antd.css"; // or 'antd/dist/antd.less'
+import "antd/dist/antd.less";
 
 import Dashboard from "./screens/dashboard";
 import SignIn from "./screens/SignIn";
@@ -27,7 +27,7 @@ const store = createStore(combineReducers({
   userData,
 }));
 
-function App() {
+export default function App() {
   return (
     <Provider store={store}>
       <Router>
@@ -48,5 +48,3 @@ function App() {
     </Provider>
   );
 }
-
-export default App;
