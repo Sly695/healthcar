@@ -5,6 +5,9 @@ import {
   Popup,
   Polyline,
 } from "react-leaflet";
+import imgGps from "../img/gps.svg";
+import imgLocation from "../img/location.svg";
+import imgLogo from "../img/Logo.svg";
 import React, { useEffect, useState } from "react";
 import moment from "moment";
 import "moment/locale/fr";
@@ -287,17 +290,17 @@ function Map(props) {
 }
 
 const location = new Icon({
-  iconUrl: "../img/Logo.svg",
+  iconUrl: imgLogo,
   iconSize: [50, 50],
 });
 
 const office = new Icon({
-  iconUrl: "../img/location.svg",
+  iconUrl: imgLocation,
   iconSize: [50, 50],
 });
 
 const gps = new Icon({
-  iconUrl: "../img/gps.svg",
+  iconUrl: imgGps,
   iconSize: [50, 50],
 });
 
