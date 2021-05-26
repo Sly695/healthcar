@@ -28,7 +28,7 @@ import FooterDash from "../component/Footer";
 
 import socketIOClient from "socket.io-client";
 
-var socket = socketIOClient("http://192.168.1.53:3000");
+var socket = socketIOClient("https://healthcar31.herokuapp.com/");
 
 const { Content } = Layout;
 const { Title } = Typography;

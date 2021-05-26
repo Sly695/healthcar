@@ -35,7 +35,7 @@ import FooterDash from "./Footer";
 import Header from "./Header";
 import socketIOClient from "socket.io-client";
 
-var socket = socketIOClient("http://192.168.1.53:3000");
+var socket = socketIOClient("https://healthcar31.herokuapp.com/");
 
 const { Content } = Layout;
 

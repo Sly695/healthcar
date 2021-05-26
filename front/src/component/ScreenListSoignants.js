@@ -26,7 +26,7 @@ import { useSelector } from "react-redux";
 import socketIOClient from "socket.io-client";
 import { SmileOutlined } from "@ant-design/icons";
 
-var socket = socketIOClient("http://192.168.1.53:3000");
+var socket = socketIOClient("https://healthcar31.herokuapp.com/");
 
 const { Content } = Layout;
 
