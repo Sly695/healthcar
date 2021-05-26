@@ -11,6 +11,7 @@
     "@testing-library/user-event": "^12.8.3",
     "antd": "^4.15.6",
     "craco-antd": "^1.19.0",
+    "craco-less": "^1.17.0",
     "filename-regex": "^2.0.1",
     "geoportal-access-lib": "^2.1.8",
     "inquirer": "^8.0.0",

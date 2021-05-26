@@ -4,12 +4,52 @@
 @import url("https://fonts.googleapis.com/css2?family=Assistant:wght@400;700&display=swap");
 /* font-family: 'Assistant', sans-serif; */
 
+/*-------Titres------*/
+h1.ant-typography{
+  color: @primary-color;
+  margin-top: 3rem;
+}
 
-/*-------FOOTER------*/
+h2.ant-typography{
+  color: @primary-color;
+}
+
+
+h2{
+  color: @highlight-color;
+}
+
+/* -------NAV------- */
+aside{
+  width: 100vw;
+  height: auto;
+  justify-content: space-between;
+  padding-top: 15px;
+  box-shadow: @shadow-color;
+  .ant-menu{
+    border: none;
+  }
+}
+
 Footer{
     background-color: #fff;
 }
 
+/* -------CONTENT------- */
+main.ant-layout-content.site-layout-background {
+  margin: 20px;
+  padding: 20px;
+  box-shadow: 0px 12px 26px rgba(16, 30, 115, 0.06);
+  border-radius: 8px;
+}
+
+/* -------TABLEAU------- */
+
+.ant-table-thead{
+  .ant-table-cell{
+    color: @highlight-color;
+}
+}
 /* --------------------- SIGNIN */
 .screenSignIn {
   height: 100vh;
@@ -21,15 +61,10 @@ Footer{
 }
 .blocform {
   font-family: "Signika", sans-serif;
-  padding: 15px;
+  padding: 30px;
   color: @processing-color;
 }
 
-h1{
-  color: @success-color;
-  margin-top: 3rem;
-
-}
 .top {
   margin-top: 3rem;
   margin-bottom: 2rem;
@@ -55,7 +90,7 @@ h1{
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 100%;
+  height: 100hv;
 }
 /* SIGNIN --------------------- */
 @media screen and (max-width: 850px) {
