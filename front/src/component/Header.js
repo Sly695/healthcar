@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { Card, PageHeader, List } from "antd";
 import {
@@ -11,7 +11,7 @@ import {
 
 export default function Header() {
   const [list, setList] = useState([]);
-  const [waitingTransport, setWaitingTransport] = useState();
+  const [waitingTransport, setWaitingTransport] = useState(0);
   const [processTransport, setProcessTransport] = useState(0);
   const [endTransport, setEndTransport] = useState(0);
   const [cancelTransport, setCancelTransport] = useState(0);
@@ -23,7 +23,7 @@ export default function Header() {
     async function findList() {
       const data = await fetch(`/course-list`);
       const body = await data.json();
-
+      // setList(body);
       const filtreDispo = body.courseList.filter((id) => id.status == "dispo");
       setWaitingTransport(filtreDispo.length);
       const filtreEncours = body.courseList.filter(

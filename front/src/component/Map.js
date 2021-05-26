@@ -6,6 +6,8 @@ import {
   Polyline,
 } from "react-leaflet";
 import React, { useEffect, useState } from "react";
+import moment from "moment";
+import "moment/locale/fr";
 import { useSelector } from "react-redux";
 import "leaflet/dist/leaflet.css";
 import { Icon, icon } from "leaflet";
@@ -99,7 +101,7 @@ function Map(props) {
 
   var markerUser = userList.map(function (marker, i) {
     return (
-      <Marker position={[marker.latitude, marker.longitude]} icon={location}>
+      <Marker position={[marker.latitude, marker.longitude]} icon={office}>
         <Popup>Vous êtes là</Popup>
       </Marker>
     );
@@ -157,7 +159,8 @@ function Map(props) {
             </div>
             <div style={{ display: "flex", flexDirection: "column" }}>
               <Text type="warning">Date de Naissance : </Text>
-              {marker.patient[0].birthdate}
+
+              {moment(marker.patient[0].birthdate).locale("fr").format("L")}
             </div>
             <div style={{ display: "flex", flexDirection: "column" }}>
               <Text type="warning">Type de transport : </Text>
@@ -165,7 +168,9 @@ function Map(props) {
             </div>
             <div style={{ display: "flex", flexDirection: "column" }}>
               <Text type="warning">Temps de trajet : </Text>
-              <Text>{totalTimeDeparture / 60} minutes</Text>
+              <Text>
+                {parseFloat(totalTimeDeparture / 60).toFixed(0)} minutes
+              </Text>
             </div>
             <div style={{ display: "flex", flexDirection: "column" }}>
               <Text type="warning">Distance : </Text>
@@ -208,7 +213,7 @@ function Map(props) {
           marker.addressArrival[0].latitude,
           marker.addressArrival[0].longitude,
         ]}
-        icon={location}
+        icon={gps}
       >
         <Popup>
           <Card
@@ -228,7 +233,7 @@ function Map(props) {
             </div>
             <div style={{ display: "flex", flexDirection: "column" }}>
               <Text type="warning">Temps de trajet: </Text>
-              {totalTimeArrival / 60} minutes
+              {parseFloat(totalTimeArrival / 60).toFixed(0)} minutes
             </div>
             <div style={{ display: "flex", flexDirection: "column" }}>
               <Text type="warning">Distance: </Text>
@@ -283,6 +288,16 @@ function Map(props) {
 
 const location = new Icon({
   iconUrl: "../Images/Logo.svg",
+  iconSize: [50, 50],
+});
+
+const office = new Icon({
+  iconUrl: "../Images/location.svg",
+  iconSize: [50, 50],
+});
+
+const gps = new Icon({
+  iconUrl: "../Images/gps.svg",
   iconSize: [50, 50],
 });
 
