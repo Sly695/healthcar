@@ -28,7 +28,6 @@ import FooterDash from "../component/Footer";
 
 import socketIOClient from "socket.io-client";
 
-
 var socket = socketIOClient("https://healthcar31.herokuapp.com/");
 
 const { Content } = Layout;
@@ -150,19 +149,19 @@ export default function ScreenList(props) {
                 <Space size="middle">
                   {record.status === "annulé" ? (
                     <CloseCircleOutlined
-                      style={{ color: "#EE7D52", borderBlockColor: 'none' }}
+                      style={{ color: "#EE7D52", borderBlockColor: "none" }}
                     />
                   ) : record.status === "dispo" ? (
                     <HistoryOutlined
-                      style={{ color: "#6793FF", borderBlockColor: 'none' }}
+                      style={{ color: "#6793FF", borderBlockColor: "none" }}
                     />
                   ) : record.status === "cloturé" ? (
                     <CheckCircleOutlined
-                      style={{ color: "#5CC689", borderBlockColor: 'none' }}
+                      style={{ color: "#5CC689", borderBlockColor: "none" }}
                     />
                   ) : (
                     <SyncOutlined
-                      style={{ color: "#FFAE80", borderBlockColor: 'none'}}
+                      style={{ color: "#FFAE80", borderBlockColor: "none" }}
                     />
                   )}
                 </Space>
@@ -200,28 +199,12 @@ export default function ScreenList(props) {
             />
 
             <Column title="Arrivée" dataIndex="arrivalLocation" key="arrival" />
-            <Column
-              title="Date et heure"
-              dataIndex=""
-              key="dateArrival"
-              render={(text, record) => (
-                <Space size="middle">
-                  {moment(record.dateArrival).locale("fr").format("LLL")}
-                </Space>
-              )}
-            />
+
             <Column
               title="Date et heure"
               key="status"
               render={(text, record) => (
                 <Space size="middle">
-                  {record.status === "annulé"
-                    ? "Annulé"
-                    : record.status === "dispo"
-                    ? "Disponible"
-                    : record.status === "cloturé"
-                    ? "Transport effectué"
-                    : "Transport accepté (en cours)"}
                   {moment(record.dateArrival).locale("fr").format("L")}
                   {moment(record.timeArrival).locale("fr").format("LT")}
                 </Space>
@@ -235,41 +218,52 @@ export default function ScreenList(props) {
                 <Space size="middle">
                   {record.status === "annulé" ? (
                     <Button
-                    type="primary"
-                    onClick={() => {
-                      setDataModal(record);
-                      setVisible(true);
-                    }}
+                      type="primary"
+                      onClick={() => {
+                        setDataModal(record);
+                        setVisible(true);
+                      }}
                       style={{ backgroundColor: "#EE7D52" }}
-                    >Détails </Button>
+                    >
+                      Détails{" "}
+                    </Button>
                   ) : record.status === "dispo" ? (
                     <Button
-                    type="primary"
-                    onClick={() => {
-                      setDataModal(record);
-                      setVisible(true);
-                    }}
-                      style={{ backgroundColor: "#6793FF"}}
-                    >Détails </Button>
+                      type="primary"
+                      onClick={() => {
+                        setDataModal(record);
+                        setVisible(true);
+                      }}
+                      style={{ backgroundColor: "#6793FF" }}
+                    >
+                      Détails{" "}
+                    </Button>
                   ) : record.status === "cloturé" ? (
                     <Button
-                    type="primary"
-                    onClick={() => {
-                      setDataModal(record);
-                      setVisible(true);
-                    }}
-                      style={{ backgroundColor: "#5CC689", borderColor: "#5CC689"}}
-                    >Détails </Button>
+                      type="primary"
+                      onClick={() => {
+                        setDataModal(record);
+                        setVisible(true);
+                      }}
+                      style={{
+                        backgroundColor: "#5CC689",
+                        borderColor: "#5CC689",
+                      }}
+                    >
+                      Détails{" "}
+                    </Button>
                   ) : (
                     <Button
-                    value="large"
-                    type="primary"
-                    onClick={() => {
-                      setDataModal(record);
-                      setVisible(true);
-                    }}
-                      style={{ backgroundColor: "#FFAE80"}}
-                    >Détails </Button>
+                      value="large"
+                      type="primary"
+                      onClick={() => {
+                        setDataModal(record);
+                        setVisible(true);
+                      }}
+                      style={{ backgroundColor: "#FFAE80" }}
+                    >
+                      Détails{" "}
+                    </Button>
                   )}
                 </Space>
               )}
@@ -388,4 +382,3 @@ export default function ScreenList(props) {
     </Layout>
   );
 }
-

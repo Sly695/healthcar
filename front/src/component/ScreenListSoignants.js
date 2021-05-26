@@ -17,7 +17,7 @@ import {
   Rate,
   Affix,
   notification,
-  Typography
+  Typography,
 } from "antd";
 import Nav from "../component/Nav";
 import Profil from "../component/ScreenProfil";
@@ -26,7 +26,6 @@ import FooterDash from "../component/Footer";
 import { useSelector } from "react-redux";
 import socketIOClient from "socket.io-client";
 import { SmileOutlined } from "@ant-design/icons";
-
 
 var socket = socketIOClient("https://healthcar31.herokuapp.com/");
 
@@ -101,8 +100,8 @@ export default function ScreenListSoignants(props) {
 
       <Layout>
         <Header />
-        <Content className="site-layout-background" >
-        <Title level={2}>Vos réservations</Title>
+        <Content className="site-layout-background">
+          <Title level={2}>Vos réservations</Title>
           <Table dataSource={list}>
             <Column
               title="Status"
@@ -161,28 +160,12 @@ export default function ScreenListSoignants(props) {
             />
 
             <Column title="Arrivée" dataIndex="arrivalLocation" key="arrival" />
-            <Column
-              title="Date et heure"
-              dataIndex=""
-              key="dateArrival"
-              render={(text, record) => (
-                <Space size="middle">
-                  {moment(record.dateArrival).locale("fr").format("LLL")}
-                </Space>
-              )}
-            />
+
             <Column
               title="Date et heure"
               key="status"
               render={(text, record) => (
                 <Space size="middle">
-                  {record.status === "annulé"
-                    ? "Annulé"
-                    : record.status === "dispo"
-                    ? "Disponible"
-                    : record.status === "cloturé"
-                    ? "Transport effectué"
-                    : "Transport accepté (en cours)"}
                   {moment(record.dateArrival).locale("fr").format("L")}
                   {moment(record.timeArrival).locale("fr").format("LT")}
                 </Space>
