@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { Card, PageHeader, List } from "antd";
-import "antd/dist/antd.css";
 import {
   FieldTimeOutlined,
   ReloadOutlined,
@@ -11,7 +10,12 @@ import {
 } from "@ant-design/icons";
 
 export default function Header() {
+<<<<<<< HEAD
   const [waitingTransport, setWaitingTransport] = useState();
+=======
+  const [list, setList] = useState([]);
+  const [waitingTransport, setWaitingTransport] = useState(0);
+>>>>>>> 5002894ad0c5511eb5df4bcd43a3d418e394324f
   const [processTransport, setProcessTransport] = useState(0);
   const [endTransport, setEndTransport] = useState(0);
   const [cancelTransport, setCancelTransport] = useState(0);
@@ -24,6 +28,10 @@ export default function Header() {
     async function findList() {
       const data = await fetch(`/course-list`);
       const body = await data.json();
+<<<<<<< HEAD
+=======
+      // setList(body);
+>>>>>>> 5002894ad0c5511eb5df4bcd43a3d418e394324f
       const filtreDispo = body.courseList.filter((id) => id.status == "dispo");
       setWaitingTransport(filtreDispo.length);
       const filtreEncours = body.courseList.filter((id) => id.status == "encours");

@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "../style/App.less";
+import {
+  CheckCircleOutlined,
+  HistoryOutlined,
+  CloseCircleOutlined,
+  SyncOutlined,
+} from "@ant-design/icons";
 import moment from "moment";
 import "moment/locale/fr";
 import "../App.less";
@@ -16,6 +22,7 @@ import socketIOClient from "socket.io-client";
 var socket = socketIOClient("http://192.168.254.15:3000");
 
 const { Content } = Layout;
+const { Title } = Typography;
 
 export default function ScreenList(props) {
   const [list, setList] = useState([]);
@@ -129,15 +136,35 @@ export default function ScreenList(props) {
 
       <Layout>
         <Header />
-        <Content
-          className="site-layout-background"
-          style={{
-            margin: "24px 16px",
-            padding: 24,
-            minHeight: 280,
-          }}
-        >
+        <Content className="site-layout-background">
+          <Title level={2}>Liste des transports</Title>
+
           <Table dataSource={list}>
+            <Column
+              title="Status"
+              key="status"
+              render={(text, record) => (
+                <Space size="middle">
+                  {record.status === "annulé" ? (
+                    <CloseCircleOutlined
+                      style={{ color: "red", fontSize: "22px" }}
+                    />
+                  ) : record.status === "dispo" ? (
+                    <HistoryOutlined
+                      style={{ color: "blue", fontSize: "22px" }}
+                    />
+                  ) : record.status === "cloturé" ? (
+                    <CheckCircleOutlined
+                      style={{ color: "green", fontSize: "22px" }}
+                    />
+                  ) : (
+                    <SyncOutlined
+                      style={{ color: "orange", fontSize: "22px" }}
+                    />
+                  )}
+                </Space>
+              )}
+            />
             <Column
               title="Nom"
               key="lastname"
@@ -192,6 +219,8 @@ export default function ScreenList(props) {
                       : record.status === "cloturé"
                         ? "Transport effectué"
                         : "Transport accepté (en cours)"}
+                  {moment(record.dateArrival).locale("fr").format("L")}
+                  {moment(record.timeArrival).locale("fr").format("LT")}
                 </Space>
               )}
             />
@@ -231,7 +260,15 @@ export default function ScreenList(props) {
               Départ de {dataModal.departureLocation} à déstination de{" "}
               {dataModal.arrivalLocation}
             </p>
-            <p>Heure du RDV prévue : {dataModal.timeArrival}</p>
+            <p>
+              Date du RDV :{" "}
+              {moment(dataModal.dateArrival).locale("fr").format("L")}
+            </p>
+            <p>
+              Heure du RDV prévue :{" "}
+              {moment(dataModal.timeArrival).locale("fr").format("LT")}
+            </p>
+
             <p>
               Note de course : {dataModal.message ? dataModal.message : "Vide"}
             </p>

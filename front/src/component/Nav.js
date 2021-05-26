@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+
+import "../App.less";
 import imgLogo from "../img/Logo.svg";
 
-import { Card, Layout, Image, Menu, Divider, Typography, Rate } from "antd";
+import { Card, Layout, Image, Menu, Divider, Typography, Rate, Space } from "antd";
 import "antd/dist/antd.css"; // or 'antd/dist/antd.less'
 import {
   UserOutlined,
@@ -24,7 +26,7 @@ export default function Nav(props) {
 
   useEffect(() => {
     moyenne();
-  }, []);
+  }, [rate]);
 
   function moyenne() {
     var n = userData.note.length;
@@ -52,6 +54,7 @@ export default function Nav(props) {
 
   return (
     <Sider
+      trigger={null}
       theme="light"
       breakpoint="lg"
       collapsedWidth="0"
@@ -61,17 +64,16 @@ export default function Nav(props) {
       onCollapse={(collapsed, type) => {
         console.log(collapsed, type);
       }}
-      style={{
-        width: "100%",
-        height: "100vh",
-        justifyContent: "space-between",
-      }}
+      align="middle" 
     >
-      <Image className="logo" src={imgLogo} preview="false" />
+      <Space direction="vertical" size={20}>
+        <Image preview={false}  src={imgLogo} width={150}/>
 
-      <Title level={5}>
-        {users.firstname} {users.lastname}
-      </Title>
+        <Title level={5} type="warning">
+          {users.firstname} {users.lastname}
+        </Title>
+      </Space>
+      
 
       <Divider />
 
@@ -106,23 +108,18 @@ export default function Nav(props) {
           <Link to="/dashboard/list">Transports</Link>
         </Menu.Item>
 
-        <Menu.Item
-          hidden={userData.role == "ambulance" ? false : true}
-          key="5"
-          icon={<UserOutlined />}
-        >
+        <Menu.Item key="5" icon={<UserOutlined />}>
           <Link to="/dashboard/account-edit-client">Profil</Link>
         </Menu.Item>
       </Menu>
 
-      <Divider hidden={userData.role == "ambulance" ? false : true}>
+      <Divider />
         <Rate
           hidden={userData.role == "ambulance" ? false : true}
           allowHalf
           disabled
           value={rate}
         />
-      </Divider>
 
       <Divider />
       <Menu>
@@ -133,3 +130,13 @@ export default function Nav(props) {
     </Sider>
   );
 }
+
+
+const styleSheet = {
+styleLogo: {
+  fontSize: "150px",
+  
+},
+
+}
+

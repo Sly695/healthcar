@@ -1,4 +1,10 @@
 import React, { useState, useEffect } from "react";
+import {
+  CheckCircleOutlined,
+  HistoryOutlined,
+  CloseCircleOutlined,
+  SyncOutlined,
+} from "@ant-design/icons";
 import "../App.less";
 import moment from "moment";
 import "moment/locale/fr";
@@ -99,6 +105,31 @@ export default function ScreenListSoignants(props) {
         >
           <Table dataSource={list}>
             <Column
+              title="Status"
+              key="status"
+              render={(text, record) => (
+                <Space size="middle">
+                  {record.status === "annulé" ? (
+                    <CloseCircleOutlined
+                      style={{ color: "red", fontSize: "22px" }}
+                    />
+                  ) : record.status === "dispo" ? (
+                    <HistoryOutlined
+                      style={{ color: "blue", fontSize: "22px" }}
+                    />
+                  ) : record.status === "cloturé" ? (
+                    <CheckCircleOutlined
+                      style={{ color: "green", fontSize: "22px" }}
+                    />
+                  ) : (
+                    <SyncOutlined
+                      style={{ color: "orange", fontSize: "22px" }}
+                    />
+                  )}
+                </Space>
+              )}
+            />
+            <Column
               title="Nom"
               key="lastname"
               render={(text, record) => (
@@ -152,6 +183,8 @@ export default function ScreenListSoignants(props) {
                       : record.status === "cloturé"
                         ? "Transport effectué"
                         : "Transport accepté (en cours)"}
+                  {moment(record.dateArrival).locale("fr").format("L")}
+                  {moment(record.timeArrival).locale("fr").format("LT")}
                 </Space>
               )}
             />

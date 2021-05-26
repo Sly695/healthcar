@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
-import { Field, reduxForm } from 'redux-form'
+
 import "../App.less";
 import {
   Affix,
@@ -29,8 +29,6 @@ var socket = socketIOClient("http://192.168.254.15:3000");
 
 const { Content } = Layout;
 const { Title } = Typography;
-const FormItem = Form.Item;
-const RadioGroup = Radio.Group;
 
 const formItemLayout = {
   labelCol: {
@@ -56,23 +54,24 @@ const tailFormItemLayout = {
   }
 };
 
-const makeField = Component => ({ input, meta, children, hasFeedback, label, ...rest }) => {
-  const hasError = meta.touched && meta.invalid;
-  return (
-    <FormItem
-      {...formItemLayout}
-      label={label}
-      validateStatus={hasError ? "error" : "success"}
-      hasFeedback={hasFeedback && hasError}
-      help={hasError && meta.error}
-    >
-      <Component {...input} {...rest} children={children} />
-    </FormItem>
-  );
-};
-const AInput = makeField(Input);
-const ARadioGroup = makeField(RadioGroup);
-const AAvatar = makeField(Avatar)
+// const makeField = Component => ({ input, meta, children, hasFeedback, label, i, ...rest }) => {
+//   const hasError = meta.touched && meta.invalid;
+//   return (
+//     <FormItem
+//       key={i}
+//       {...formItemLayout}
+//       label={label}
+//       validateStatus={hasError ? "error" : "success"}
+//       hasFeedback={hasFeedback && hasError}
+//       help={hasError && meta.error}
+//     >
+//       <Component {...input} {...rest} children={children} />
+//     </FormItem>
+//   );
+// };
+// const AInput = makeField(Input);
+// const ARadioGroup = makeField(RadioGroup);
+// const AAvatar = makeField(Avatar)
 
 
 
@@ -138,18 +137,24 @@ function UploadAvatar() {
   );
 }
 
-const Profil = (props) => {
+export default function Profil(props) {
+  const userData = useSelector((state) => state.userData);
+  const dispatch = useDispatch();
 
   const userData = useSelector((state) => state.userData);
   const dispatch = useDispatch();
 
   console.log(userData);
+  const { handleSubmit, pristine, submitting } = props;
 
   const { handleSubmit, pristine, submitting } = props
 
   const [componentSize, setComponentSize] = useState('default');
   const [value, setValue] = React.useState(1);
   // UpdateProfil Ambulance
+  const [componentSize, setComponentSize] = useState('default');
+  const [value, setValue] = React.useState(1);
+  // UpdateProfil 
   const [nomEntreprise, setEntreprise] = useState("");
   const [siret, setSiret] = useState("");
   const [occupation, setOccupation] = useState("");
@@ -535,16 +540,7 @@ const Profil = (props) => {
   // }
 }
 
-export default reduxForm({
-  form: 'EditProfil'  // a unique identifier for this form
-})(Profil)
 
-// InitializeFromStateForm = connect(
-//   state => ({
-//     initialValues: state.account.data // pull initial values from account reducer
-//   }),
-//   { load: loadAccount }               // bind account loading action creator
-// )(InitializeFromStateForm)
 
 const styleInput = {
   fontSize: "15px",

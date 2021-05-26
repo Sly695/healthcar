@@ -1,4 +1,4 @@
-import "../App.less";
+import "../App.js";
 import React, { useState } from "react";
 import {
   Row,
@@ -11,25 +11,37 @@ import {
   Tabs,
   Alert,
   message,
+  Typography,
 } from "antd";
-import "antd/dist/antd.css"; // or 'antd/dist/antd.less'
-
 import { useDispatch } from "react-redux";
 
 const { TabPane } = Tabs;
+const {Title} = Typography;
 
-const layout = {
+const formItemLayout = {
   labelCol: {
-    span: 6,
+    xs: { span: 24 },
+    sm: { span: 8,
+          offset: 4 
+        },
   },
   wrapperCol: {
-    span: 15,
+    xs: { span: 24 },
+    sm: { span: 16,
+          offset: 4 
+        },
   },
 };
-const tailLayout = {
+const tailFormItemLayout = {
   wrapperCol: {
-    offset: 1,
-    span: 16,
+    xs: {
+      span: 24,
+      offset: 0,
+    },
+    sm: {
+      span: 16,
+      offset: 4,
+    },
   },
 };
 
@@ -141,20 +153,25 @@ function SignIn(props) {
   };
 
   return (
-    <Row className="screenSignIn">
+
+    <Row 
+    className="screenSignIn"
+    >
       <Col md={16} xs={24} className="bgsignin"></Col>
-      <Col md={8} xs={24} className="blocform">
-        <div className="contentForm">
+      <Col md={8} xs={24} className="blocform" >
+        <div className="contentForm"
+        type="flex" justify="center" align="middle" style={{minHeight: '100vh'}}
+        >
           <div className="top">
             <img src="../images/Logo.svg" style={{ width: "15rem" }} />
-            <h1 style={{ color: "#6793FF" }}>Bienvenue sur HealthCar</h1>
-            <h2 style={{ color: "#B170FF" }}>
+            <Title level={1}>Bienvenue sur HealthCar</Title>
+            <h2>
               Réservez votre ambulance ou trouvez des patients à transporter.
             </h2>
           </div>
-          <center>
             <Form
-              {...layout}
+            layout="vertical"
+              {...formItemLayout}
               name="basic"
               initialValues={{
                 remember: true,
@@ -195,22 +212,37 @@ function SignIn(props) {
               </Form.Item>
 
               <Form.Item
-                {...tailLayout}
+                {...tailFormItemLayout}
                 name="remember"
                 valuePropName="checked"
               >
                 <span>
                   <u>Mot de passe oublié</u>
                 </span>
-                <Checkbox style={{ marginLeft: "30px" }}>Remember me</Checkbox>{" "}
+                <Checkbox style={{ marginLeft: "30px" }}>Se souvenir de moi</Checkbox>{" "}
               </Form.Item>
 
-              <Form.Item {...tailLayout}>
+              <Form.Item {...tailFormItemLayout}>
+
                 <Button
-                  type="primary"
+                  onClick={() => signIn()}
+                  type="primary" block
+                  htmlType="submit"
+                  style={{
+                    fontSize: "15px",
+                    height: "40px",
+                    borderRadius: "15px",
+                  }}
+                >
+                  Connexion
+                </Button>
+              </Form.Item>
+              <Form.Item {...tailFormItemLayout}>
+                <Button
+                  type="primary" block
                   onClick={() => setVisible(true)}
                   style={{
-                    borderRadius: "10px",
+                    borderRadius: "15px",
                     background: "#FFAE80",
                     borderColor: "#FFAE80",
                     fontSize: "15px",
@@ -219,24 +251,11 @@ function SignIn(props) {
                 >
                   Créer un compte
                 </Button>
-                <Button
-                  onClick={() => signIn()}
-                  type="primary"
-                  htmlType="submit"
-                  style={{
-                    fontSize: "15px",
-                    height: "40px",
-                    borderRadius: "10px",
-                    marginLeft: "20px",
-                  }}
-                >
-                  Connexion
-                </Button>
+
               </Form.Item>
             </Form>
-          </center>
           <div className="buttonSignUp"></div>
-          <div className="terms">Terms and conditions</div>
+          <div className="terms">Mentions légales</div>
         </div>
       </Col>
       <Modal
@@ -397,7 +416,6 @@ function SignIn(props) {
 export default SignIn;
 
 const styleInput = {
-  fontSize: "15px",
   color: "#B170FF",
-  borderRadius: "2rem",
+  borderRadius: "15px",
 };
