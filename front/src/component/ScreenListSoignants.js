@@ -8,16 +8,25 @@ import {
 import "../App.less";
 import moment from "moment";
 import "moment/locale/fr";
-import { Layout, Modal, Table, Space, Button, Rate, Affix, notification } from "antd";
+import {
+  Layout,
+  Modal,
+  Table,
+  Space,
+  Button,
+  Rate,
+  Affix,
+  notification,
+} from "antd";
 import Nav from "../component/Nav";
 import Profil from "../component/ScreenProfil";
 import Header from "../component/Header";
 import FooterDash from "../component/Footer";
 import { useSelector } from "react-redux";
 import socketIOClient from "socket.io-client";
-import { SmileOutlined } from '@ant-design/icons';
+import { SmileOutlined } from "@ant-design/icons";
 
-var socket = socketIOClient("http://192.168.254.15:3000");
+var socket = socketIOClient("http://192.168.1.53:3000");
 
 const { Content } = Layout;
 
@@ -26,7 +35,7 @@ export default function ScreenListSoignants(props) {
   const [visible, setVisible] = useState(false);
   const [dataModal, setDataModal] = useState({ idpro: "Fake" });
   const [note, setNote] = useState(Number);
-  const [notificationMessage, setNotificationMessage] = useState()
+  const [notificationMessage, setNotificationMessage] = useState();
 
   const { Column, ColumnGroup } = Table;
   const iduser = useSelector((state) => state.iduser);
@@ -39,7 +48,6 @@ export default function ScreenListSoignants(props) {
       const filtre = body.courseList.filter((id) => id.idUser == iduser);
 
       setList(filtre);
-      
     };
 
     findList();
@@ -47,33 +55,28 @@ export default function ScreenListSoignants(props) {
 
   useEffect(() => {
     async function receivedNotification() {
-      await socket.on('sendValidationBack', (message) => {
-        setNotificationMessage(message)
+      await socket.on("sendValidationBack", (message) => {
+        setNotificationMessage(message);
       });
     }
     receivedNotification();
 
     //Pour que la notification ne se répête pas quand on navigue sur les différents screens
-    if(notificationMessage){
+    if (notificationMessage) {
       openNotification();
     }
-
   }, [notificationMessage]);
-
-  
 
   const openNotification = () => {
     const args = {
       message: "Notification",
       description: notificationMessage,
       duration: 0,
-      icon: <SmileOutlined style={{ color: 'green' }} />,
+      icon: <SmileOutlined style={{ color: "green" }} />,
     };
-    
+
     notification.open(args);
   };
-
-  
 
   const notation = async (idpro, idtransport) => {
     var rawResponse = await fetch(
@@ -179,10 +182,10 @@ export default function ScreenListSoignants(props) {
                   {record.status === "annulé"
                     ? "Annulé"
                     : record.status === "dispo"
-                      ? "Disponible"
-                      : record.status === "cloturé"
-                        ? "Transport effectué"
-                        : "Transport accepté (en cours)"}
+                    ? "Disponible"
+                    : record.status === "cloturé"
+                    ? "Transport effectué"
+                    : "Transport accepté (en cours)"}
                   {moment(record.dateArrival).locale("fr").format("L")}
                   {moment(record.timeArrival).locale("fr").format("LT")}
                 </Space>
