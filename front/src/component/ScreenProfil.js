@@ -1,4 +1,6 @@
-import React, {useState} from 'react';
+import React, {useState } from 'react';
+import { useSelector, useDispatch } from "react-redux";
+
 import "../App.less";
 import {
   Affix,
@@ -14,7 +16,7 @@ import {
   Upload,
   message,
 } from 'antd';
-import { LoadingOutlined, PlusOutlined, UploadOutlined } from '@ant-design/icons';
+import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 
 import Nav from '../component/Nav'
 import Header from "../component/Header";
@@ -22,7 +24,49 @@ import FooterDash from '../component/Footer';
 
 const { Content } = Layout;
 const { Title } = Typography;
-const { TextArea } = Input;
+
+const formItemLayout = {
+  labelCol: {
+    xs: { span: 24 },
+    sm: { span: 6 }
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 14 }
+  }
+};
+
+const tailFormItemLayout = {
+  wrapperCol: {
+    xs: {
+      span: 24,
+      offset: 0
+    },
+    sm: {
+      span: 14,
+      offset: 6
+    }
+  }
+};
+
+// const makeField = Component => ({ input, meta, children, hasFeedback, label, i, ...rest }) => {
+//   const hasError = meta.touched && meta.invalid;
+//   return (
+//     <FormItem
+//       key={i}
+//       {...formItemLayout}
+//       label={label}
+//       validateStatus={hasError ? "error" : "success"}
+//       hasFeedback={hasFeedback && hasError}
+//       help={hasError && meta.error}
+//     >
+//       <Component {...input} {...rest} children={children} />
+//     </FormItem>
+//   );
+// };
+// const AInput = makeField(Input);
+// const ARadioGroup = makeField(RadioGroup);
+// const AAvatar = makeField(Avatar)
 
 function getBase64(img, callback) {
   const reader = new FileReader();
@@ -82,142 +126,225 @@ function UploadAvatar() {
         {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
       </Upload>
     );
+}
+  
+export default function Profil (props) {
+const userData = useSelector((state) => state.userData);
+const dispatch = useDispatch();
+
+console.log(userData);
+
+const { handleSubmit, pristine, submitting } = props;
+
+
+const [componentSize, setComponentSize] = useState('default');
+const [value, setValue] = React.useState(1);
+// UpdateProfil 
+  const [nomEntreprise, setEntreprise] = useState("");
+  const [siret, setSiret] = useState("");
+  const [occupation, setOccupation] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [firstname, setFirstname] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [adresse, setAdresse] = useState("");
+  const [postalCode, setCodePostal] = useState("");
+  const [city, setCity] = useState("");
+  const [avatar, setAvatar] = useState("");
+
+
+  async function UpdateSoigant() {
+      var request = await fetch("users/update-profil-ambulance", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `lastname=${lastname}&firstname=${firstname}&email=${email}&phone=${phone}&password=${password}&adresse=${adresse}&postalCode=${postalCode}&city=${city}&avatar=${avatar}`,
+      });
+      let response = await request.json();
+      console.log(response);
+      if (response.result == true) {
+        successUpdate();
+      } else {
+        errorUpdate();
+      }
   }
 
-
-  export default function Profil(props) {
-
-    const [componentSize, setComponentSize] = useState('default');
-    const [value, setValue] = React.useState(1);
-
-    // const []
-
-    const onChange = e => {
-      console.log('radio checked', e.target.value);
-      setValue(e.target.value);
-    };
-
-  const onFormLayoutChange = ({ size }) => {
-    setComponentSize(size);
+  const successUpdate = () => {
+      message.success({
+        content: "Votre profil a été mis à jour avec succès",
+        className: "custom-class",
+        style: {
+          marginTop: "20vh",
+        },
+      });
+  };
+    
+  const errorUpdate = () => {
+    message.error({
+      content: "Oups petite erreur, votre profil n'a pas pu être mis à jour.",
+      className: "custom-class",
+      style: {
+        marginTop: "20vh",
+      },
+    });
   };
 
-    return(
-      <Layout>
-      <Affix>
-        <Nav />
-      </Affix>
+  const onChange = e => {
+      console.log('radio checked', e.target.value);
+      setValue(e.target.value);
+  };
 
+  return(
+    <Layout>
+      <Affix>
+       <Nav />
+      </Affix>
       <Layout>
         <Header />
       <Content
-        className="site-layout-background"
-        style={{
-          margin: '24px 16px',
-          padding: 24,
-          minHeight: 280,
-      }}
-      >
+      className="site-layout-background">
+
       <Title level={1}>Gestion du profil de votre entreprise</Title>
 
-       <Form
-          labelCol={{
-            span: 12,
-          }}
-          wrapperCol={{
-            span: 22,
-          }}
-          layout="vertical"
-          initialValues={{
-            size: componentSize,
-          }}
-          onValuesChange={onFormLayoutChange}
-          size={componentSize}
-        >
-          <Row gutter={[8, 8]}>
-                <Col span={8}>
-                    <Form.Item 
-                    label="Nom de l’entreprise"
-                    name="entreprise">
-                        <Input style={styleInput}/>
-                    </Form.Item>
-                    <Form.Item 
-                    label="SIRET"
-                    name="siret">
-                        <Input style={styleInput}/>
-                    </Form.Item>
-                    <Form.Item 
-                    label="Email"
-                    name="email">
-                        <Input style={styleInput}/>
-                    </Form.Item>
-                    <Form.Item 
-                    label="Téléphone"
-                    name="phone">
-                        <Input style={styleInput}/>
-                    </Form.Item>
-                </Col>
-                <Col span={8} >
-                    <Form.Item name={['user', 'introduction']} label="Adresse siège social" >
-                       <Input.TextArea showCount maxLength={100} onChange={onChange} rows={5} style={styleInput}/>
-                    </Form.Item>
-                    <Form.Item label="Code Postal">
-                        <Input style={styleInput}/>
-                    </Form.Item >
-                    <Form.Item label="Ville">
-                        <Input style={styleInput}/>
-                    </Form.Item>
+      <Form
+        labelCol={{
+          span: 12,
+        }}
+        wrapperCol={{
+          span: 22,
+        }}
+        layout="vertical">
 
-                </Col>
-                <Col span={8} >
-                    <Radio.Group onChange={onChange} value={value}>
-                        <Radio value={1}>Femme</Radio>
-                        <Radio value={2}>Homme</Radio>
-                    </Radio.Group>
-                    <Form.Item>
-                    {UploadAvatar()}
-                    </Form.Item>
-                    <Form.Item 
-                    label="Nom contact" 
-                    name="username">
-                        <Input style={styleInput}/>
-                    </Form.Item>
-                    <Form.Item 
-                    label="Poste" 
-                    name="occupation">
-                        <Input style={styleInput}/>
-                    </Form.Item>
-                    <Form.Item 
-                    label="Changer mot de passe"
-                    name="password">
-                      <Input.Password placeholder="input password" style={styleInput} />
-                    </Form.Item>
+        <Row gutter={[8, 8]}>
+          <Col md={8} xs={24}>
+            <Form.Item label="Société">
+                <Input
+                value={userData.nomEntreprise} 
+                name="nomEntreprise"
+                style={styleInput}
+                onChange={(e) => setEntreprise(e.target.value)}
+                />
+            </Form.Item>
 
-                    <Button
-                        block
-                        style={{
-                          fontSize: "17px",
-                          height: "40px",
-                          borderRadius: "10px",
-                        }}
-                        type="primary"
-                      >
-                        Valider
-                    </Button>
-                </Col>
+            <Form.Item 
+            label="Siret"
+            hidden={userData.role == "ambulance" ? false : true}
+            >
+              <Input
+              value={userData.siret} 
+              name="siret"
+              style={styleInput}
+              onChange={(e) => setSiret(e.target.value)}/>
+            </Form.Item>
+
+            <Form.Item label="Email">
+              <Input
+              value={userData.email} 
+              name="email"
+              style={styleInput}
+              onChange={(e) => setEmail(e.target.value)}/>
+            </Form.Item>
+            
+            <Form.Item label="Téléphone" >
+                <Input
+                value={userData.phone} 
+                name="phone"
+                style={styleInput}
+                onChange={(e) => setPhone(e.target.value)}/>
+            </Form.Item>
+
+            <Form.Item label="Poste">
+              <Input 
+              name="occupation"
+              style={styleInput}
+              onChange={(e) => setOccupation(e.target.value)}/>
+            </Form.Item>
+
+          </Col>
+          <Col md={8} xs={24} >
+
+            <Form.Item label="Adresse" >
+              <Input 
+                value={userData.adresse} 
+                name='adresse'
+                onChange={(e) => setAdresse(e.target.value)}
+                style={styleInput}/>
+            </Form.Item>
+
+            <Form.Item label="Code Postal">
+              <Input 
+                value={userData.adresse.adresse} 
+                style={styleInput}
+                onChange={(e) => setCodePostal(e.target.value)}/>
+            </Form.Item >
+
+            <Form.Item label="Ville">
+              <Input
+                value={userData.adresse.city}
+                style={styleInput}
+                onChange={(e) => setCity(e.target.value)}/>
+            </Form.Item>
+
+            <Form.Item label="Nom">
+              <Input
+                value={userData.adresse.lastname}
+                name="lastname"
+                style={styleInput}
+                onChange={(e) => setLastname(e.target.value)}/>
+            </Form.Item>
+            
+            <Form.Item label="Prénom" >
+              <Input
+              value={userData.adresse.firstname}
+              name="firstname"
+              style={styleInput}
+              onChange={(e) => setFirstname(e.target.value)}/>
+            </Form.Item>
+
+          </Col>
+          <Col md={8} xs={24} >
+            
+            <Form.Item label="Changer mot de passe">
+              <Input.Password 
+                name="password"
+                placeholder="input password" 
+                style={styleInput} 
+                onChange={(e) => setPassword(e.target.value)}/>
+            </Form.Item>
+
+            <Form.Item label="Changer mot de passe">
+              <Input.Password 
+                name="password"
+                placeholder="input password" 
+                style={styleInput} 
+                onChange={(e) => setPassword(e.target.value)}/>
+            </Form.Item>
+
+              <Button 
+              type="primary" 
+              disabled={pristine || submitting} 
+              htmlType="submit" 
+              style={{
+                  fontSize: "17px",
+                  height: "40px",
+                  borderRadius: "10px",
+                }}
+              type="primary">Valider</Button>
+            </Col>
           </Row>
         </Form>
-      
-    </Content>
-    <FooterDash />
+        
+      </Content>
+      <FooterDash />
+        </Layout>
       </Layout>
-    </Layout>
-    )
+      )
+}
 
-  }
+
 
   const styleInput = {
     fontSize: "15px",
     color: "#B170FF",
-    borderRadius: "2rem",
+    borderRadius: "15px",
   };
-

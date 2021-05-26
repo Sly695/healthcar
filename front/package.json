@@ -11,7 +11,9 @@
     "@testing-library/user-event": "^12.8.3",
     "antd": "^4.15.6",
     "craco-antd": "^1.19.0",
+    "craco-less": "^1.17.0",
     "filename-regex": "^2.0.1",
+    "geoportal-access-lib": "^2.1.8",
     "inquirer": "^8.0.0",
     "leaflet": "^1.7.1",
     "moment": "^2.29.1",
@@ -20,9 +22,12 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-leaflet": "^3.2.0",
+    "react-redux": "^7.2.4",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.3",
+    "redux": "^4.1.0",
     "regex-cache": "^0.4.4",
+    "socket.io-client": "^4.1.2",
     "web-vitals": "^1.1.2"
   },
   "scripts": {

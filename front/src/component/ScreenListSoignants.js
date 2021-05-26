@@ -1,42 +1,96 @@
 import React, { useState, useEffect } from "react";
+import {
+  CheckCircleOutlined,
+  HistoryOutlined,
+  CloseCircleOutlined,
+  SyncOutlined,
+} from "@ant-design/icons";
 import "../App.less";
-import { Layout, Modal, Table, Space, Button, Rate, Affix } from "antd";
+import moment from "moment";
+import "moment/locale/fr";
+import {
+  Layout,
+  Modal,
+  Table,
+  Space,
+  Button,
+  Rate,
+  Affix,
+  notification,
+  Typography
+} from "antd";
 import Nav from "../component/Nav";
 import Profil from "../component/ScreenProfil";
 import Header from "../component/Header";
 import FooterDash from "../component/Footer";
+import { useSelector } from "react-redux";
+import socketIOClient from "socket.io-client";
+import { SmileOutlined } from "@ant-design/icons";
+
+
+var socket = socketIOClient("https://healthcar31.herokuapp.com/");
+
 const { Content } = Layout;
+const { Title } = Typography;
 
 export default function ScreenListSoignants(props) {
   const [list, setList] = useState([]);
   const [visible, setVisible] = useState(false);
   const [dataModal, setDataModal] = useState({ idpro: "Fake" });
   const [note, setNote] = useState(Number);
+  const [notificationMessage, setNotificationMessage] = useState();
 
   const { Column, ColumnGroup } = Table;
+  const iduser = useSelector((state) => state.iduser);
+  const userData = useSelector((state) => state.userData);
 
   useEffect(() => {
     const findList = async () => {
       const data = await fetch(`/course-list`);
       const body = await data.json();
-      console.log(body.courseList);
-      setList(body);
+      const filtre = body.courseList.filter((id) => id.idUser == iduser);
+
+      setList(filtre);
     };
 
     findList();
   }, [visible]);
+
+  useEffect(() => {
+    async function receivedNotification() {
+      await socket.on("sendValidationBack", (message) => {
+        setNotificationMessage(message);
+      });
+    }
+    receivedNotification();
+
+    //Pour que la notification ne se répête pas quand on navigue sur les différents screens
+    if (notificationMessage) {
+      openNotification();
+    }
+  }, [notificationMessage]);
+
+  const openNotification = () => {
+    const args = {
+      message: "Notification",
+      description: notificationMessage,
+      duration: 0,
+      icon: <SmileOutlined style={{ color: "green" }} />,
+    };
+
+    notification.open(args);
+  };
 
   const notation = async (idpro, idtransport) => {
     var rawResponse = await fetch(
       `/feedback?idpro=${idpro}&alreadynote=${idtransport}&note=${note}`
     );
     var response = await rawResponse.json();
-    console.log(response);
+    setVisible(false);
   };
 
   function noteChange(value) {
     setNote(value);
-    console.log(note);
   }
 
   return (
@@ -47,15 +101,34 @@ export default function ScreenListSoignants(props) {
 
       <Layout>
         <Header />
-        <Content
-          className="site-layout-background"
-          style={{
-            margin: "24px 16px",
-            padding: 24,
-            minHeight: 280,
-          }}
-        >
-          <Table dataSource={list.courseList}>
+        <Content className="site-layout-background" >
+        <Title level={2}>Vos réservations</Title>
+          <Table dataSource={list}>
+            <Column
+              title="Status"
+              key="status"
+              render={(text, record) => (
+                <Space size="middle">
+                  {record.status === "annulé" ? (
+                    <CloseCircleOutlined
+                      style={{ color: "red", fontSize: "22px" }}
+                    />
+                  ) : record.status === "dispo" ? (
+                    <HistoryOutlined
+                      style={{ color: "blue", fontSize: "22px" }}
+                    />
+                  ) : record.status === "cloturé" ? (
+                    <CheckCircleOutlined
+                      style={{ color: "green", fontSize: "22px" }}
+                    />
+                  ) : (
+                    <SyncOutlined
+                      style={{ color: "orange", fontSize: "22px" }}
+                    />
+                  )}
+                </Space>
+              )}
+            />
             <Column
               title="Nom"
               key="lastname"
@@ -90,8 +163,13 @@ export default function ScreenListSoignants(props) {
             <Column title="Arrivée" dataIndex="arrivalLocation" key="arrival" />
             <Column
               title="Date et heure"
-              dataIndex="dateArrival"
+              dataIndex=""
               key="dateArrival"
+              render={(text, record) => (
+                <Space size="middle">
+                  {moment(record.dateArrival).locale("fr").format("LLL")}
+                </Space>
+              )}
             />
             <Column
               title="Date et heure"
@@ -105,6 +183,8 @@ export default function ScreenListSoignants(props) {
                     : record.status === "cloturé"
                     ? "Transport effectué"
                     : "Transport accepté (en cours)"}
+                  {moment(record.dateArrival).locale("fr").format("L")}
+                  {moment(record.timeArrival).locale("fr").format("LT")}
                 </Space>
               )}
             />

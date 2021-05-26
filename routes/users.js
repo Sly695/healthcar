@@ -4,6 +4,7 @@ var userModel = require("../models/users");
 var uid2 = require("uid2");
 var bcrypt = require("bcrypt");
 var UserModel = require("../models/users");
+var request = require("sync-request");
 
 /* GET users listing. */
 router.get("/", function (req, res, next) {
@@ -68,6 +69,8 @@ router.post("/sign-in", async function (req, res, next) {
   var error = [];
   var token = null;
   var role;
+  var id;
+  var userData;
 
   if (req.body.email == "" || req.body.password == "") {
     error.push("champs vides");
@@ -83,6 +86,8 @@ router.post("/sign-in", async function (req, res, next) {
         result = true;
         token = user.token;
         role = user.role;
+        iduser = user._id;
+        userData = user;
       } else {
         result = false;
         error.push("mot de passe incorrect");
@@ -92,7 +97,7 @@ router.post("/sign-in", async function (req, res, next) {
     }
   }
 
-  res.json({ result, error, token, role });
+  res.json({ result, error, token, role, iduser, userData });
 });
 
 router.post("/sign-up-ambulance", async function (req, res, next) {
@@ -100,6 +105,9 @@ router.post("/sign-up-ambulance", async function (req, res, next) {
   var error = [];
   var saveUser = null;
   var token = null;
+  var address = req.body.addressFromFront;
+  var postalCode = req.body.postalCodefromFront;
+  var city = req.body.cityFromFront;
 
   const data = await userModel.findOne({
     email: req.body.emailFromFront,
@@ -114,12 +122,21 @@ router.post("/sign-up-ambulance", async function (req, res, next) {
     req.body.siretFromFront == "" ||
     req.body.emailFromFront == "" ||
     req.body.phoneFromFront == "" ||
-    req.body.passwordFromFront == ""
+    req.body.passwordFromFront == "" ||
+    req.body.addressFromFront == "" ||
+    req.body.postalCodeFromFront == "" ||
+    req.body.cityFromFront == ""
   ) {
     error.push("champs vides");
   }
 
   if (error.length == 0) {
+    var dataAPI = request(
+      "GET",
+      `https://api.opencagedata.com/geocode/v1/json?q=${address},${postalCode} ${city}, France &key=e40b9c1452fe4b29997b6f91eb035202`
+    );
+    var dataAPIparsed = JSON.parse(dataAPI.body);
+
     var hash = bcrypt.hashSync(req.body.passwordFromFront, 10);
     var newUser = new userModel({
       nomEntreprise: req.body.nomEntrepriseFromFront,
@@ -131,6 +148,13 @@ router.post("/sign-up-ambulance", async function (req, res, next) {
       password: hash,
       token: uid2(32),
       date_inscrit: new Date(),
+      adresse: {
+        address: req.body.addressFromFront,
+        postalCode: req.body.postalCodefromFront,
+        city: req.body.cityFromFront,
+        latitude: dataAPIparsed.results[0].geometry.lat,
+        longitude: dataAPIparsed.results[0].geometry.lng,
+      },
     });
 
     saveUser = await newUser.save();
@@ -148,20 +172,45 @@ router.post("/sign-up-ambulance", async function (req, res, next) {
 //          UPDATE PROFIL  |
 //----------------------------------------
 
-router.put("/update-profil-carestaff", async (req, res, next) => {
-  let token = "gx38g6PBoxyMMVn2sstOUQvlIj7iOGUr";
+// router.put("/update-profil-carestaff", async (req, res, next) => {
+//   let token = "gx38g6PBoxyMMVn2sstOUQvlIj7iOGUr";
 
+//   const userProfil = await userModel.updateOne(
+//     {
+//       token: token,
+//     },
+//     {
+//       lastname: req.body.lastname,
+//       firstname: req.body.firstname,
+//       email: req.body.email,
+//       avatar: req.body.avatar,
+//       password: req.body.password,
+//       phone: req.body.phone,
+//       adresse: {
+//         adresse: req.body.adresse,
+//         postalCode: req.body.postalCode,
+//         city: req.body.city,
+//       },
+//     }
+//   );
+//   res.json({ userProfil });
+// });
+
+router.put("/update-profil", async (req, res, next) => {
   const userProfil = await userModel.updateOne(
     {
-      token: token,
+      token: req.body.token,
     },
     {
       lastname: req.body.lastname,
       firstname: req.body.firstname,
+      monEntreprise: req.body.nomEntreprise,
+      siret: req.body.siret,
+      responsable_name: req.body.responableName,
+      firstname: req.body.firstname,
       email: req.body.email,
-      avatar: req.body.avatar,
-      password: req.body.password,
       phone: req.body.phone,
+      password: req.body.password,
       adresse: {
         adresse: req.body.adresse,
         postalCode: req.body.postalCode,
@@ -169,34 +218,16 @@ router.put("/update-profil-carestaff", async (req, res, next) => {
       },
     }
   );
+
   res.json({ userProfil });
 });
 
-router.put("/update-profil-ambulance", async (req, res, next) => {
-  let token = "afWbpZPvEdHsrBpi1AFYi6ccmcspU648";
-
-  const userProfil = await userModel.updateOne(
-    {
-      token: token,
-    },
-    {
-      monEntreprise: req.body.nomEntreprise,
-      siret: req.body.siret,
-      lastname: req.body.lastname,
-      firstname: req.body.firstname,
-      email: req.body.email,
-      phone: req.body.phone,
-      avatar: req.body.avatar,
-      password: req.body.password,
-      adresse: {
-        adresse: req.body.adresse,
-        postalCode: req.body.postalCode,
-        city: req.body.city,
-      },
-    }
-  );
-
-  res.json({ userProfil });
+//----------------------------------------------------------
+//         Sélectionner dans la DB l'ambulancier qui est connecté
+//----------------------------------------------------------
+router.get("/user-list", async (req, res, next) => {
+  let user = await userModel.findOne({ nomEntreprise: req.query.userData });
+  res.json({ user });
 });
 
 module.exports = router;

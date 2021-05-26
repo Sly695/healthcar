@@ -1,40 +1,20 @@
 import "../App";
-import React, { useState } from "react";
+import React from "react";
 
-import Nav from '../component/Nav'
-import Header from "../component/Header";
-import FooterDash from '../component/Footer';
-import Profil from '../component/ScreenProfil'
-import Booking from '../component/Booking'
+import Booking from "../component/Booking";
 
+import { Layout } from "antd";
 
-import {
-  Card,
-  Layout,
-  Menu,
-  Affix,
-} from "antd";
-
-const { Meta } = Card;
-const { SubMenu } = Menu;
 const { Content } = Layout;
 
-function Dashboard(props) {
-
+export default function Dashboard(props) {
   return (
     <Layout>
-
       <Layout>
- 
-
-      <Content>
-        <Booking/>
-      </Content>
-
+        <Content>
+          <Booking />
+        </Content>
       </Layout>
-
     </Layout>
   );
 }
-
-export default Dashboard;

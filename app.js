@@ -12,6 +12,12 @@ require("./models/bd");
 
 var app = express();
 
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+
+  next();
+});
+
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
@@ -23,13 +29,13 @@ app.use(cookieParser());
 // app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, "front/build")));
 
-// app.get("*", function (_, res) {
-//   res.sendFile(path.join(__dirname, "front/build/index.html"), function (err) {
+// app.get('/*', function(req, res) {
+//   res.sendFile(path.join(__dirname, 'front/build/index.html'), function(err) {
 //     if (err) {
-//       res.status(500).send(err);
+//       res.status(500).send(err)
 //     }
-//   });
-// });
+//   })
+// })
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
