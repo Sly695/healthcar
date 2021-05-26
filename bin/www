@@ -21,6 +21,19 @@ app.set('port', port);
 
 var server = http.createServer(app);
 
+var io = require('socket.io')(server);
+
+
+io.on('connection', function(socket){
+  socket.on('sendValidation', function(message) {
+    console.log(message)
+    io.emit('sendValidationBack', message);
+  });
+  socket.on('sendAddCourse', function(message) {
+    console.log(message)
+    io.emit('sendAddCourseBack', message);
+  });
+});
 /**
  * Listen on provided port, on all network interfaces.
  */

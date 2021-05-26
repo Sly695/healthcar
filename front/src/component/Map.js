@@ -5,6 +5,9 @@ import {
   Popup,
   Polyline,
 } from "react-leaflet";
+import imgGps from "../img/gps.svg";
+import imgLocation from "../img/location.svg";
+import imgLogo from "../img/Logo.svg";
 import React, { useEffect, useState } from "react";
 import moment from "moment";
 import "moment/locale/fr";
@@ -19,12 +22,20 @@ import {
   Button,
   Typography,
   Space,
+  notification,
 } from "antd";
-import { EnvironmentOutlined, LogoutOutlined } from "@ant-design/icons";
+import {
+  EnvironmentOutlined,
+  LogoutOutlined,
+  SmileOutlined,
+} from "@ant-design/icons";
 //import * as Gp from "chemin/vers/GpServices.js";
 import Nav from "./Nav";
 import FooterDash from "./Footer";
 import Header from "./Header";
+import socketIOClient from "socket.io-client";
+
+var socket = socketIOClient("http://192.168.1.53:3000");
 
 const { Content } = Layout;
 
@@ -43,6 +54,7 @@ function Map(props) {
   const [coordsRouteArrival, setCoordsRouteArrival] = useState([]);
   const [totalTimeArrival, setTotalTimeArrival] = useState([]);
   const [totalDistanceArrival, setTotalDistanceArrival] = useState([]);
+  const [notificationMessage, setNotificationMessage] = useState([]);
 
   const userData = useSelector((state) => state.userData.nomEntreprise);
   const iduser = useSelector((state) => state.iduser);
@@ -69,6 +81,32 @@ function Map(props) {
     listUser();
   }, [refresh]);
 
+  useEffect(() => {
+    async function receivedNotification() {
+      await socket.on("sendAddCourseBack", (message) => {
+        setNotificationMessage(message);
+        console.log(message);
+      });
+    }
+    receivedNotification();
+
+    //Pour que la notification ne se répête pas quand on navigue sur les différents screens
+    if (notificationMessage) {
+      openNotification();
+    }
+  }, [notificationMessage]);
+
+  const openNotification = () => {
+    const args = {
+      message: "Notification",
+      description: notificationMessage,
+      duration: 0,
+      icon: <SmileOutlined style={{ color: "green" }} />,
+    };
+
+    notification.open(args);
+  };
+
   const validation = async (id, status) => {
     const result = await fetch(
       `/transport-validation?_id=${id}&status=${status}&iduser=${iduser}`
@@ -78,10 +116,10 @@ function Map(props) {
   };
 
   //Route vers le back qui va requêter une API afin d'avoir des infos sur un trajet
-  async function getRoute(latitude, longitude, marker) {
+  async function getRoute(marker) {
     //Récupère des infos sur le trajet entre la société et l'adresse departure
     var rawResponseDeparture = await fetch(
-      `/getRoute?latitudeEndPoint=${latitude}&longitudeEndPoint=${longitude}&latitudeStartPoint=${userList[0].latitude}&longitudeStartPoint=${userList[0].longitude}`
+      `/getRoute?latitudeEndPoint=${marker.addressDeparture[0].latitude}&longitudeEndPoint=${marker.addressDeparture[0].longitude}&latitudeStartPoint=${userList[0].latitude}&longitudeStartPoint=${userList[0].longitude}`
     );
     var responseDeparture = await rawResponseDeparture.json();
     setCoordsRouteDeparture(responseDeparture.result);
@@ -91,7 +129,7 @@ function Map(props) {
     //Récupère des infos sur le trajet entre la société et l'adresse departure
     setAddressArrival([marker]);
     var rawResponseArrival = await fetch(
-      `/getRoute?latitudeEndPoint=${marker.addressArrival[0].latitude}&longitudeEndPoint=${marker.addressArrival[0].longitude}&latitudeStartPoint=${latitude}&longitudeStartPoint=${longitude}`
+      `/getRoute?latitudeEndPoint=${marker.addressArrival[0].latitude}&longitudeEndPoint=${marker.addressArrival[0].longitude}&latitudeStartPoint=${marker.addressDeparture[0].latitude}&longitudeStartPoint=${marker.addressDeparture[0].longitude}`
     );
     var responseArrival = await rawResponseArrival.json();
     setCoordsRouteArrival(responseArrival.result);
@@ -134,16 +172,7 @@ function Map(props) {
               </Text>
             }
             extra={
-              <a
-                onClick={() =>
-                  getRoute(
-                    marker.addressDeparture[0].latitude,
-                    marker.addressDeparture[0].longitude,
-                    marker
-                  )
-                }
-                href="#"
-              >
+              <a onClick={() => getRoute(marker)} href="#">
                 Itinéraire
               </a>
             }
@@ -286,18 +315,20 @@ function Map(props) {
   );
 }
 
+//45.764043,4.835659
+
 const location = new Icon({
-  iconUrl: "../Images/Logo.svg",
+  iconUrl: imgLogo,
   iconSize: [50, 50],
 });
 
 const office = new Icon({
-  iconUrl: "../Images/location.svg",
+  iconUrl: imgLocation,
   iconSize: [50, 50],
 });
 
 const gps = new Icon({
-  iconUrl: "../Images/gps.svg",
+  iconUrl: imgGps,
   iconSize: [50, 50],
 });
 

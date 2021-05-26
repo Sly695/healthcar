@@ -354,4 +354,3 @@ const [value, setValue] = React.useState(1);
     color: "#B170FF",
     borderRadius: "2rem",
   };
-
