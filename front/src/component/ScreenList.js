@@ -199,28 +199,12 @@ export default function ScreenList(props) {
             />
 
             <Column title="Arrivée" dataIndex="arrivalLocation" key="arrival" />
-            <Column
-              title="Date et heure"
-              dataIndex=""
-              key="dateArrival"
-              render={(text, record) => (
-                <Space size="middle">
-                  {moment(record.dateArrival).locale("fr").format("LLL")}
-                </Space>
-              )}
-            />
+
             <Column
               title="Date et heure"
               key="status"
               render={(text, record) => (
                 <Space size="middle">
-                  {record.status === "annulé"
-                    ? "Annulé"
-                    : record.status === "dispo"
-                    ? "Disponible"
-                    : record.status === "cloturé"
-                    ? "Transport effectué"
-                    : "Transport accepté (en cours)"}
                   {moment(record.dateArrival).locale("fr").format("L")}
                   {moment(record.timeArrival).locale("fr").format("LT")}
                 </Space>
@@ -326,7 +310,7 @@ export default function ScreenList(props) {
               onClick={() => {
                 validation(dataModal._id, "annulé");
                 setVisible(false);
-                socket.emit("sendValidation", "Votre course a été annulé !");
+                socket.emit("sendValidation", "Votre course a été annulée !");
               }}
               type="primary"
               hidden={
@@ -345,7 +329,7 @@ export default function ScreenList(props) {
               onClick={() => {
                 validation(dataModal._id, "cloturé");
                 setVisible(false);
-                socket.emit("sendValidation", "Votre course a été clôturé !");
+                socket.emit("sendValidation", "Votre course a été clôturée !");
               }}
               type="primary"
               hidden={dataModal.status == "encours" ? false : true}

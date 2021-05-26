@@ -28,13 +28,16 @@ export default function Header() {
       // setList(body);
       const filtreDispo = body.courseList.filter((id) => id.status == "dispo");
       setWaitingTransport(filtreDispo.length);
-      const filtreEncours = body.courseList.filter((id) => id.status == "encours");
+      const filtreEncours = body.courseList.filter(
+        (id) => id.status == "encours"
+      );
       setProcessTransport(filtreEncours.length);
       const filtreEnd = body.courseList.filter((id) => id.status == "cloturé");
       setEndTransport(filtreEnd.length);
-      const filtreCancel = body.courseList.filter((id) => id.status == "annulé");
+      const filtreCancel = body.courseList.filter(
+        (id) => id.status == "annulé"
+      );
       setCancelTransport(filtreCancel.length);
-      
     }
     findList();
   }, []);
@@ -74,9 +77,15 @@ export default function Header() {
         renderItem={(item) => (
           <List.Item>
             <Card title={item.title}>
-              <Card.Meta avatar={<CheckCircleOutlined />} />
-
-              {item.status}
+              <center
+                style={{
+                  fontSize: "30px",
+                  color: "#B170FF",
+                }}
+              >
+                {/* <CheckCircleOutlined /> */}
+                {item.status}
+              </center>
             </Card>
           </List.Item>
         )}

@@ -164,28 +164,12 @@ export default function ScreenListSoignants(props) {
             />
 
             <Column title="Arrivée" dataIndex="arrivalLocation" key="arrival" />
-            <Column
-              title="Date et heure"
-              dataIndex=""
-              key="dateArrival"
-              render={(text, record) => (
-                <Space size="middle">
-                  {moment(record.dateArrival).locale("fr").format("LLL")}
-                </Space>
-              )}
-            />
+
             <Column
               title="Date et heure"
               key="status"
               render={(text, record) => (
                 <Space size="middle">
-                  {record.status === "annulé"
-                    ? "Annulé"
-                    : record.status === "dispo"
-                    ? "Disponible"
-                    : record.status === "cloturé"
-                    ? "Transport effectué"
-                    : "Transport accepté (en cours)"}
                   {moment(record.dateArrival).locale("fr").format("L")}
                   {moment(record.timeArrival).locale("fr").format("LT")}
                 </Space>

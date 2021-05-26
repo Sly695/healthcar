@@ -16,20 +16,16 @@ import {
 import { useDispatch } from "react-redux";
 
 const { TabPane } = Tabs;
-const {Title} = Typography;
+const { Title } = Typography;
 
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
-    sm: { span: 8,
-          offset: 4 
-        },
+    sm: { span: 8, offset: 4 },
   },
   wrapperCol: {
     xs: { span: 24 },
-    sm: { span: 16,
-          offset: 4 
-        },
+    sm: { span: 16, offset: 4 },
   },
 };
 const tailFormItemLayout = {
@@ -109,19 +105,20 @@ function SignIn(props) {
       body: `email=${signInEmail}&password=${signInPassword}`,
     });
     let response = await request.json();
-    console.log(response);
-    dispatch({ type: "addToken", token: response.token });
-    dispatch({ type: "addRole", role: response.role });
-    dispatch({ type: "addIduser", iduser: response.iduser });
-    dispatch({ type: "addUserData", userData: response.userData });
     if (response.result == false) {
       errorSignUp();
-    }
+    } else {
+      console.log(response);
+      dispatch({ type: "addToken", token: response.token });
+      dispatch({ type: "addRole", role: response.role });
+      dispatch({ type: "addIduser", iduser: response.iduser });
+      dispatch({ type: "addUserData", userData: response.userData });
 
-    if (response.role == "soignant") {
-      return props.history.push("/dashboard/booking");
-    } else if (response.role == "ambulance") {
-      return props.history.push("/dashboard/list");
+      if (response.role == "soignant") {
+        return props.history.push("/dashboard/booking");
+      } else if (response.role == "ambulance") {
+        return props.history.push("/dashboard/list");
+      }
     }
   }
 
@@ -153,14 +150,15 @@ function SignIn(props) {
   };
 
   return (
-
-    <Row 
-    className="screenSignIn"
-    >
+    <Row className="screenSignIn">
       <Col md={16} xs={24} className="bgsignin"></Col>
-      <Col md={8} xs={24} className="blocform" >
-        <div className="contentForm"
-        type="flex" justify="center" align="middle" style={{minHeight: '100vh'}}
+      <Col md={8} xs={24} className="blocform">
+        <div
+          className="contentForm"
+          type="flex"
+          justify="center"
+          align="middle"
+          style={{ minHeight: "100vh" }}
         >
           <div className="top">
             <img src="../images/Logo.svg" style={{ width: "15rem" }} />
@@ -169,91 +167,93 @@ function SignIn(props) {
               Réservez votre ambulance ou trouvez des patients à transporter.
             </h2>
           </div>
-            <Form
+          <Form
             layout="vertical"
-              {...formItemLayout}
-              name="basic"
-              initialValues={{
-                remember: true,
-              }}
-              onFinish={onFinish}
-              onFinishFailed={onFinishFailed}
+            {...formItemLayout}
+            name="basic"
+            initialValues={{
+              remember: true,
+            }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+          >
+            <Form.Item
+              label="E-mail"
+              name="username"
+              rules={[
+                {
+                  required: true,
+                  message: "Veuillez entrer votre email!",
+                },
+              ]}
             >
-              <Form.Item
-                label="E-mail"
-                name="username"
-                rules={[
-                  {
-                    required: true,
-                    message: "Veuillez entrer votre email!",
-                  },
-                ]}
+              <Input
+                onChange={(e) => setSignInEmail(e.target.value)}
+                style={styleInput}
+              />
+            </Form.Item>
+
+            <Form.Item
+              label="Mot de passe"
+              name="password"
+              rules={[
+                {
+                  required: true,
+                  message: "Veuillez entrer votre mot de passe!",
+                },
+              ]}
+            >
+              <Input.Password
+                onChange={(e) => setSignInPassword(e.target.value)}
+                style={styleInput}
+              />
+            </Form.Item>
+
+            <Form.Item
+              {...tailFormItemLayout}
+              name="remember"
+              valuePropName="checked"
+            >
+              <span>
+                <u>Mot de passe oublié</u>
+              </span>
+              <Checkbox style={{ marginLeft: "30px" }}>
+                Se souvenir de moi
+              </Checkbox>{" "}
+            </Form.Item>
+
+            <Form.Item {...tailFormItemLayout}>
+              <Button
+                onClick={() => signIn()}
+                type="primary"
+                block
+                htmlType="submit"
+                style={{
+                  fontSize: "15px",
+                  height: "40px",
+                  borderRadius: "15px",
+                }}
               >
-                <Input
-                  onChange={(e) => setSignInEmail(e.target.value)}
-                  style={styleInput}
-                />
-              </Form.Item>
-
-              <Form.Item
-                label="Mot de passe"
-                name="password"
-                rules={[
-                  {
-                    required: true,
-                    message: "Veuillez entrer votre mot de passe!",
-                  },
-                ]}
+                Connexion
+              </Button>
+            </Form.Item>
+            <Form.Item {...tailFormItemLayout}>
+              <Button
+                type="primary"
+                block
+                onClick={() => setVisible(true)}
+                style={{
+                  borderRadius: "15px",
+                  background: "#FFAE80",
+                  borderColor: "#FFAE80",
+                  fontSize: "15px",
+                  height: "40px",
+                }}
               >
-                <Input.Password
-                  onChange={(e) => setSignInPassword(e.target.value)}
-                  style={styleInput}
-                />
-              </Form.Item>
-
-              <Form.Item
-                {...tailFormItemLayout}
-                name="remember"
-                valuePropName="checked"
-              >
-                <span>
-                  <u>Mot de passe oublié</u>
-                </span>
-                <Checkbox style={{ marginLeft: "30px" }}>Se souvenir de moi</Checkbox>{" "}
-              </Form.Item>
-
-              <Form.Item {...tailFormItemLayout}>
-
-                <Button
-                  onClick={() => signIn()}
-                  type="primary" block
-                  htmlType="submit"
-                  style={{
-                    fontSize: "15px",
-                    height: "40px",
-                    borderRadius: "15px",
-                  }}
-                >
-                  Connexion
-                </Button>
-              </Form.Item>
-              <Form.Item {...tailFormItemLayout}>
-                <Button
-                  type="primary" block
-                  onClick={() => setVisible(true)}
-                  style={{
-                    borderRadius: "15px",
-                    background: "#FFAE80",
-                    borderColor: "#FFAE80",
-                    fontSize: "15px",
-                    height: "40px",
-                  }}
-                >
-                  Créer un compte
-                </Button>
-
-              </Form.Item>
-            </Form>
+                Créer un compte
+              </Button>
+            </Form.Item>
+          </Form>
           <div className="buttonSignUp"></div>
           <div className="terms">Mentions légales</div>
         </div>
@@ -349,24 +349,24 @@ function SignIn(props) {
                   onChange={(e) => setSignUpNameA(e.target.value)}
                 />
               </Form.Item>
-                <Form.Item label="Adresse">
-                  <Input
-                    style={styleInput}
-                    onChange={(e) => setSignUpAdresse(e.target.value)}
-                  />
-                </Form.Item>
-                <Form.Item label="Code Postal">
-                  <Input
-                    style={styleInput}
-                    onChange={(e) => setSignUpCodePostal(e.target.value)}
-                  />
-                </Form.Item>
-                <Form.Item label="Ville">
-                  <Input
-                    style={styleInput}
-                    onChange={(e) => setSignUpCity(e.target.value)}
-                  />
-                </Form.Item>
+              <Form.Item label="Adresse">
+                <Input
+                  style={styleInput}
+                  onChange={(e) => setSignUpAdresse(e.target.value)}
+                />
+              </Form.Item>
+              <Form.Item label="Code Postal">
+                <Input
+                  style={styleInput}
+                  onChange={(e) => setSignUpCodePostal(e.target.value)}
+                />
+              </Form.Item>
+              <Form.Item label="Ville">
+                <Input
+                  style={styleInput}
+                  onChange={(e) => setSignUpCity(e.target.value)}
+                />
+              </Form.Item>
               <Form.Item label="Siret">
                 <Input
                   style={styleInput}
