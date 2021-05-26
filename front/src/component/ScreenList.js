@@ -109,19 +109,19 @@ export default function ScreenList(props) {
                 <Space size="middle">
                   {record.status === "annulé" ? (
                     <CloseCircleOutlined
-                      style={{ color: "red", fontSize: "22px" }}
+                      style={{ color: "#EE7D52", borderBlockColor: 'none' }}
                     />
                   ) : record.status === "dispo" ? (
                     <HistoryOutlined
-                      style={{ color: "blue", fontSize: "22px" }}
+                      style={{ color: "#6793FF", borderBlockColor: 'none' }}
                     />
                   ) : record.status === "cloturé" ? (
                     <CheckCircleOutlined
-                      style={{ color: "green", fontSize: "22px" }}
+                      style={{ color: "#5CC689", borderBlockColor: 'none' }}
                     />
                   ) : (
                     <SyncOutlined
-                      style={{ color: "orange", fontSize: "22px" }}
+                      style={{ color: "#FFAE80", borderBlockColor: 'none'}}
                     />
                   )}
                 </Space>
@@ -175,16 +175,43 @@ export default function ScreenList(props) {
               key="action"
               render={(text, record) => (
                 <Space size="middle">
-                  <a
+                  {record.status === "annulé" ? (
+                    <Button
+                    type="primary"
                     onClick={() => {
                       setDataModal(record);
                       setVisible(true);
                     }}
-                  >
-                    Détails de la course
-                    {/* {record.patient[0].lastname}{" "}
-                    {record.patient[0].firstname} */}
-                  </a>
+                      style={{ backgroundColor: "#EE7D52" }}
+                    >Détails </Button>
+                  ) : record.status === "dispo" ? (
+                    <Button
+                    type="primary"
+                    onClick={() => {
+                      setDataModal(record);
+                      setVisible(true);
+                    }}
+                      style={{ backgroundColor: "#6793FF"}}
+                    >Détails </Button>
+                  ) : record.status === "cloturé" ? (
+                    <Button
+                    type="primary"
+                    onClick={() => {
+                      setDataModal(record);
+                      setVisible(true);
+                    }}
+                      style={{ backgroundColor: "#5CC689"}}
+                    >Détails </Button>
+                  ) : (
+                    <Button
+                    type="primary"
+                    onClick={() => {
+                      setDataModal(record);
+                      setVisible(true);
+                    }}
+                      style={{ backgroundColor: "#FFAE80"}}
+                    >Détails </Button>
+                  )}
                 </Space>
               )}
             />
