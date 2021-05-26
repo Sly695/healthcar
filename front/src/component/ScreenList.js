@@ -9,12 +9,17 @@ import {
 import moment from "moment";
 import "moment/locale/fr";
 import "../App.less";
-import { Layout, Modal, Table, Space, Button, Affix, Typography } from "antd";
+import { Layout, Modal, Table, Space, Button, Affix, notification, Typography} from "antd";
 import { useSelector } from "react-redux";
+import { SmileOutlined } from '@ant-design/icons';
 
 import Nav from "../component/Nav";
 import Header from "../component/Header";
 import FooterDash from "../component/Footer";
+
+import socketIOClient from "socket.io-client";
+
+var socket = socketIOClient("http://192.168.254.15:3000");
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -22,6 +27,7 @@ const { Title } = Typography;
 export default function ScreenList(props) {
   const [list, setList] = useState([]);
   const [visible, setVisible] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState();
   const [dataModal, setDataModal] = useState({
     _id: "fake",
     ref: "4pMHc",
@@ -77,18 +83,50 @@ export default function ScreenList(props) {
       if (dataModal._id == "fake") {
         setDataModal(body.courseList[0]);
       }
+
+
+
     };
 
     findList();
   }, [visible]);
+
+  useEffect(() => {
+    async function receivedNotification() {
+      await socket.on('sendAddCourseBack', (message) => {
+        setNotificationMessage(message)
+        console.log(message)
+      });
+    }
+    receivedNotification();
+
+    //Pour que la notification ne se répête pas quand on navigue sur les différents screens
+    if (notificationMessage) {
+      openNotification();
+    }
+  }, [notificationMessage]);
+
+  const openNotification = () => {
+    const args = {
+      message: "Notification",
+      description: notificationMessage,
+      duration: 0,
+      icon: <SmileOutlined style={{ color: 'green' }} />,
+    };
+
+    notification.open(args);
+  };
+
 
   const validation = async (id, status) => {
     const result = await fetch(
       `/transport-validation?_id=${id}&status=${status}&iduser=${iduser}`
     );
     const body = await result.json();
-    //setSourceList(body.result);
   };
+
+
+
 
   return (
     <Layout>
@@ -165,6 +203,22 @@ export default function ScreenList(props) {
               key="dateArrival"
               render={(text, record) => (
                 <Space size="middle">
+                  {moment(record.dateArrival).locale("fr").format("LLL")}
+                </Space>
+              )}
+            />
+            <Column
+              title="Date et heure"
+              key="status"
+              render={(text, record) => (
+                <Space size="middle">
+                  {record.status === "annulé"
+                    ? "Annulé"
+                    : record.status === "dispo"
+                      ? "Disponible"
+                      : record.status === "cloturé"
+                        ? "Transport effectué"
+                        : "Transport accepté (en cours)"}
                   {moment(record.dateArrival).locale("fr").format("L")}
                   {moment(record.timeArrival).locale("fr").format("LT")}
                 </Space>
@@ -223,10 +277,10 @@ export default function ScreenList(props) {
               {dataModal.status === "annulé"
                 ? "Annulé"
                 : dataModal.status === "dispo"
-                ? "Disponible"
-                : dataModal.status === "cloturé"
-                ? "Transport effectué"
-                : "Transport accepté (en cours)"}
+                  ? "Disponible"
+                  : dataModal.status === "cloturé"
+                    ? "Transport effectué"
+                    : "Transport accepté (en cours)"}
             </p>
 
             <p>
@@ -248,16 +302,18 @@ export default function ScreenList(props) {
               onClick={() => {
                 validation(dataModal._id, "encours");
                 setVisible(false);
+                socket.emit("sendValidation", "Votre course a été prise en charge !")
               }}
+
               type="primary"
               hidden={
                 dataModal.status == "encours"
                   ? true
                   : dataModal.status == "annulé"
-                  ? false
-                  : dataModal.status == "dispo"
-                  ? false
-                  : true
+                    ? false
+                    : dataModal.status == "dispo"
+                      ? false
+                      : true
               }
             >
               Accepter
@@ -266,16 +322,17 @@ export default function ScreenList(props) {
               onClick={() => {
                 validation(dataModal._id, "annulé");
                 setVisible(false);
+                socket.emit("sendValidation", "Votre course a été annulé !")
               }}
               type="primary"
               hidden={
                 dataModal.status == "encours"
                   ? false
                   : dataModal.status == "annulé"
-                  ? true
-                  : dataModal.status == "dispo"
-                  ? true
-                  : true
+                    ? true
+                    : dataModal.status == "dispo"
+                      ? true
+                      : true
               }
             >
               Annuler
@@ -284,6 +341,7 @@ export default function ScreenList(props) {
               onClick={() => {
                 validation(dataModal._id, "cloturé");
                 setVisible(false);
+                socket.emit("sendValidation", "Votre course a été clôturé !")
               }}
               type="primary"
               hidden={dataModal.status == "encours" ? false : true}

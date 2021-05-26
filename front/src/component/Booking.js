@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../App.less";
 import {
   Layout,
@@ -11,6 +11,7 @@ import {
   DatePicker,
   Affix,
   message,
+  notification
 } from "antd";
 import moment from "moment";
 import { useSelector } from "react-redux";
@@ -19,6 +20,10 @@ import Nav from "../component/Nav";
 
 import Header from "../component/Header";
 import FooterDash from "../component/Footer";
+
+import socketIOClient from "socket.io-client";
+
+import { SmileOutlined } from '@ant-design/icons';
 
 const { Content } = Layout;
 
@@ -40,11 +45,44 @@ export default function Booking(props) {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [messageR, setMessageR] = useState("");
+  const [notificationMessage, setNotificationMessage] = useState()
 
   const data = useSelector((state) => state.iduser);
-  console.log(data);
 
   const format = "HH:mm";
+
+  var socket = socketIOClient("http://192.168.254.15:3000");
+
+  useEffect(() => {
+    async function receivedNotification() {
+      await socket.on('sendValidationBack', (message) => {
+        setNotificationMessage(message)
+      });
+
+      
+    }
+
+    if(notificationMessage){
+      openNotification();
+    }
+    
+    receivedNotification();
+    
+    
+  }, [notificationMessage]);
+
+  const openNotification = () => {
+    const args = {
+      message: "Notification",
+      description: notificationMessage,
+      duration: 0,
+      icon: <SmileOutlined style={{ color: 'green' }} />,
+    };
+    
+    notification.open(args);
+  };
+
+  
 
   async function booking() {
     var request = await fetch("/booking", {
@@ -53,14 +91,16 @@ export default function Booking(props) {
       body: `departureName=${nameDeparture}&addressDeparture=${streetDeparture}&postalCodeDeparture=${zipDeparture}&cityDeparture=${cityDeparture}&arrivalLocationName=${nameArrival}&addressArrival=${streetArrival}&postalCodeArrival=${zipArrival}&cityArrival=${cityArrival}&dateArrival=${date}&timeArrival=${time}&type=${type}&message=${messageR}&_id=${data}&lastnamePatient=${lastname}&firstnamePatient=${firstname}&sexePatient=${sexe}&birthdate=${naissance}&secu=${secu}`,
     });
     let response = await request.json();
-    console.log(response);
     if (response.result == true) {
       successSignUp();
+      socket.emit("sendAddCourse", "Une nouvelle course est dispo")
       return props.history.push("/list-soignants");
     } else {
       errorSignUp();
     }
   }
+
+  
 
 
   const successSignUp = () => {
@@ -99,9 +139,10 @@ export default function Booking(props) {
   }
 
   function onChangeTime(time, timeString) {
-    console.log(time, timeString);
     setTime(time, timeString);
   }
+
+  
 
   return (
     <Layout>
@@ -219,7 +260,9 @@ export default function Booking(props) {
                 placeholder="Heure"
                 onChange={onChangeTime}
               />{" "}
-              <Button onClick={() => booking()}>Valider la réservation</Button>
+              <Button onClick={() => 
+              booking()}
+              >Valider la réservation</Button>
             </Form.Item>
           </Form>
         </Content>
