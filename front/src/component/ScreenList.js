@@ -28,7 +28,7 @@ import FooterDash from "../component/Footer";
 
 import socketIOClient from "socket.io-client";
 
-var socket = socketIOClient("http://192.168.1.53:3000");
+var socket = socketIOClient("http://5.51.124.2:3000");
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -86,10 +86,10 @@ export default function ScreenList(props) {
       const data = await fetch(`/course-list`);
       const body = await data.json();
       const filtre = body.courseList.filter(
-        (id) => id.idPro == iduser || id.status == "dispo"
+        (id) => id.idPro === iduser || id.status === "dispo"
       );
       setList(filtre);
-      if (dataModal._id == "fake") {
+      if (dataModal._id === "fake") {
         setDataModal(body.courseList[0]);
       }
     };
@@ -257,10 +257,11 @@ export default function ScreenList(props) {
                       setDataModal(record);
                       setVisible(true);
                     }}
-                      style={{ backgroundColor: "#5CC689"}}
+                      style={{ backgroundColor: "#5CC689", borderColor: "#5CC689"}}
                     >Détails </Button>
                   ) : (
                     <Button
+                    value="large"
                     type="primary"
                     onClick={() => {
                       setDataModal(record);
@@ -338,11 +339,11 @@ export default function ScreenList(props) {
               }}
               type="primary"
               hidden={
-                dataModal.status == "encours"
+                dataModal.status === "encours"
                   ? true
-                  : dataModal.status == "annulé"
+                  : dataModal.status === "annulé"
                   ? false
-                  : dataModal.status == "dispo"
+                  : dataModal.status === "dispo"
                   ? false
                   : true
               }
@@ -357,11 +358,11 @@ export default function ScreenList(props) {
               }}
               type="primary"
               hidden={
-                dataModal.status == "encours"
+                dataModal.status === "encours"
                   ? false
-                  : dataModal.status == "annulé"
+                  : dataModal.status === "annulé"
                   ? true
-                  : dataModal.status == "dispo"
+                  : dataModal.status === "dispo"
                   ? true
                   : true
               }
@@ -375,7 +376,7 @@ export default function ScreenList(props) {
                 socket.emit("sendValidation", "Votre course a été clôturé !");
               }}
               type="primary"
-              hidden={dataModal.status == "encours" ? false : true}
+              hidden={dataModal.status === "encours" ? false : true}
             >
               Fin de mission
             </Button>
@@ -387,8 +388,3 @@ export default function ScreenList(props) {
   );
 }
 
-const styleInput = {
-  fontSize: "15px",
-  color: "#B170FF",
-  borderRadius: "2rem",
-};

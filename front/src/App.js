@@ -12,7 +12,7 @@ import ListeTransport from "./component/ScreenList";
 import ListeTransportSoignants from "./component/ScreenListSoignants";
 import Map from "./component/Map";
 
-import { createStore, combineReducers, applyMiddleware } from "redux";
+import { createStore, combineReducers } from "redux";
 import { Provider } from "react-redux";
 
 import token from "./reducers/token";

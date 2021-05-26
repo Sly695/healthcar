@@ -13,20 +13,16 @@ import moment from "moment";
 import "moment/locale/fr";
 import { useSelector } from "react-redux";
 import "leaflet/dist/leaflet.css";
-import { Icon, icon } from "leaflet";
+import { Icon } from "leaflet";
 import {
-  DatePicker,
   Layout,
   Affix,
   Card,
   Button,
   Typography,
-  Space,
   notification,
 } from "antd";
 import {
-  EnvironmentOutlined,
-  LogoutOutlined,
   SmileOutlined,
 } from "@ant-design/icons";
 //import * as Gp from "chemin/vers/GpServices.js";
@@ -39,7 +35,7 @@ var socket = socketIOClient("http://192.168.1.53:3000");
 
 const { Content } = Layout;
 
-const { Text, Link } = Typography;
+const { Text } = Typography;
 
 function Map(props) {
   const [courseList, setCourseList] = useState([]);
@@ -218,11 +214,11 @@ function Map(props) {
                 setRefresh(!refresh);
               }}
               hidden={
-                marker.status == "encours"
+                marker.status === "encours"
                   ? true
-                  : marker.status == "annulé"
+                  : marker.status === "annulé"
                   ? false
-                  : marker.status == "dispo"
+                  : marker.status === "dispo"
                   ? false
                   : true
               }

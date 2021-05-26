@@ -77,7 +77,7 @@ function SignIn(props) {
     });
     let response = await request.json();
     console.log(response);
-    if (response.result == true) {
+    if (response.result === true) {
       successSignUp();
       setVisible(false);
     } else {
@@ -94,7 +94,7 @@ function SignIn(props) {
     let response = await request.json();
 
     console.log(response);
-    if (response.result == true) {
+    if (response.result === true) {
       successSignUp();
       setVisible(false);
     } else {
@@ -114,13 +114,13 @@ function SignIn(props) {
     dispatch({ type: "addRole", role: response.role });
     dispatch({ type: "addIduser", iduser: response.iduser });
     dispatch({ type: "addUserData", userData: response.userData });
-    if (response.result == false) {
+    if (response.result === false) {
       errorSignUp();
     }
 
-    if (response.role == "soignant") {
+    if (response.role === "soignant") {
       return props.history.push("/dashboard/booking");
-    } else if (response.role == "ambulance") {
+    } else if (response.role === "ambulance") {
       return props.history.push("/dashboard/list");
     }
   }
@@ -396,7 +396,7 @@ function SignIn(props) {
                   style={{
                     fontSize: "17px",
                     height: "40px",
-                    borderRadius: "10px",
+                    borderRadius: "15px",
                     marginLeft: "20px",
                   }}
                   type="primary"

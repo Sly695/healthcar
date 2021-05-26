@@ -14,7 +14,6 @@ h2.ant-typography{
   color: @primary-color;
 }
 
-
 h2{
   color: @highlight-color;
 }
@@ -22,17 +21,59 @@ h2{
 /* -------NAV------- */
 aside{
   width: 100vw;
-  height: auto;
+  height: 100vh;
   justify-content: space-between;
   padding-top: 15px;
-  box-shadow: @shadow-color;
+  box-shadow: 0px 12px 26px rgba(16, 30, 115, 0.06);
+  z-index: 100;
   .ant-menu{
     border: none;
   }
 }
 
+/* -------HEADER------- */
+.ant-page-header-content{
+  .ant-card{
+    box-shadow: 0px 12px 26px rgba(16, 30, 115, 0.02);
+    .ant-card-head{
+      .ant-card-head-title{
+        font-size: 20px;
+        color: #000000;
+      }
+    }
+    .ant-card-body{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .ant-card-meta-avatar{
+        font-size: 32px;
+      }
+      h3{
+        font-size: 24px;
+        color: #000000;
+        margin-bottom: 0;
+      }
+    }
+
+  }
+}
+
+Button{
+  border-radius: 15px;
+  border-color: none;
+}
+
+/* -------FOOTER------- */
+
 Footer{
     background-color: #fff;
+    .ant-list-item{
+      border-bottom: none;
+      .ant-image{
+        display: flex;
+
+      }
+    }
 }
 
 /* -------CONTENT------- */
@@ -43,9 +84,10 @@ Footer{
 //   align-items: center;
 // }
 
+
 main.ant-layout-content{
   background-color: #FFF;
-  margin: 20px;
+  margin: 20px auto;
   padding: 30px;
   width: 70vw;
   box-shadow: 0px 12px 26px rgba(16, 30, 115, 0.06);
@@ -63,7 +105,7 @@ main.ant-layout-content{
 main.ant-layout-content .ant-table {
   display: block;
 
-  @media screen and (max-width: 720px) {
+  @media screen and (max-width: 1280px) {
     &-thead {
       display: none;
     }
@@ -154,5 +196,14 @@ main.ant-layout-content .ant-table {
   }
   .blocform {
     border-top: solid #6693fe 3px;
+  }
+}
+
+/* MODAL --------------------- */
+.leaflet-popup-content-wrapper{
+  border: solid 1px #6693fe;
+  border-radius: 12px;
+  .ant-card{
+    border: none;
   }
 }

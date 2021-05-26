@@ -1,4 +1,4 @@
-import React, {useState, useEffect } from 'react';
+import React, {useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 
 import "../App.less";
@@ -16,7 +16,7 @@ import {
   Upload,
   message,
 } from 'antd';
-import { LoadingOutlined, PlusOutlined, UploadOutlined } from '@ant-design/icons';
+import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 
 import Nav from '../component/Nav'
 import Header from "../component/Header";
@@ -194,7 +194,6 @@ const [value, setValue] = React.useState(1);
       setValue(e.target.value);
   };
 
-    // if (userData.role == "ambulance") {
   return(
     <Layout>
       <Affix>
@@ -203,12 +202,7 @@ const [value, setValue] = React.useState(1);
       <Layout>
         <Header />
       <Content
-      className="site-layout-background"
-      style={{
-        margin: '24px 16px',
-        padding: 24,
-        minHeight: 280,
-      }}>
+      className="site-layout-background">
 
       <Title level={1}>Gestion du profil de votre entreprise</Title>
 
@@ -352,5 +346,5 @@ const [value, setValue] = React.useState(1);
   const styleInput = {
     fontSize: "15px",
     color: "#B170FF",
-    borderRadius: "2rem",
+    borderRadius: "15px",
   };
