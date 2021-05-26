@@ -168,7 +168,9 @@ function Map(props) {
             </div>
             <div style={{ display: "flex", flexDirection: "column" }}>
               <Text type="warning">Temps de trajet : </Text>
-              <Text>{totalTimeDeparture / 60} minutes</Text>
+              <Text>
+                {parseFloat(totalTimeDeparture / 60).toFixed(0)} minutes
+              </Text>
             </div>
             <div style={{ display: "flex", flexDirection: "column" }}>
               <Text type="warning">Distance : </Text>
@@ -211,7 +213,7 @@ function Map(props) {
           marker.addressArrival[0].latitude,
           marker.addressArrival[0].longitude,
         ]}
-        icon={location}
+        icon={gps}
       >
         <Popup>
           <Card
@@ -231,7 +233,7 @@ function Map(props) {
             </div>
             <div style={{ display: "flex", flexDirection: "column" }}>
               <Text type="warning">Temps de trajet: </Text>
-              {totalTimeArrival / 60} minutes
+              {parseFloat(totalTimeArrival / 60).toFixed(0)} minutes
             </div>
             <div style={{ display: "flex", flexDirection: "column" }}>
               <Text type="warning">Distance: </Text>
@@ -291,6 +293,11 @@ const location = new Icon({
 
 const office = new Icon({
   iconUrl: "../Images/location.svg",
+  iconSize: [50, 50],
+});
+
+const gps = new Icon({
+  iconUrl: "../Images/gps.svg",
   iconSize: [50, 50],
 });
 
