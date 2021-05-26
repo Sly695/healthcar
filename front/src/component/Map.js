@@ -3,14 +3,16 @@ import React, { useEffect, useState, } from "react";
 import { useSelector } from "react-redux";
 import 'leaflet/dist/leaflet.css';
 import { Icon, icon } from "leaflet";
-import { DatePicker, Layout, Affix, Card, Button, Typography, Space } from 'antd';
-import { EnvironmentOutlined, LogoutOutlined } from '@ant-design/icons'
+import { DatePicker, Layout, Affix, Card, Button, Typography, Space, notification } from 'antd';
+import { EnvironmentOutlined, LogoutOutlined, SmileOutlined} from '@ant-design/icons'
 //import * as Gp from "chemin/vers/GpServices.js";
 import Nav from './Nav'
 import FooterDash from "./Footer";
 import Header from "./Header";
-
+import socketIOClient from "socket.io-client";
 import moment from 'moment';
+
+var socket = socketIOClient("http://192.168.254.15:3000");
 
 
 const { Content } = Layout;
@@ -30,6 +32,8 @@ function Map(props) {
     const [coordsRouteArrival, setCoordsRouteArrival] = useState([]);
     const [totalTimeArrival, setTotalTimeArrival] = useState([]);
     const [totalDistanceArrival, setTotalDistanceArrival] = useState([]);
+
+    const [notificationMessage, setNotificationMessage] = useState("")
 
     const userData = useSelector((state) => state.userData.nomEntreprise);
 
@@ -52,6 +56,33 @@ function Map(props) {
         listUser();
 
     }, []);
+
+    useEffect(() => {
+        async function receivedNotification() {
+            await socket.on('sendAddCourseBack', (message) => {
+              setNotificationMessage(message)
+              console.log(message)
+            });
+          }
+          receivedNotification();
+      
+          //Pour que la notification ne se répête pas quand on navigue sur les différents screens
+          if(notificationMessage){
+            openNotification();
+          }
+    }, [notificationMessage]);
+
+    const openNotification = () => {
+        const args = {
+          message: "Notification",
+          description: notificationMessage,
+          duration: 0,
+          icon: <SmileOutlined style={{ color: 'green' }} />,
+        };
+        
+        notification.open(args);
+      };
+    
 
 
 
