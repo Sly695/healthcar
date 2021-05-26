@@ -165,7 +165,8 @@ export default function ScreenList(props) {
               key="dateArrival"
               render={(text, record) => (
                 <Space size="middle">
-                  {moment(record.dateArrival).locale("fr").format("LLL")}
+                  {moment(record.dateArrival).locale("fr").format("L")}
+                  {moment(record.timeArrival).locale("fr").format("LT")}
                 </Space>
               )}
             />
@@ -205,7 +206,15 @@ export default function ScreenList(props) {
               Départ de {dataModal.departureLocation} à déstination de{" "}
               {dataModal.arrivalLocation}
             </p>
-            <p>Heure du RDV prévue : {dataModal.timeArrival}</p>
+            <p>
+              Date du RDV :{" "}
+              {moment(dataModal.dateArrival).locale("fr").format("L")}
+            </p>
+            <p>
+              Heure du RDV prévue :{" "}
+              {moment(dataModal.timeArrival).locale("fr").format("LT")}
+            </p>
+
             <p>
               Note de course : {dataModal.message ? dataModal.message : "Vide"}
             </p>
