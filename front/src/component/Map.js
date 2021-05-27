@@ -14,17 +14,8 @@ import "moment/locale/fr";
 import { useSelector } from "react-redux";
 import "leaflet/dist/leaflet.css";
 import { Icon } from "leaflet";
-import {
-  Layout,
-  Affix,
-  Card,
-  Button,
-  Typography,
-  notification,
-} from "antd";
-import {
-  SmileOutlined,
-} from "@ant-design/icons";
+import { Layout, Affix, Card, Button, Typography, notification } from "antd";
+import { SmileOutlined } from "@ant-design/icons";
 //import * as Gp from "chemin/vers/GpServices.js";
 import Nav from "./Nav";
 import FooterDash from "./Footer";
@@ -45,7 +36,6 @@ function Map(props) {
   const [coordsRouteDeparture, setCoordsRouteDeparture] = useState([]);
   const [totalTimeDeparture, setTotalTimeDeparture] = useState([]);
   const [totalDistanceDeparture, setTotalDistanceDeparture] = useState([]);
-
 
   const [addressArrival, setAddressArrival] = useState([]);
   const [coordsRouteArrival, setCoordsRouteArrival] = useState([]);
@@ -145,47 +135,11 @@ function Map(props) {
   var markerArrival = courseList.map(function (marker, i) {
     var type = "";
 
-
-        return (
-            <Marker
-                position={[
-                    marker.addressDeparture[0].latitude,
-                    marker.addressDeparture[0].longitude,
-                ]}
-                icon={location}
-            >
-                <Popup>
-                    <Card
-                        size="Default size card"
-                        title={
-                            <Text style={{ color: "#FFAE80" }} type="success">
-                                Détail - {marker.patient[0].lastname}{" "}
-                                {marker.patient[0].firstname}
-                            </Text>
-                        }
-                        extra={
-                            <a
-                                onClick={() =>
-                                    getRoute(marker)
-                                }
-                                href="#"
-                            >
-                                Itinéraire
-              </a>
-                        }
-                        style={{ width: 300 }}
-                    >
-                        <div style={{ display: "flex", flexDirection: "column" }}>
-                            <Text type="warning">Lieu de prise en charge : </Text>
-                            {marker.departureLocation}
-                            <br />
-                            {marker.addressDeparture[0].address}{" "}
-                            {marker.addressDeparture[0].postalCode}{" "}
-                            {marker.addressDeparture[0].city}
-                        </div>
-                        <div style={{ display: "flex", flexDirection: "column" }}>
-                            <Text type="warning">Date de Naissance : </Text>
-
+    if (marker.type) {
+      type = "Ambulance";
+    } else {
+      type = "Véhicule semi allongé";
+    }
 
     return (
       <Marker
