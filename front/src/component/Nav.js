@@ -108,8 +108,11 @@ export default function Nav(props) {
         </Menu.Item>
       </Menu>
 
-      <Divider />
+      <Divider
+        style={{ display: userData.role === "soignant" ? "none" : "" }}
+      />
       <Rate
+        style={{ display: userData.role === "soignant" ? "none" : "" }}
         hidden={userData.role === "ambulance" ? false : true}
         allowHalf
         disabled
