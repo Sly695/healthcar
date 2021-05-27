@@ -18,6 +18,8 @@ import {
   Affix,
   notification,
   Typography,
+  Row,
+  Col
 } from "antd";
 import { useSelector } from "react-redux";
 import { SmileOutlined } from "@ant-design/icons";
@@ -149,19 +151,19 @@ export default function ScreenList(props) {
                 <Space size="middle">
                   {record.status === "annulé" ? (
                     <CloseCircleOutlined
-                      style={{ color: "#EE7D52", borderBlockColor: 'none' }}
+                      style={{ color: "#EE7D52", fontSize: '30px'}}
                     />
                   ) : record.status === "dispo" ? (
                     <HistoryOutlined
-                      style={{ color: "#6793FF", borderBlockColor: 'none' }}
+                      style={{ color: "#6793FF", fontSize: '30px'}}
                     />
                   ) : record.status === "cloturé" ? (
                     <CheckCircleOutlined
-                      style={{ color: "#5CC689", borderBlockColor: 'none' }}
+                      style={{ color: "#5CC689", fontSize: '30px'}}
                     />
                   ) : (
                     <SyncOutlined
-                      style={{ color: "#FFAE80", borderBlockColor: 'none'}}
+                      style={{ color: "#FFAE80", fontSize: '30px'}}
                     />
                   )}
                 </Space>
@@ -239,7 +241,7 @@ export default function ScreenList(props) {
                       setDataModal(record);
                       setVisible(true);
                     }}
-                      style={{ backgroundColor: "#EE7D52" }}
+                      style={{ backgroundColor: "#EE7D52", borderColor: "#EE7D52" }}
                     >Détails </Button>
                   ) : record.status === "dispo" ? (
                     <Button
@@ -248,7 +250,7 @@ export default function ScreenList(props) {
                       setDataModal(record);
                       setVisible(true);
                     }}
-                      style={{ backgroundColor: "#6793FF"}}
+                      style={{ backgroundColor: "#6793FF", borderColor: "#6793FF"}}
                     >Détails </Button>
                   ) : record.status === "cloturé" ? (
                     <Button
@@ -267,7 +269,7 @@ export default function ScreenList(props) {
                       setDataModal(record);
                       setVisible(true);
                     }}
-                      style={{ backgroundColor: "#FFAE80"}}
+                      style={{ backgroundColor: "#FFAE80", borderColor: "#FFAE80"}}
                     >Détails </Button>
                   )}
                 </Space>
@@ -283,51 +285,79 @@ export default function ScreenList(props) {
             footer={null}
             onCancel={() => setVisible(false)}
           >
-            <p>Référence : {dataModal.ref}</p>
-            <p>Nom : {dataModal.patient[0].lastname}</p>
-            <p>Prénom : {dataModal.patient[0].firstname}</p>
-            <p>
-              Départ de {dataModal.departureLocation} à déstination de{" "}
-              {dataModal.arrivalLocation}
-            </p>
-            <p>
-              Date du RDV :{" "}
-              {moment(dataModal.dateArrival).locale("fr").format("L")}
-            </p>
-            <p>
-              Heure du RDV prévue :{" "}
-              {moment(dataModal.timeArrival).locale("fr").format("LT")}
-            </p>
+            <h5>Référence :{" "}{dataModal.ref}</h5> 
+            <Row gutter={[16, 16]}>
+            
+              <Col sm={12} md={6} >
+                <h4>Nom :</h4> <p>{dataModal.patient[0].lastname}</p>
+                <h4>Prénom :</h4> <p>{dataModal.patient[0].firstname}</p>
+              </Col>
+              <Col sm={12} md={6}>
+                
+                <h4>Date du RDV :</h4>
+                <p>
+                {moment(dataModal.dateArrival).locale("fr").format("L")}
+                </p>
+                <h4>Heure du RDV prévue :</h4>
+                <p>
+                {moment(dataModal.timeArrival).locale("fr").format("LT")}
+                </p>
+              </Col>
+              <Col sm={12} md={6}>
+                
+                <h4>Départ de</h4> 
+                <p>{dataModal.departureLocation}</p> 
+                <h4>à déstination de</h4>
+                <p>{dataModal.arrivalLocation}</p>
+                
+              </Col>
 
-            <p>
-              Note de course : {dataModal.message ? dataModal.message : "Vide"}
-            </p>
-            <p>
-              Status :{" "}
-              {dataModal.status === "annulé"
-                ? "Annulé"
-                : dataModal.status === "dispo"
-                ? "Disponible"
-                : dataModal.status === "cloturé"
-                ? "Transport effectué"
-                : "Transport accepté (en cours)"}
-            </p>
+              <Col>
+              <h4>Adresse de départ :</h4> 
+                <p>{dataModal.addressDeparture[0].address},
+                <br/>{dataModal.addressDeparture[0].postalCode},
+                <br/>{dataModal.addressDeparture[0].city}
+                </p>
+                
+                <h4>Adresse d'arrivée : </h4>
+                <p>{dataModal.addressArrival[0].address},
+                <br/>{dataModal.addressArrival[0].postalCode},
+                <br/>{dataModal.addressArrival[0].city}
+                </p>
+              </Col>
+            </Row>
 
-            <p>
-              Type de transport :{" "}
-              {dataModal.type === true ? "Ambulance" : "VSL"}
-            </p>
+            <Row gutter={[16, 16]}>
+              <Col sm={24} md={8}>        
+                <h4>Note de course :</h4> 
+                <p>{dataModal.message ? dataModal.message : "Vide"}</p>
+                
+              </Col>
+              <Col sm={24} md={8}>
+                <h4>Type de transport :</h4>
+                <p>
+                {dataModal.type === true ? "Ambulance" : "VSL"}
+                </p>
+              </Col>
+              <Col sm={24} md={8}>
+              
+                
+                <h3>Status : {" "}
 
-            <p>
-              Adresse de départ : {dataModal.addressDeparture[0].address},{" "}
-              {dataModal.addressDeparture[0].postalCode},{" "}
-              {dataModal.addressDeparture[0].city}
-            </p>
-            <p>
-              Adresse de départ : {dataModal.addressArrival[0].address},{" "}
-              {dataModal.addressArrival[0].postalCode},{" "}
-              {dataModal.addressArrival[0].city}
-            </p>
+                {dataModal.status === "annulé"
+                  ? "Annulé"
+                  : dataModal.status === "dispo"
+                  ? "Disponible"
+                  : dataModal.status === "cloturé"
+                  ? "Transport effectué" 
+                  : "Transport accepté (en cours)" 
+                }
+                </h3>
+
+                </Col>
+
+            </Row>
+
             <Button
               onClick={() => {
                 validation(dataModal._id, "encours");
