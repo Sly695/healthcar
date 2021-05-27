@@ -19,7 +19,9 @@ import {
   notification,
   Typography,
   Row,
-  Col
+  Col,
+  Tabs,
+
 } from "antd";
 import { useSelector } from "react-redux";
 import { SmileOutlined } from "@ant-design/icons";
@@ -95,6 +97,7 @@ export default function ScreenList(props) {
       if (dataModal._id === "fake") {
         setDataModal(body.courseList[0]);
       }
+      callback("10");
     };
 
     findList();
@@ -133,6 +136,27 @@ export default function ScreenList(props) {
     const body = await result.json();
   };
 
+
+  function callback(key) {
+    console.log(key);
+    if (key == "1") {
+      setList(listEnAttente);
+    }
+    if (key == "2") {
+      setList(listEnCours);
+    }
+    if (key == "3") {
+      setList(listEnd);
+    }
+    if (key == "4") {
+      setList(listCancel);
+    }
+    if (key == "10") {
+      setList(list);
+    }
+  }
+
+
   return (
     <Layout>
       <Affix>
@@ -152,19 +176,19 @@ export default function ScreenList(props) {
                 <Space size="middle">
                   {record.status === "annulé" ? (
                     <CloseCircleOutlined
-                      style={{ color: "#EE7D52", fontSize: '30px'}}
+                      style={{ color: "#EE7D52", fontSize: "30px" }}
                     />
                   ) : record.status === "dispo" ? (
                     <HistoryOutlined
-                      style={{ color: "#6793FF", fontSize: '30px'}}
+                      style={{ color: "#6793FF", fontSize: "30px" }}
                     />
                   ) : record.status === "cloturé" ? (
                     <CheckCircleOutlined
-                      style={{ color: "#5CC689", fontSize: '30px'}}
+                      style={{ color: "#5CC689", fontSize: "30px" }}
                     />
                   ) : (
                     <SyncOutlined
-                      style={{ color: "#FFAE80", fontSize: '30px'}}
+                      style={{ color: "#FFAE80", fontSize: "30px" }}
                     />
                   )}
                 </Space>
@@ -237,22 +261,32 @@ export default function ScreenList(props) {
                 <Space size="middle">
                   {record.status === "annulé" ? (
                     <Button
-                    type="primary"
-                    onClick={() => {
-                      setDataModal(record);
-                      setVisible(true);
-                    }}
-                      style={{ backgroundColor: "#EE7D52", borderColor: "#EE7D52" }}
-                    >Détails </Button>
+                      type="primary"
+                      onClick={() => {
+                        setDataModal(record);
+                        setVisible(true);
+                      }}
+                      style={{
+                        backgroundColor: "#EE7D52",
+                        borderColor: "#EE7D52",
+                      }}
+                    >
+                      Détails{" "}
+                    </Button>
                   ) : record.status === "dispo" ? (
                     <Button
-                    type="primary"
-                    onClick={() => {
-                      setDataModal(record);
-                      setVisible(true);
-                    }}
-                      style={{ backgroundColor: "#6793FF", borderColor: "#6793FF"}}
-                    >Détails </Button>
+                      type="primary"
+                      onClick={() => {
+                        setDataModal(record);
+                        setVisible(true);
+                      }}
+                      style={{
+                        backgroundColor: "#6793FF",
+                        borderColor: "#6793FF",
+                      }}
+                    >
+                      Détails{" "}
+                    </Button>
                   ) : record.status === "cloturé" ? (
                     <Button
                     type="primary"
@@ -264,14 +298,19 @@ export default function ScreenList(props) {
                     >Détails </Button>
                   ) : (
                     <Button
-                    value="large"
-                    type="primary"
-                    onClick={() => {
-                      setDataModal(record);
-                      setVisible(true);
-                    }}
-                      style={{ backgroundColor: "#FFAE80", borderColor: "#FFAE80"}}
-                    >Détails </Button>
+                      value="large"
+                      type="primary"
+                      onClick={() => {
+                        setDataModal(record);
+                        setVisible(true);
+                      }}
+                      style={{
+                        backgroundColor: "#FFAE80",
+                        borderColor: "#FFAE80",
+                      }}
+                    >
+                      Détails{" "}
+                    </Button>
                   )}
                 </Space>
               )}
@@ -286,77 +325,67 @@ export default function ScreenList(props) {
             footer={null}
             onCancel={() => setVisible(false)}
           >
-            <h5>Référence :{" "}{dataModal.ref}</h5> 
+            <h5>Référence : {dataModal.ref}</h5>
             <Row gutter={[16, 16]}>
-            
-              <Col sm={12} md={6} >
+              <Col sm={12} md={6}>
                 <h4>Nom :</h4> <p>{dataModal.patient[0].lastname}</p>
                 <h4>Prénom :</h4> <p>{dataModal.patient[0].firstname}</p>
               </Col>
               <Col sm={12} md={6}>
-                
                 <h4>Date du RDV :</h4>
-                <p>
-                {moment(dataModal.dateArrival).locale("fr").format("L")}
-                </p>
-                <h4>Heure du RDV prévue :</h4>
-                <p>
-                {moment(dataModal.timeArrival).locale("fr").format("LT")}
-                </p>
+                <p>{moment(dataModal.dateArrival).locale("fr").format("L")}</p>
+                <h4>Heure du RDV :</h4>
+                <p>{moment(dataModal.timeArrival).locale("fr").format("LT")}</p>
               </Col>
               <Col sm={12} md={6}>
-                
-                <h4>Départ de</h4> 
-                <p>{dataModal.departureLocation}</p> 
-                <h4>à déstination de</h4>
+                <h4>Départ de</h4>
+                <p>{dataModal.departureLocation}</p>
+                <h4>à destination de</h4>
                 <p>{dataModal.arrivalLocation}</p>
-                
               </Col>
 
               <Col>
-              <h4>Adresse de départ :</h4> 
-                <p>{dataModal.addressDeparture[0].address},
-                <br/>{dataModal.addressDeparture[0].postalCode},
-                <br/>{dataModal.addressDeparture[0].city}
+                <h4>Adresse de départ :</h4>
+                <p>
+                  {dataModal.addressDeparture[0].address},
+                  <br />
+                  {dataModal.addressDeparture[0].postalCode},
+                  <br />
+                  {dataModal.addressDeparture[0].city}
                 </p>
-                
+
                 <h4>Adresse d'arrivée : </h4>
-                <p>{dataModal.addressArrival[0].address},
-                <br/>{dataModal.addressArrival[0].postalCode},
-                <br/>{dataModal.addressArrival[0].city}
+                <p>
+                  {dataModal.addressArrival[0].address},
+                  <br />
+                  {dataModal.addressArrival[0].postalCode},
+                  <br />
+                  {dataModal.addressArrival[0].city}
                 </p>
               </Col>
             </Row>
 
             <Row gutter={[16, 16]}>
-              <Col sm={24} md={8}>        
-                <h4>Note de course :</h4> 
+              <Col sm={24} md={8}>
+                <h4>Note de course :</h4>
                 <p>{dataModal.message ? dataModal.message : "Vide"}</p>
-                
               </Col>
               <Col sm={24} md={8}>
                 <h4>Type de transport :</h4>
-                <p>
-                {dataModal.type === true ? "Ambulance" : "VSL"}
-                </p>
+                <p>{dataModal.type === true ? "Ambulance" : "VSL"}</p>
               </Col>
               <Col sm={24} md={8}>
-              
-                
-                <h3>Status : {" "}
-
-                {dataModal.status === "annulé"
-                  ? "Annulé"
-                  : dataModal.status === "dispo"
-                  ? "Disponible"
-                  : dataModal.status === "cloturé"
-                  ? "Transport effectué" 
-                  : "Transport accepté (en cours)" 
-                }
+                <h3>
+                  Status :{" "}
+                  {dataModal.status === "annulé"
+                    ? " Annulé"
+                    : dataModal.status === "dispo"
+                    ? " Disponible"
+                    : dataModal.status === "cloturé"
+                    ? " Transport effectué"
+                    : " Transport accepté (en cours)"}
                 </h3>
-
-                </Col>
-
+              </Col>
             </Row>
 
             <Button
@@ -385,7 +414,7 @@ export default function ScreenList(props) {
               onClick={() => {
                 validation(dataModal._id, "annulé");
                 setVisible(false);
-                socket.emit("sendValidation", "Votre course a été annulé !");
+                socket.emit("sendValidation", "Votre course a été annulée !");
               }}
               type="primary"
               hidden={
@@ -404,7 +433,7 @@ export default function ScreenList(props) {
               onClick={() => {
                 validation(dataModal._id, "cloturé");
                 setVisible(false);
-                socket.emit("sendValidation", "Votre course a été clôturé !");
+                socket.emit("sendValidation", "Votre course a été clôturée !");
               }}
               type="primary"
               hidden={dataModal.status === "encours" ? false : true}

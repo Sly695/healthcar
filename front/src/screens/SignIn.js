@@ -117,7 +117,7 @@ function SignIn(props) {
       if (response.role == "soignant") {
         return props.history.push("/dashboard/booking");
       } else if (response.role == "ambulance") {
-        return props.history.push("/dashboard/list");
+        return props.history.push("/dashboard/map");
       }
     }
   }
