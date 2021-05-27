@@ -18,6 +18,7 @@ import {
   Affix,
   notification,
   Typography,
+  Tabs,
 } from "antd";
 import { useSelector } from "react-redux";
 import { SmileOutlined } from "@ant-design/icons";
@@ -32,9 +33,15 @@ var socket = socketIOClient("https://healthcar31.herokuapp.com/");
 
 const { Content } = Layout;
 const { Title } = Typography;
+const { TabPane } = Tabs;
 
 export default function ScreenList(props) {
   const [list, setList] = useState([]);
+  const [listEnAttente, setListEnAttente] = useState([]);
+  const [listEnCours, setListEnCours] = useState([]);
+  const [listEnd, setListEnd] = useState([]);
+  const [listCancel, setListCancel] = useState([]);
+
   const [visible, setVisible] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState();
   const [dataModal, setDataModal] = useState({
@@ -89,6 +96,23 @@ export default function ScreenList(props) {
         (id) => id.idPro === iduser || id.status === "dispo"
       );
       setList(filtre);
+      const filtreEnAttente = body.courseList.filter(
+        (id) => id.status === "dispo"
+      );
+      setListEnAttente(filtreEnAttente);
+      const filtreEnCours = body.courseList.filter(
+        (id) => id.idPro === iduser && id.status === "encours"
+      );
+      setListEnCours(filtreEnCours);
+      const filtreEnd = body.courseList.filter(
+        (id) => id.idPro === iduser && id.status === "cloturé"
+      );
+      setListEnd(filtreEnd);
+      const filtreCancel = body.courseList.filter(
+        (id) => id.idPro === iduser && id.status === "annulé"
+      );
+      setListCancel(filtreCancel);
+
       if (dataModal._id === "fake") {
         setDataModal(body.courseList[0]);
       }
@@ -130,6 +154,22 @@ export default function ScreenList(props) {
     const body = await result.json();
   };
 
+  function callback(key) {
+    console.log(key);
+    if (key == "1") {
+      setList(listEnAttente);
+    }
+    if (key == "2") {
+      setList(listEnCours);
+    }
+    if (key == "3") {
+      setList(listEnd);
+    }
+    if (key == "4") {
+      setList(listCancel);
+    }
+  }
+
   return (
     <Layout>
       <Affix>
@@ -139,8 +179,13 @@ export default function ScreenList(props) {
       <Layout>
         <Header />
         <Content className="site-layout-background">
+          <Tabs onChange={callback} type="card">
+            <TabPane tab="Transports en attente" key="1"></TabPane>
+            <TabPane tab="Transports en cours" key="2"></TabPane>
+            <TabPane tab="Transports terminés" key="3"></TabPane>
+            <TabPane tab="Transports annulés" key="4"></TabPane>
+          </Tabs>
           <Title level={2}>Liste des transports</Title>
-
           <Table dataSource={list}>
             <Column
               title="Status"
@@ -269,7 +314,6 @@ export default function ScreenList(props) {
               )}
             />
           </Table>
-
           <Modal
             title="Détails du transport"
             centered
