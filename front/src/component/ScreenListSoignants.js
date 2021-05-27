@@ -248,7 +248,7 @@ export default function ScreenListSoignants(props) {
             onCancel={() => setVisible(false)}
           >
             <center>
-              <p>Comment a été le transport ?</p>
+              <h4>Comment a été le transport ?</h4>
               <Rate onChange={noteChange} />
               <br />
 

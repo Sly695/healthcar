@@ -6,7 +6,6 @@ import "../App.less";
 import imgLogo from "../img/Logo.svg";
 
 import { Layout, Image, Menu, Divider, Typography, Rate, Space } from "antd";
-import "antd/dist/antd.css"; // or 'antd/dist/antd.less'
 import {
   UserOutlined,
   CheckCircleTwoTone,
@@ -53,7 +52,7 @@ export default function Nav(props) {
 
   return (
     <Sider
-      trigger={null}
+
       theme="light"
       breakpoint="lg"
       collapsedWidth="0"
@@ -66,7 +65,8 @@ export default function Nav(props) {
       align="middle"
     >
       <Space direction="vertical" size={20}>
-        <Image preview={false} src={imgLogo} width={150} />
+        <Image className="logo" preview={false}  src={imgLogo} width={150}/>
+
 
         <Title level={5} type="warning">
           {users.firstname} {users.lastname}

@@ -18,6 +18,12 @@ h2{
   color: @highlight-color;
 }
 
+.ant-modal-title{
+  color: @highlight-color;
+}
+
+
+
 /* -------NAV------- */
 aside{
   width: 100vw;
@@ -28,6 +34,11 @@ aside{
   z-index: 100;
   .ant-menu{
     border: none;
+  }
+  .ant-layout-sider-zero-width-trigger{
+    .anticon{
+      font-size: 36px;
+    }
   }
 }
 
@@ -67,7 +78,7 @@ Button{
 
 Footer{
     background-color: #fff;
-    .ant-list-item{
+    .ant-list-split .ant-list-item{
       border-bottom: none;
       .ant-image{
         display: flex;
@@ -77,12 +88,6 @@ Footer{
 }
 
 /* -------CONTENT------- */
-
-// .ant-layout {
-//   background-color: #F6F8FB;
-//   display: flex;
-//   align-items: center;
-// }
 
 
 main.ant-layout-content{
@@ -162,12 +167,6 @@ main.ant-layout-content .ant-table {
   flex-direction: column;
   align-items: center;
 }
-// .buttonSignUp {
-//   margin-top: 5rem;
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-// }
 .terms {
   position: relative;
   bottom: 0;
@@ -206,4 +205,23 @@ main.ant-layout-content .ant-table {
   .ant-card{
     border: none;
   }
+}
+.ant-modal-content{
+  border: solid 1px #6693fe;
+  border-radius: 12px;
+  box-shadow: 0px 12px 26px rgba(16, 30, 115, 0.06);
+  .ant-modal-body{
+    h4{
+      color:@processing-color;
+    }
+    h3{
+      color: #fff;
+      padding: 10px;
+      background-color: @processing-color;
+      border-radius: 15px;
+      text-align: center;
+    }
+
+  }
+
 }

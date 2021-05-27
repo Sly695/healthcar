@@ -204,7 +204,7 @@ const [value, setValue] = React.useState(1);
       <Content
       className="site-layout-background">
 
-      <Title level={1}>Gestion du profil de votre entreprise</Title>
+      <Title level={1}>Gestion du profil</Title>
 
       <Form
         labelCol={{
