@@ -426,7 +426,7 @@ export default function ScreenList(props) {
               onClick={() => {
                 validation(dataModal._id, "annulé");
                 setVisible(false);
-                socket.emit("sendValidation", "Votre course a été annulé !");
+                socket.emit("sendValidation", "Votre course a été annulée !");
               }}
               type="primary"
               hidden={
@@ -445,7 +445,7 @@ export default function ScreenList(props) {
               onClick={() => {
                 validation(dataModal._id, "cloturé");
                 setVisible(false);
-                socket.emit("sendValidation", "Votre course a été clôturé !");
+                socket.emit("sendValidation", "Votre course a été clôturée !");
               }}
               type="primary"
               hidden={dataModal.status === "encours" ? false : true}
