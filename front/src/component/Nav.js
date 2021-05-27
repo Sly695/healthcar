@@ -24,7 +24,7 @@ export default function Nav(props) {
 
   useEffect(() => {
     moyenne();
-  }, [rate]);
+  }, [userData]);
 
   function moyenne() {
     var n = userData.note.length;
@@ -52,7 +52,6 @@ export default function Nav(props) {
 
   return (
     <Sider
-
       theme="light"
       breakpoint="lg"
       collapsedWidth="0"
@@ -65,8 +64,7 @@ export default function Nav(props) {
       align="middle"
     >
       <Space direction="vertical" size={20}>
-        <Image className="logo" preview={false}  src={imgLogo} width={150}/>
-
+        <Image className="logo" preview={false} src={imgLogo} width={150} />
 
         <Title level={5} type="warning">
           {users.firstname} {users.lastname}
@@ -125,7 +123,7 @@ export default function Nav(props) {
       />
       <Menu>
         <Menu.Item key="1" icon={<LogoutOutlined />}>
-          <Link to="/">Deconnexion</Link>
+          <Link to="/">Déconnexion</Link>
         </Menu.Item>
       </Menu>
     </Sider>
