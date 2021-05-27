@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import "../App.less";
 import imgLogo from "../img/Logo.svg";
 
-import { Card, Layout, Image, Menu, Divider, Typography, Rate, Space } from "antd";
+import { Layout, Image, Menu, Divider, Typography, Rate, Space } from "antd";
 import "antd/dist/antd.css"; // or 'antd/dist/antd.less'
 import {
   UserOutlined,
@@ -16,9 +16,8 @@ import {
 } from "@ant-design/icons";
 
 // import logobleu from "../../public/images/Logobleu.svg";
-const { Meta } = Card;
 const { Sider } = Layout;
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 export default function Nav(props) {
   const [rate, setRate] = useState();
@@ -64,29 +63,28 @@ export default function Nav(props) {
       onCollapse={(collapsed, type) => {
         console.log(collapsed, type);
       }}
-      align="middle" 
+      align="middle"
     >
       <Space direction="vertical" size={20}>
-        <Image preview={false}  src={imgLogo} width={150}/>
+        <Image preview={false} src={imgLogo} width={150} />
 
         <Title level={5} type="warning">
           {users.firstname} {users.lastname}
         </Title>
       </Space>
-      
 
       <Divider />
 
       <Menu mode="inline" defaultSelectedKeys={["1"]}>
         <Menu.Item
-          hidden={userData.role == "soignant" ? false : true}
+          hidden={userData.role === "soignant" ? false : true}
           key="1"
           icon={<CheckCircleTwoTone />}
         >
           <Link to="/dashboard/booking">Réservation</Link>
         </Menu.Item>
         <Menu.Item
-          hidden={userData.role == "soignant" ? false : true}
+          hidden={userData.role === "soignant" ? false : true}
           key="2"
           icon={<UnorderedListOutlined />}
         >
@@ -94,14 +92,14 @@ export default function Nav(props) {
         </Menu.Item>
 
         <Menu.Item
-          hidden={userData.role == "ambulance" ? false : true}
+          hidden={userData.role === "ambulance" ? false : true}
           key="3"
           icon={<EnvironmentOutlined />}
         >
           <Link to="/dashboard/map">Map</Link>
         </Menu.Item>
         <Menu.Item
-          hidden={userData.role == "ambulance" ? false : true}
+          hidden={userData.role === "ambulance" ? false : true}
           key="4"
           icon={<UnorderedListOutlined />}
         >
@@ -114,14 +112,17 @@ export default function Nav(props) {
       </Menu>
 
       <Divider />
-        <Rate
-          hidden={userData.role == "ambulance" ? false : true}
-          allowHalf
-          disabled
-          value={rate}
-        />
+      <Rate
+        hidden={userData.role == "ambulance" ? false : true}
+        style={{ display: userData.role === "ambulance" ? "" : "none" }}
+        allowHalf
+        disabled
+        value={rate}
+      />
 
-      <Divider />
+      <Divider
+        style={{ display: userData.role === "ambulance" ? "" : "none" }}
+      />
       <Menu>
         <Menu.Item key="1" icon={<LogoutOutlined />}>
           <Link to="/">Deconnexion</Link>
@@ -130,13 +131,3 @@ export default function Nav(props) {
     </Sider>
   );
 }
-
-
-const styleSheet = {
-styleLogo: {
-  fontSize: "150px",
-  
-},
-
-}
-

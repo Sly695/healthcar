@@ -11,7 +11,10 @@ import {
   DatePicker,
   Affix,
   message,
-  notification
+  notification,
+  Typography,
+  Col,
+  Row
 } from "antd";
 import moment from "moment";
 import { useSelector } from "react-redux";
@@ -23,9 +26,10 @@ import FooterDash from "../component/Footer";
 
 import socketIOClient from "socket.io-client";
 
-import { SmileOutlined } from '@ant-design/icons';
+import { SmileOutlined } from "@ant-design/icons";
 
 const { Content } = Layout;
+const { Title } = Typography;
 
 export default function Booking(props) {
   const [type, setType] = useState(Boolean);
@@ -45,30 +49,27 @@ export default function Booking(props) {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [messageR, setMessageR] = useState("");
-  const [notificationMessage, setNotificationMessage] = useState()
+  const [notificationMessage, setNotificationMessage] = useState();
 
   const data = useSelector((state) => state.iduser);
 
   const format = "HH:mm";
 
-  var socket = socketIOClient("http://192.168.254.15:3000");
+
+  var socket = socketIOClient("https://healthcar31.herokuapp.com/");
 
   useEffect(() => {
     async function receivedNotification() {
-      await socket.on('sendValidationBack', (message) => {
-        setNotificationMessage(message)
+      await socket.on("sendValidationBack", (message) => {
+        setNotificationMessage(message);
       });
-
-      
     }
 
-    if(notificationMessage){
+    if (notificationMessage) {
       openNotification();
     }
-    
+
     receivedNotification();
-    
-    
   }, [notificationMessage]);
 
   const openNotification = () => {
@@ -76,13 +77,11 @@ export default function Booking(props) {
       message: "Notification",
       description: notificationMessage,
       duration: 0,
-      icon: <SmileOutlined style={{ color: 'green' }} />,
+      icon: <SmileOutlined style={{ color: "green" }} />,
     };
-    
+
     notification.open(args);
   };
-
-  
 
   async function booking() {
     var request = await fetch("/booking", {
@@ -91,17 +90,14 @@ export default function Booking(props) {
       body: `departureName=${nameDeparture}&addressDeparture=${streetDeparture}&postalCodeDeparture=${zipDeparture}&cityDeparture=${cityDeparture}&arrivalLocationName=${nameArrival}&addressArrival=${streetArrival}&postalCodeArrival=${zipArrival}&cityArrival=${cityArrival}&dateArrival=${date}&timeArrival=${time}&type=${type}&message=${messageR}&_id=${data}&lastnamePatient=${lastname}&firstnamePatient=${firstname}&sexePatient=${sexe}&birthdate=${naissance}&secu=${secu}`,
     });
     let response = await request.json();
-    if (response.result == true) {
+    if (response.result === true) {
       successSignUp();
-      socket.emit("sendAddCourse", "Une nouvelle course est dispo")
+      socket.emit("sendAddCourse", "Une nouvelle course est dispo");
       return props.history.push("/list-soignants");
     } else {
       errorSignUp();
     }
   }
-
-  
-
 
   const successSignUp = () => {
     message.success({
@@ -142,8 +138,6 @@ export default function Booking(props) {
     setTime(time, timeString);
   }
 
-  
-
   return (
     <Layout>
       <Affix>
@@ -154,117 +148,149 @@ export default function Booking(props) {
         <Header />
         <Content
           className="site-layout-background"
-          style={{
-            margin: "24px 16px",
-            padding: 24,
-            minHeight: 280,
-          }}
-        >
+          >
+          <Title level={2}>Réserver votre prochain transport</Title>
           <Form
-            labelCol={{ span: 4 }}
-            wrapperCol={{ span: 14 }}
-            layout="horizontal"
+            labelCol={{
+              span: 12,
+            }}
+            wrapperCol={{
+              span: 22,
+            }}
+            layout="vertical"
             initialValues="default"
             size="default"
-          >
-            <Form.Item label="Type de transport" name="size">
-              <Radio.Group onChange={(e) => setType(e.target.value)}>
-                <Radio.Button value={true}>Ambulance</Radio.Button>
-                <Radio.Button value={false}>VSL</Radio.Button>
-              </Radio.Group>
-            </Form.Item>
-            <Form.Item label="Le patient">
-              <Input
-                style={{ width: 100 }}
-                placeholder="Nom"
-                onChange={(e) => setLastname(e.target.value)}
-              />{" "}
-              <Input
-                style={{ width: 100 }}
-                placeholder="Prénom"
-                onChange={(e) => setFirstname(e.target.value)}
-              />{" "}
-              <Select
-                style={{ width: 100 }}
-                placeholder="Sexe"
-                onChange={handleChangeSexe}
-              >
-                <Select.Option value="Homme">Homme</Select.Option>
-                <Select.Option value="Femme">Femme</Select.Option>
-              </Select>{" "}
-              <DatePicker
-                placeholder="Date de naissance"
-                onChange={onChangeDateNaissance}
-              />{" "}
-              <Input
-                style={{ width: 200 }}
-                placeholder="Numéro de sécurité sociale"
-                onChange={(e) => setSecu(e.target.value)}
-              />
-            </Form.Item>
-            <Form.Item label="Lieu de prise en charge">
-              <Input
-                style={{ width: 150 }}
-                placeholder="Domicile / EHPAD"
-                onChange={(e) => setNameDeparture(e.target.value)}
-              />{" "}
-              <Input
-                style={{ width: 200 }}
-                placeholder="Rue"
-                onChange={(e) => setStreetDeparture(e.target.value)}
-              />{" "}
-              <Input
-                style={{ width: 100 }}
-                placeholder="Code postal"
-                onChange={(e) => setZipDeparture(e.target.value)}
-              />{" "}
-              <Input
-                style={{ width: 100 }}
-                placeholder="Ville"
-                onChange={(e) => setCityDeparture(e.target.value)}
-              />{" "}
-            </Form.Item>
-            <Form.Item label="Lieu de la consultation">
-              <Input
-                style={{ width: 150 }}
-                placeholder="Etablissement"
-                onChange={(e) => setNameArrival(e.target.value)}
-              />{" "}
-              <Input
-                style={{ width: 200 }}
-                placeholder="Rue"
-                onChange={(e) => setStreetArrival(e.target.value)}
-              />{" "}
-              <Input
-                style={{ width: 100 }}
-                placeholder="Code postal"
-                onChange={(e) => setZipArrival(e.target.value)}
-              />{" "}
-              <Input
-                style={{ width: 100 }}
-                placeholder="Ville"
-                onChange={(e) => setCityArrival(e.target.value)}
-              />{" "}
-            </Form.Item>
-            <Form.Item label="Note">
-              <Input.TextArea
-                style={{ width: 300 }}
-                onChange={(e) => setMessageR(e.target.value)}
-              />{" "}
-            </Form.Item>
-            <Form.Item label="Date et heure du RDV">
-              <DatePicker placeholder="Date" onChange={onChangeDateTransport} />{" "}
-              <TimePicker
-                defaultValue={moment("12:08", format)}
-                format={format}
-                placeholder="Heure"
-                onChange={onChangeTime}
-              />{" "}
-              <Button onClick={() => 
-              booking()}
-              >Valider la réservation</Button>
-            </Form.Item>
-          </Form>
+             >
+            <Row gutter={[8, 8]}>
+              <Col md={8} xs={24}>
+                <Form.Item label="Type de transport" name="size">
+                    <Radio.Group onChange={(e) => setType(e.target.value)}>
+                      <Radio.Button value={true}>Ambulance</Radio.Button>
+                      <Radio.Button value={false}>VSL</Radio.Button>
+                    </Radio.Group>
+                </Form.Item>
+                <Form.Item>
+                    <Input
+                    style={styleBooking.Input} 
+                    label="Nom du patient"
+                    placeholder="Nom"
+                    onChange={(e) => setLastname(e.target.value)}
+                    />
+                    </Form.Item>
+                    <Form.Item label="Prénom du patient">
+                    <Input
+                    style={styleBooking.Input} 
+                    placeholder="Prénom"
+                    onChange={(e) => setFirstname(e.target.value)}/>
+                    </Form.Item>
+                      <Form.Item label="Sexe">
+                      <Select
+                      placeholder="Sexe"
+                      onChange={handleChangeSexe}>
+                        <Select.Option value="Homme">Homme</Select.Option>
+                        <Select.Option value="Femme">Femme</Select.Option>
+                      </Select>
+                      </Form.Item>
+
+                      <Form.Item label="Date de naissance">
+                      <DatePicker
+                      placeholder="Date de naissance"
+                      onChange={onChangeDateNaissance}/>
+                      </Form.Item>
+                    
+                    <Form.Item label="Numéro de sécurité sociale">
+                      <Input
+                      style={styleBooking.Input} 
+                      placeholder="1 XX XX XXX XXX XX"
+                      onChange={(e) => setSecu(e.target.value)}
+                      />
+                  </Form.Item>
+              </Col>
+
+              <Col md={8} xs={24}>
+                <Form.Item label="Lieu de prise en charge">
+                  <Input
+                  style={styleBooking.Input} 
+                    placeholder="Domicile / EHPAD"
+                    onChange={(e) => setNameDeparture(e.target.value)}
+                  />
+                </Form.Item>
+
+                <Form.Item style={styleBooking.Label} label="Adresse">
+                  <Input
+                  style={styleBooking.Input} 
+                    placeholder="Rue"
+                    onChange={(e) => setStreetDeparture(e.target.value)}
+                  />
+                </Form.Item>
+
+                <Form.Item>
+                  <Input
+                  style={styleBooking.Input} 
+                    placeholder="Code postal"
+                    onChange={(e) => setZipDeparture(e.target.value)}
+                  />
+                </Form.Item>
+                <Form.Item>
+                  <Input
+                  style={styleBooking.Input} 
+                    placeholder="Ville"
+                    onChange={(e) => setCityDeparture(e.target.value)}/>
+                </Form.Item>
+                <Form.Item label="Lieu de la consultation">
+                  <Input
+                  style={styleBooking.Input} 
+                    placeholder="Etablissement"
+                    onChange={(e) => setNameArrival(e.target.value)}/>
+                </Form.Item>
+                <Form.Item label="Adresse">
+                  <Input
+                  style={styleBooking.Input} 
+                    placeholder="Rue"
+                    onChange={(e) => setStreetArrival(e.target.value)}/>
+                </Form.Item>
+                <Form.Item>
+                  <Input
+                  style={styleBooking.Input} 
+                  placeholder="Code postal"
+                  onChange={(e) => setZipArrival(e.target.value)}/>
+                </Form.Item>
+                <Form.Item>
+                  <Input
+                    style={styleBooking.Input} 
+                    placeholder="Ville"
+                    onChange={(e) => setCityArrival(e.target.value)}
+                  />
+                </Form.Item>
+
+              </Col>
+              <Col md={8} xs={24}>
+                <Form.Item  label="Date et heure du RDV">
+                  <DatePicker placeholder="Date" onChange={onChangeDateTransport} />{" "}
+                  <TimePicker
+                  defaultValue={moment("12:08", format)}
+                  format={format}
+                  placeholder="Heure"
+                  onChange={onChangeTime}
+                  />    
+                </Form.Item>
+
+                <Form.Item label="Note">
+                  <Input.TextArea
+                  rows={4}
+                  onChange={(e) => setMessageR(e.target.value)}
+                  />
+                </Form.Item>
+
+                <Button 
+                type='primary'
+                style={{ backgroundColor: "#FFAE80", borderColor: "#FFAE80",}}
+                onClick={() => booking()}>Valider la réservation</Button>
+                
+              </Col>
+            </Row>
+                
+              </Form>
         </Content>
         <FooterDash />
       </Layout>
@@ -272,8 +298,15 @@ export default function Booking(props) {
   );
 }
 
-const styleInput = {
+const styleBooking = {
+  Input : {
   fontSize: "15px",
   color: "#B170FF",
-  borderRadius: "2rem",
+  borderRadius: "15px",
+  },
+  Label : {
+    fontSize: "15px",
+    color: "#190134",
+    },
+  
 };

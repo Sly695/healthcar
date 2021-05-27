@@ -9,9 +9,18 @@ import {
 import moment from "moment";
 import "moment/locale/fr";
 import "../App.less";
-import { Layout, Modal, Table, Space, Button, Affix, notification, Typography} from "antd";
+import {
+  Layout,
+  Modal,
+  Table,
+  Space,
+  Button,
+  Affix,
+  notification,
+  Typography,
+} from "antd";
 import { useSelector } from "react-redux";
-import { SmileOutlined } from '@ant-design/icons';
+import { SmileOutlined } from "@ant-design/icons";
 
 import Nav from "../component/Nav";
 import Header from "../component/Header";
@@ -19,7 +28,7 @@ import FooterDash from "../component/Footer";
 
 import socketIOClient from "socket.io-client";
 
-var socket = socketIOClient("http://192.168.254.15:3000");
+var socket = socketIOClient("https://healthcar31.herokuapp.com/");
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -77,15 +86,12 @@ export default function ScreenList(props) {
       const data = await fetch(`/course-list`);
       const body = await data.json();
       const filtre = body.courseList.filter(
-        (id) => id.idPro == iduser || id.status == "dispo"
+        (id) => id.idPro === iduser || id.status === "dispo"
       );
       setList(filtre);
-      if (dataModal._id == "fake") {
+      if (dataModal._id === "fake") {
         setDataModal(body.courseList[0]);
       }
-
-
-
     };
 
     findList();
@@ -93,9 +99,9 @@ export default function ScreenList(props) {
 
   useEffect(() => {
     async function receivedNotification() {
-      await socket.on('sendAddCourseBack', (message) => {
-        setNotificationMessage(message)
-        console.log(message)
+      await socket.on("sendAddCourseBack", (message) => {
+        setNotificationMessage(message);
+        console.log(message);
       });
     }
     receivedNotification();
@@ -111,12 +117,11 @@ export default function ScreenList(props) {
       message: "Notification",
       description: notificationMessage,
       duration: 0,
-      icon: <SmileOutlined style={{ color: 'green' }} />,
+      icon: <SmileOutlined style={{ color: "green" }} />,
     };
 
     notification.open(args);
   };
-
 
   const validation = async (id, status) => {
     const result = await fetch(
@@ -124,9 +129,6 @@ export default function ScreenList(props) {
     );
     const body = await result.json();
   };
-
-
-
 
   return (
     <Layout>
@@ -147,19 +149,19 @@ export default function ScreenList(props) {
                 <Space size="middle">
                   {record.status === "annulé" ? (
                     <CloseCircleOutlined
-                      style={{ color: "red", fontSize: "22px" }}
+                      style={{ color: "#EE7D52", borderBlockColor: "none" }}
                     />
                   ) : record.status === "dispo" ? (
                     <HistoryOutlined
-                      style={{ color: "blue", fontSize: "22px" }}
+                      style={{ color: "#6793FF", borderBlockColor: "none" }}
                     />
                   ) : record.status === "cloturé" ? (
                     <CheckCircleOutlined
-                      style={{ color: "green", fontSize: "22px" }}
+                      style={{ color: "#5CC689", borderBlockColor: "none" }}
                     />
                   ) : (
                     <SyncOutlined
-                      style={{ color: "orange", fontSize: "22px" }}
+                      style={{ color: "#FFAE80", borderBlockColor: "none" }}
                     />
                   )}
                 </Space>
@@ -197,28 +199,12 @@ export default function ScreenList(props) {
             />
 
             <Column title="Arrivée" dataIndex="arrivalLocation" key="arrival" />
-            <Column
-              title="Date et heure"
-              dataIndex=""
-              key="dateArrival"
-              render={(text, record) => (
-                <Space size="middle">
-                  {moment(record.dateArrival).locale("fr").format("LLL")}
-                </Space>
-              )}
-            />
+
             <Column
               title="Date et heure"
               key="status"
               render={(text, record) => (
                 <Space size="middle">
-                  {record.status === "annulé"
-                    ? "Annulé"
-                    : record.status === "dispo"
-                      ? "Disponible"
-                      : record.status === "cloturé"
-                        ? "Transport effectué"
-                        : "Transport accepté (en cours)"}
                   {moment(record.dateArrival).locale("fr").format("L")}
                   {moment(record.timeArrival).locale("fr").format("LT")}
                 </Space>
@@ -230,16 +216,55 @@ export default function ScreenList(props) {
               key="action"
               render={(text, record) => (
                 <Space size="middle">
-                  <a
-                    onClick={() => {
-                      setDataModal(record);
-                      setVisible(true);
-                    }}
-                  >
-                    Détails de la course
-                    {/* {record.patient[0].lastname}{" "}
-                    {record.patient[0].firstname} */}
-                  </a>
+                  {record.status === "annulé" ? (
+                    <Button
+                      type="primary"
+                      onClick={() => {
+                        setDataModal(record);
+                        setVisible(true);
+                      }}
+                      style={{ backgroundColor: "#EE7D52" }}
+                    >
+                      Détails{" "}
+                    </Button>
+                  ) : record.status === "dispo" ? (
+                    <Button
+                      type="primary"
+                      onClick={() => {
+                        setDataModal(record);
+                        setVisible(true);
+                      }}
+                      style={{ backgroundColor: "#6793FF" }}
+                    >
+                      Détails{" "}
+                    </Button>
+                  ) : record.status === "cloturé" ? (
+                    <Button
+                      type="primary"
+                      onClick={() => {
+                        setDataModal(record);
+                        setVisible(true);
+                      }}
+                      style={{
+                        backgroundColor: "#5CC689",
+                        borderColor: "#5CC689",
+                      }}
+                    >
+                      Détails{" "}
+                    </Button>
+                  ) : (
+                    <Button
+                      value="large"
+                      type="primary"
+                      onClick={() => {
+                        setDataModal(record);
+                        setVisible(true);
+                      }}
+                      style={{ backgroundColor: "#FFAE80" }}
+                    >
+                      Détails{" "}
+                    </Button>
+                  )}
                 </Space>
               )}
             />
@@ -277,10 +302,10 @@ export default function ScreenList(props) {
               {dataModal.status === "annulé"
                 ? "Annulé"
                 : dataModal.status === "dispo"
-                  ? "Disponible"
-                  : dataModal.status === "cloturé"
-                    ? "Transport effectué"
-                    : "Transport accepté (en cours)"}
+                ? "Disponible"
+                : dataModal.status === "cloturé"
+                ? "Transport effectué"
+                : "Transport accepté (en cours)"}
             </p>
 
             <p>
@@ -302,18 +327,20 @@ export default function ScreenList(props) {
               onClick={() => {
                 validation(dataModal._id, "encours");
                 setVisible(false);
-                socket.emit("sendValidation", "Votre course a été prise en charge !")
+                socket.emit(
+                  "sendValidation",
+                  "Votre course a été prise en charge !"
+                );
               }}
-
               type="primary"
               hidden={
-                dataModal.status == "encours"
+                dataModal.status === "encours"
                   ? true
-                  : dataModal.status == "annulé"
-                    ? false
-                    : dataModal.status == "dispo"
-                      ? false
-                      : true
+                  : dataModal.status === "annulé"
+                  ? false
+                  : dataModal.status === "dispo"
+                  ? false
+                  : true
               }
             >
               Accepter
@@ -322,17 +349,17 @@ export default function ScreenList(props) {
               onClick={() => {
                 validation(dataModal._id, "annulé");
                 setVisible(false);
-                socket.emit("sendValidation", "Votre course a été annulé !")
+                socket.emit("sendValidation", "Votre course a été annulé !");
               }}
               type="primary"
               hidden={
-                dataModal.status == "encours"
+                dataModal.status === "encours"
                   ? false
-                  : dataModal.status == "annulé"
-                    ? true
-                    : dataModal.status == "dispo"
-                      ? true
-                      : true
+                  : dataModal.status === "annulé"
+                  ? true
+                  : dataModal.status === "dispo"
+                  ? true
+                  : true
               }
             >
               Annuler
@@ -341,10 +368,10 @@ export default function ScreenList(props) {
               onClick={() => {
                 validation(dataModal._id, "cloturé");
                 setVisible(false);
-                socket.emit("sendValidation", "Votre course a été clôturé !")
+                socket.emit("sendValidation", "Votre course a été clôturé !");
               }}
               type="primary"
-              hidden={dataModal.status == "encours" ? false : true}
+              hidden={dataModal.status === "encours" ? false : true}
             >
               Fin de mission
             </Button>
@@ -355,9 +382,3 @@ export default function ScreenList(props) {
     </Layout>
   );
 }
-
-const styleInput = {
-  fontSize: "15px",
-  color: "#B170FF",
-  borderRadius: "2rem",
-};
