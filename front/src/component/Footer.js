@@ -12,7 +12,7 @@ export default function FooterDash() {
   const { Footer } = Layout;
   return (
     <Footer className="ant-row">
-      <List className="ant-col ant-col-xs-24 ant-col-xl-8">
+      <List className="ant-col ant-col-xs-24 ant-col-xl-6">
         <Title level={4}>Centre d’aide</Title>
         <List.Item>
           <Text href="#">Questions fréquentes</Text>
@@ -25,13 +25,13 @@ export default function FooterDash() {
         </List.Item>
       </List>
 
-      <List className="ant-col ant-col-xs-24 ant-col-xl-8">
+      <List className="ant-col ant-col-xs-24 ant-col-xl-6">
         <Title level={4}>HealthCar</Title>
         <List.Item>
           <Text href="#">C.G.U</Text>
         </List.Item>
         <List.Item>
-          <Text href="#">Privacy</Text>
+          <Text href="#">Mentions légales</Text>
         </List.Item>
         <List.Item>
           <Text href="#">Presse</Text>
@@ -41,15 +41,9 @@ export default function FooterDash() {
         </List.Item>
       </List>
 
-      <List className="ant-col ant-col-xs-24 ant-col-xl-8">
-        <Title level={4}>Download the application</Title>
-        <List.Item>
-          <Image className="logo" src={imgGoogle} />
-          <Image className="logo" src={imgApple} />
-        </List.Item>
-      </List>
       <Image
-        className="ant-col ant-col-xs-24 ant-col-xl-8 logo"
+        preview={false}
+        className="ant-col ant-col-xs-24 ant-col-xl-12"
         src={imgLogo}
       />
     </Footer>

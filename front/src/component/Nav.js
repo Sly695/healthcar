@@ -14,7 +14,6 @@ import {
   UnorderedListOutlined,
 } from "@ant-design/icons";
 
-// import logobleu from "../../public/images/Logobleu.svg";
 const { Sider } = Layout;
 const { Title } = Typography;
 
@@ -61,15 +60,17 @@ export default function Nav(props) {
       onCollapse={(collapsed, type) => {
         console.log(collapsed, type);
       }}
-      align="middle"
+      align="middle" 
     >
       <Space direction="vertical" size={20}>
-        <Image className="logo" preview={false} src={imgLogo} width={150} />
+
+        <Image className="logo" preview={false}  src={imgLogo} width={150}/>
 
         <Title level={5} type="warning">
           {users.firstname} {users.lastname}
         </Title>
       </Space>
+      
 
       <Divider />
 
@@ -110,17 +111,14 @@ export default function Nav(props) {
       </Menu>
 
       <Divider />
-      <Rate
-        hidden={userData.role == "ambulance" ? false : true}
-        style={{ display: userData.role === "ambulance" ? "" : "none" }}
-        allowHalf
-        disabled
-        value={rate}
-      />
+        <Rate
+          hidden={userData.role === "ambulance" ? false : true}
+          allowHalf
+          disabled
+          value={rate}
+        />
 
-      <Divider
-        style={{ display: userData.role === "ambulance" ? "" : "none" }}
-      />
+      <Divider />
       <Menu>
         <Menu.Item key="1" icon={<LogoutOutlined />}>
           <Link to="/">Déconnexion</Link>
@@ -129,3 +127,5 @@ export default function Nav(props) {
     </Sider>
   );
 }
+
+

@@ -198,7 +198,6 @@ function Map(props) {
             </div>
             <br />
             <Button
-              style={{ color: "#6693fe" }}
               danger
               onClick={() => {
                 validation(marker._id, "encours");
