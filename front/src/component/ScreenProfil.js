@@ -321,7 +321,7 @@ export default function Profil(props) {
                   />
                 </Form.Item>
 
-                <Form.Item label="Changer mot de passe">
+                <Form.Item label="Confirmer le mot de passe">
                   <Input.Password
                     name="password"
                     placeholder="input password"
