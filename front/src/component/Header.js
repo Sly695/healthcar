@@ -14,16 +14,20 @@ export default function Header() {
   const [endTransport, setEndTransport] = useState(0);
   const [cancelTransport, setCancelTransport] = useState(0);
   const iduser = useSelector((state) => state.iduser);
+  const userData = useSelector((state) => state.userData);
   useEffect(() => {
     async function findList() {
       const data = await fetch(`/course-list`);
       const body = await data.json();
 
       // setList(body);
-      const filtreDispo = body.courseList.filter(
-        (id) =>
-          (id.idPro === iduser || id.idUser === iduser) && id.status === "dispo"
-      );
+      if (userData.role == "ambulance") {
+        var filtreDispo = body.courseList.filter((id) => id.status === "dispo");
+      } else {
+        var filtreDispo = body.courseList.filter(
+          (id) => id.idUser === iduser && id.status === "dispo"
+        );
+      }
       setWaitingTransport(filtreDispo.length);
       const filtreEncours = body.courseList.filter(
         (id) =>
