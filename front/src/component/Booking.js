@@ -55,7 +55,7 @@ export default function Booking(props) {
 
   const format = "HH:mm";
 
-  var socket = socketIOClient("https://healthcar31.herokuapp.com/");
+  var socket = socketIOClient("https://healthcar-31.herokuapp.com/");
 
   useEffect(() => {
     async function receivedNotification() {
