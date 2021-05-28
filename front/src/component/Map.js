@@ -22,7 +22,7 @@ import FooterDash from "./Footer";
 import Header from "./Header";
 import socketIOClient from "socket.io-client";
 
-var socket = socketIOClient("https://healthcar31.herokuapp.com/");
+var socket = socketIOClient("https://healthcar-31.herokuapp.com/");
 
 const { Content } = Layout;
 
