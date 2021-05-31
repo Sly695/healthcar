@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Card, PageHeader, List } from "antd";
+import { useSelector } from "react-redux";
 import {
   CheckCircleOutlined,
   HistoryOutlined,
@@ -12,22 +13,40 @@ export default function Header() {
   const [processTransport, setProcessTransport] = useState(0);
   const [endTransport, setEndTransport] = useState(0);
   const [cancelTransport, setCancelTransport] = useState(0);
-
+  const iduser = useSelector((state) => state.iduser);
+  const userData = useSelector((state) => state.userData);
   useEffect(() => {
     async function findList() {
       const data = await fetch(`/course-list`);
       const body = await data.json();
 
       // setList(body);
-      const filtreDispo = body.courseList.filter((id) => id.status === "dispo");
+      if (userData.role == "ambulance") {
+        var filtreDispo = body.courseList.filter((id) => id.status === "dispo");
+      } else {
+        var filtreDispo = body.courseList.filter(
+          (id) => id.idUser === iduser && id.status === "dispo"
+        );
+      }
       setWaitingTransport(filtreDispo.length);
-      const filtreEncours = body.courseList.filter((id) => id.status === "encours");
+      const filtreEncours = body.courseList.filter(
+        (id) =>
+          (id.idPro === iduser || id.idUser === iduser) &&
+          id.status === "encours"
+      );
       setProcessTransport(filtreEncours.length);
-      const filtreEnd = body.courseList.filter((id) => id.status === "cloturé");
+      const filtreEnd = body.courseList.filter(
+        (id) =>
+          (id.idPro === iduser || id.idUser === iduser) &&
+          id.status === "cloturé"
+      );
       setEndTransport(filtreEnd.length);
-      const filtreCancel = body.courseList.filter((id) => id.status === "annulé");
+      const filtreCancel = body.courseList.filter(
+        (id) =>
+          (id.idPro === iduser || id.idUser === iduser) &&
+          id.status === "annulé"
+      );
       setCancelTransport(filtreCancel.length);
-      
     }
     findList();
   }, []);
@@ -38,7 +57,7 @@ export default function Header() {
       status: waitingTransport,
     },
     {
-      title: "Transport en cours",
+      title: "Transports en cours",
       status: processTransport,
     },
     {
@@ -67,26 +86,19 @@ export default function Header() {
         renderItem={(item) => (
           <List.Item>
             <Card title={item.title}>
-              <Card.Meta 
-              avatar={
-                item.status === cancelTransport ? (
-                  <CloseCircleOutlined
-                    style={{ color: "#EE7D52"}}
-                  />
-                ) : item.status === waitingTransport ? (
-                  <HistoryOutlined
-                    style={{ color: "#6793FF"}}
-                  />
-                ) : item.status === endTransport ? (
-                  <CheckCircleOutlined
-                    style={{ color: "#5CC689"}}
-                  />
-                ) : (
-                  <SyncOutlined
-                    style={{ color: "#FFAE80"}}
-                  />
-                )}
-                />
+              <Card.Meta
+                avatar={
+                  item.title === "Transports annulés" ? (
+                    <CloseCircleOutlined style={{ color: "#EE7D52" }} />
+                  ) : item.title === "Transports en attente" ? (
+                    <HistoryOutlined style={{ color: "#6793FF" }} />
+                  ) : item.title === "Transports terminés" ? (
+                    <CheckCircleOutlined style={{ color: "#5CC689" }} />
+                  ) : (
+                    <SyncOutlined style={{ color: "#FFAE80" }} />
+                  )
+                }
+              />
               <h3>{item.status}</h3>
             </Card>
           </List.Item>

@@ -117,7 +117,7 @@ function SignIn(props) {
       if (response.role == "soignant") {
         return props.history.push("/dashboard/booking");
       } else if (response.role == "ambulance") {
-        return props.history.push("/dashboard/list");
+        return props.history.push("/dashboard/map");
       }
     }
   }
@@ -271,10 +271,10 @@ function SignIn(props) {
             <Form
               className="form"
               labelCol={{
-                span: 4,
+                span: 6,
               }}
               wrapperCol={{
-                span: 14,
+                span: 12,
               }}
               layout="horizontal"
               initialValues={{
@@ -307,9 +307,11 @@ function SignIn(props) {
                 />
               </Form.Item>
               <Form.Item label="Mot de passe">
-                <Input
-                  style={styleInput}
-                  onChange={(e) => setSignUpPasswordS(e.target.value)}
+                <Input.Password
+                name="password"
+                placeholder="input password" 
+                style={styleInput}
+                onChange={(e) => setSignUpPasswordS(e.target.value)}
                 />
               </Form.Item>
               <Form.Item>
@@ -321,8 +323,7 @@ function SignIn(props) {
                     height: "40px",
                     borderRadius: "10px",
                     marginLeft: "20px",
-                  }}
-                >
+                  }}>
                   Valider
                 </Button>
               </Form.Item>
@@ -332,10 +333,10 @@ function SignIn(props) {
             <Form
               className="form"
               labelCol={{
-                span: 4,
+                span: 6,
               }}
               wrapperCol={{
-                span: 14,
+                span: 12,
               }}
               layout="horizontal"
               initialValues={{
@@ -386,7 +387,9 @@ function SignIn(props) {
                 />
               </Form.Item>
               <Form.Item label="Mot de passe">
-                <Input
+                <Input.Password
+                name="password"
+                placeholder="input password" 
                   style={styleInput}
                   onChange={(e) => setSignUpPasswordA(e.target.value)}
                 />
@@ -397,7 +400,7 @@ function SignIn(props) {
                     fontSize: "17px",
                     height: "40px",
                     borderRadius: "15px",
-                    marginLeft: "20px",
+                    
                   }}
                   type="primary"
                   onClick={() => signUpAmbulance()}

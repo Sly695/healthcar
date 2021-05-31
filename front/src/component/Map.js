@@ -22,7 +22,7 @@ import FooterDash from "./Footer";
 import Header from "./Header";
 import socketIOClient from "socket.io-client";
 
-var socket = socketIOClient("https://healthcar31.herokuapp.com/");
+var socket = socketIOClient("https://healthcar-31.herokuapp.com/");
 
 const { Content } = Layout;
 
@@ -198,7 +198,6 @@ function Map(props) {
             </div>
             <br />
             <Button
-              style={{ color: "#6693fe" }}
               danger
               onClick={() => {
                 validation(marker._id, "encours");

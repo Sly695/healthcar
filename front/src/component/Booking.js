@@ -14,7 +14,7 @@ import {
   notification,
   Typography,
   Col,
-  Row
+  Row,
 } from "antd";
 import moment from "moment";
 import { useSelector } from "react-redux";
@@ -55,8 +55,7 @@ export default function Booking(props) {
 
   const format = "HH:mm";
 
-
-  var socket = socketIOClient("https://healthcar31.herokuapp.com/");
+  var socket = socketIOClient("https://healthcar-31.herokuapp.com/");
 
   useEffect(() => {
     async function receivedNotification() {
@@ -146,9 +145,7 @@ export default function Booking(props) {
 
       <Layout>
         <Header />
-        <Content
-          className="site-layout-background"
-          >
+        <Content className="site-layout-background">
           <Title level={2}>Réserver votre prochain transport</Title>
           <Form
             labelCol={{
@@ -160,57 +157,57 @@ export default function Booking(props) {
             layout="vertical"
             initialValues="default"
             size="default"
-             >
+          >
             <Row gutter={[8, 8]}>
               <Col md={8} xs={24}>
                 <Form.Item label="Type de transport" name="size">
-                    <Radio.Group onChange={(e) => setType(e.target.value)}>
-                      <Radio.Button value={true}>Ambulance</Radio.Button>
-                      <Radio.Button value={false}>VSL</Radio.Button>
-                    </Radio.Group>
+                  <Radio.Group onChange={(e) => setType(e.target.value)}>
+                    <Radio.Button value={true}>Ambulance</Radio.Button>
+                    <Radio.Button value={false}>VSL</Radio.Button>
+                  </Radio.Group>
                 </Form.Item>
                 <Form.Item>
-                    <Input
-                    style={styleBooking.Input} 
+                  <Input
+                    style={styleBooking.Input}
                     label="Nom du patient"
                     placeholder="Nom"
                     onChange={(e) => setLastname(e.target.value)}
-                    />
-                    </Form.Item>
-                    <Form.Item label="Prénom du patient">
-                    <Input
-                    style={styleBooking.Input} 
+                  />
+                </Form.Item>
+                <Form.Item label="Prénom du patient">
+                  <Input
+                    style={styleBooking.Input}
                     placeholder="Prénom"
-                    onChange={(e) => setFirstname(e.target.value)}/>
-                    </Form.Item>
-                      <Form.Item label="Sexe">
-                      <Select
-                      placeholder="Sexe"
-                      onChange={handleChangeSexe}>
-                        <Select.Option value="Homme">Homme</Select.Option>
-                        <Select.Option value="Femme">Femme</Select.Option>
-                      </Select>
-                      </Form.Item>
+                    onChange={(e) => setFirstname(e.target.value)}
+                  />
+                </Form.Item>
+                <Form.Item label="Sexe">
+                  <Select placeholder="Sexe" onChange={handleChangeSexe}>
+                    <Select.Option value="Homme">Homme</Select.Option>
+                    <Select.Option value="Femme">Femme</Select.Option>
+                  </Select>
+                </Form.Item>
 
-                      <Form.Item label="Date de naissance">
-                      <DatePicker
-                      placeholder="Date de naissance"
-                      onChange={onChangeDateNaissance}/>
-                      </Form.Item>
-                    
-                    <Form.Item label="Numéro de sécurité sociale">
-                      <Input
-                      style={styleBooking.Input} 
-                      placeholder="1 XX XX XXX XXX XX"
-                      onChange={(e) => setSecu(e.target.value)}
-                      />
-                  </Form.Item>
+                <Form.Item label="Date de naissance">
+                  <DatePicker
+                    placeholder="Date de naissance"
+                    onChange={onChangeDateNaissance}
+                  />
+                </Form.Item>
+
+                <Form.Item label="Numéro de sécurité sociale">
+                  <Input
+                    style={styleBooking.Input}
+                    placeholder="1 XX XX XXX XXX XX"
+                    onChange={(e) => setSecu(e.target.value)}
+                  />
+                </Form.Item>
               </Col>
 
               <Col md={8} xs={24}>
                 <Form.Item label="Lieu de prise en charge">
                   <Input
-                  style={styleBooking.Input} 
+                    style={styleBooking.Input}
                     placeholder="Domicile / EHPAD"
                     onChange={(e) => setNameDeparture(e.target.value)}
                   />
@@ -218,7 +215,7 @@ export default function Booking(props) {
 
                 <Form.Item style={styleBooking.Label} label="Adresse">
                   <Input
-                  style={styleBooking.Input} 
+                    style={styleBooking.Input}
                     placeholder="Rue"
                     onChange={(e) => setStreetDeparture(e.target.value)}
                   />
@@ -226,71 +223,79 @@ export default function Booking(props) {
 
                 <Form.Item>
                   <Input
-                  style={styleBooking.Input} 
+                    style={styleBooking.Input}
                     placeholder="Code postal"
                     onChange={(e) => setZipDeparture(e.target.value)}
                   />
                 </Form.Item>
                 <Form.Item>
                   <Input
-                  style={styleBooking.Input} 
+                    style={styleBooking.Input}
                     placeholder="Ville"
-                    onChange={(e) => setCityDeparture(e.target.value)}/>
+                    onChange={(e) => setCityDeparture(e.target.value)}
+                  />
                 </Form.Item>
                 <Form.Item label="Lieu de la consultation">
                   <Input
-                  style={styleBooking.Input} 
+                    style={styleBooking.Input}
                     placeholder="Etablissement"
-                    onChange={(e) => setNameArrival(e.target.value)}/>
+                    onChange={(e) => setNameArrival(e.target.value)}
+                  />
                 </Form.Item>
                 <Form.Item label="Adresse">
                   <Input
-                  style={styleBooking.Input} 
+                    style={styleBooking.Input}
                     placeholder="Rue"
-                    onChange={(e) => setStreetArrival(e.target.value)}/>
+                    onChange={(e) => setStreetArrival(e.target.value)}
+                  />
                 </Form.Item>
                 <Form.Item>
                   <Input
-                  style={styleBooking.Input} 
-                  placeholder="Code postal"
-                  onChange={(e) => setZipArrival(e.target.value)}/>
+                    style={styleBooking.Input}
+                    placeholder="Code postal"
+                    onChange={(e) => setZipArrival(e.target.value)}
+                  />
                 </Form.Item>
                 <Form.Item>
                   <Input
-                    style={styleBooking.Input} 
+                    style={styleBooking.Input}
                     placeholder="Ville"
                     onChange={(e) => setCityArrival(e.target.value)}
                   />
                 </Form.Item>
-
               </Col>
               <Col md={8} xs={24}>
-                <Form.Item  label="Date et heure du RDV">
-                  <DatePicker placeholder="Date" onChange={onChangeDateTransport} />{" "}
+                <Form.Item label="Date et heure du RDV">
+                  <DatePicker
+                    placeholder="Date"
+                    onChange={onChangeDateTransport}
+                  />{" "}
                   <TimePicker
-                  defaultValue={moment("12:08", format)}
-                  format={format}
-                  placeholder="Heure"
-                  onChange={onChangeTime}
-                  />    
+                    style={{ marginTop: "20px" }}
+                    defaultValue={moment("12:08", format)}
+                    format={format}
+                    placeholder="Heure"
+                    onChange={onChangeTime}
+                  />
                 </Form.Item>
 
                 <Form.Item label="Note">
                   <Input.TextArea
-                  rows={4}
-                  onChange={(e) => setMessageR(e.target.value)}
+                    rows={4}
+                    onChange={(e) => setMessageR(e.target.value)}
                   />
                 </Form.Item>
 
-                <Button 
-                type='primary'
-                style={{ backgroundColor: "#FFAE80", borderColor: "#FFAE80",}}
-                onClick={() => booking()}>Valider la réservation</Button>
-                
+                <Button
+                  type="primary"
+                  style={{ backgroundColor: "#FFAE80", borderColor: "#FFAE80" }}
+                  onClick={() => booking()}
+                >
+                  Valider la réservation
+                </Button>
               </Col>
             </Row>
-                
-              </Form>
+          </Form>
         </Content>
         <FooterDash />
       </Layout>
@@ -299,14 +304,13 @@ export default function Booking(props) {
 }
 
 const styleBooking = {
-  Input : {
-  fontSize: "15px",
-  color: "#B170FF",
-  borderRadius: "15px",
+  Input: {
+    fontSize: "15px",
+    color: "#B170FF",
+    borderRadius: "15px",
   },
-  Label : {
+  Label: {
     fontSize: "15px",
     color: "#190134",
-    },
-  
+  },
 };
