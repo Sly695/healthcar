@@ -138,9 +138,6 @@ function UploadAvatar() {
 export default function Profil(props) {
   const userData = useSelector((state) => state.userData);
   const dispatch = useDispatch();
-
-  console.log(userData);
-
   const { handleSubmit, pristine, submitting } = props;
 
   const [componentSize, setComponentSize] = useState("default");
@@ -151,6 +148,7 @@ export default function Profil(props) {
   const [occupation, setOccupation] = useState("");
   const [lastname, setLastname] = useState("");
   const [firstname, setFirstname] = useState("");
+  const [userData1, setUserData1] = useState(userData.nomEntreprise)
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -199,6 +197,8 @@ export default function Profil(props) {
     setValue(e.target.value);
   };
 
+  console.log(userData1);
+
   return (
     <Layout>
       <Affix>
@@ -222,10 +222,10 @@ export default function Profil(props) {
               <Col md={8} xs={24}>
                 <Form.Item label="Société">
                   <Input
-                    value={userData.nomEntreprise}
+                    value={userData1}
                     name="nomEntreprise"
                     style={styleInput}
-                    onChange={(e) => setEntreprise(e.target.value)}
+                    onChange={(e) => setUserData1(e.target.value)}
                   />
                 </Form.Item>
 
@@ -340,6 +340,8 @@ export default function Profil(props) {
                     borderRadius: "10px",
                   }}
                   type="primary"
+                  onClick={() => 
+                    UpdateSoigant}
                 >
                   Valider
                 </Button>

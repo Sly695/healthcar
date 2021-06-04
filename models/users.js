@@ -12,7 +12,6 @@ var userSchema = mongoose.Schema({
   lastname: String,
   firstname: String,
   avatar: String,
-
   email: String,
   role: String, // soignant, transporteur
   adresse: [AddressSchema],

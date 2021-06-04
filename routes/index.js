@@ -212,4 +212,10 @@ router.get("/getRoute", async (req, res, next) => {
   });
 });
 
+router.post("/test", async (req, res, next) => {
+  var name = req.body.name;
+  console.log(name)
+  res.json({result : name})
+})
+
 module.exports = router;
