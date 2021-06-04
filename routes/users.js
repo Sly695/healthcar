@@ -206,7 +206,6 @@ router.put("/update-profil", async (req, res, next) => {
       firstname: req.body.firstname,
       monEntreprise: req.body.nomEntreprise,
       siret: req.body.siret,
-      responsable_name: req.body.responableName,
       firstname: req.body.firstname,
       email: req.body.email,
       phone: req.body.phone,
@@ -218,7 +217,6 @@ router.put("/update-profil", async (req, res, next) => {
       },
     }
   );
-
   res.json({ userProfil });
 });
 
