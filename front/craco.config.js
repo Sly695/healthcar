@@ -14,7 +14,7 @@
 //             '@highlight-color': '#B170FF',
 //             '@warning-color': '#FFAE80',
 //             '@white': '#fff',
-//             '@black': '#000',
+//             '@black': '#190134',
 //             '@link-color': '#FFAE80',
 //             '@border-radius-base': '2px',
 //             '@layout-sider-background': '#fff',

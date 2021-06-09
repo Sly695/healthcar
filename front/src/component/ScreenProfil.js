@@ -257,6 +257,7 @@ const [value, setValue] = useState([]);
                   fontSize: "17px",
                   height: "40px",
                   borderRadius: "10px",
+                  width: "100%",
                 }}
               type="primary">Valider</Button>
             </Col>
