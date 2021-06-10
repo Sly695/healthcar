@@ -6,7 +6,6 @@ import "../App.less";
 import imgLogo from "../img/Logo.svg";
 
 import { Layout, Image, Menu, Divider, Typography, Rate, Space } from "antd";
-import "antd/dist/antd.css"; // or 'antd/dist/antd.less'
 import {
   UserOutlined,
   CheckCircleTwoTone,
@@ -15,7 +14,6 @@ import {
   UnorderedListOutlined,
 } from "@ant-design/icons";
 
-// import logobleu from "../../public/images/Logobleu.svg";
 const { Sider } = Layout;
 const { Title } = Typography;
 
@@ -25,7 +23,7 @@ export default function Nav(props) {
 
   useEffect(() => {
     moyenne();
-  }, [rate]);
+  }, [userData]);
 
   function moyenne() {
     var n = userData.note.length;
@@ -53,7 +51,6 @@ export default function Nav(props) {
 
   return (
     <Sider
-      trigger={null}
       theme="light"
       breakpoint="lg"
       collapsedWidth="0"
@@ -63,16 +60,15 @@ export default function Nav(props) {
       onCollapse={(collapsed, type) => {
         console.log(collapsed, type);
       }}
-      align="middle" 
+      align="middle"
     >
       <Space direction="vertical" size={20}>
-        <Image preview={false}  src={imgLogo} width={150}/>
+        <Image className="logo" preview={false} src={imgLogo} width={150} />
 
         <Title level={5} type="warning">
           {users.firstname} {users.lastname}
         </Title>
       </Space>
-      
 
       <Divider />
 
@@ -112,22 +108,23 @@ export default function Nav(props) {
         </Menu.Item>
       </Menu>
 
-      <Divider />
-        <Rate
-          hidden={userData.role === "ambulance" ? false : true}
-          allowHalf
-          disabled
-          value={rate}
-        />
+      <Divider
+        style={{ display: userData.role === "soignant" ? "none" : "" }}
+      />
+      <Rate
+        style={{ display: userData.role === "soignant" ? "none" : "" }}
+        hidden={userData.role === "ambulance" ? false : true}
+        allowHalf
+        disabled
+        value={rate}
+      />
 
       <Divider />
       <Menu>
         <Menu.Item key="1" icon={<LogoutOutlined />}>
-          <Link to="/">Deconnexion</Link>
+          <Link to="/">Déconnexion</Link>
         </Menu.Item>
       </Menu>
     </Sider>
   );
 }
-
-

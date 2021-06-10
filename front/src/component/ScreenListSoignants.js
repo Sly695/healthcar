@@ -17,7 +17,8 @@ import {
   Rate,
   Affix,
   notification,
-  Typography
+  Typography,
+  Tabs,
 } from "antd";
 import Nav from "../component/Nav";
 import Profil from "../component/ScreenProfil";
@@ -27,14 +28,19 @@ import { useSelector } from "react-redux";
 import socketIOClient from "socket.io-client";
 import { SmileOutlined } from "@ant-design/icons";
 
-
-var socket = socketIOClient("https://healthcar31.herokuapp.com/");
+var socket = socketIOClient("https://healthcar-31.herokuapp.com/");
 
 const { Content } = Layout;
 const { Title } = Typography;
+const { TabPane } = Tabs;
 
 export default function ScreenListSoignants(props) {
   const [list, setList] = useState([]);
+  const [listEnAttente, setListEnAttente] = useState([]);
+  const [listEnCours, setListEnCours] = useState([]);
+  const [listEnd, setListEnd] = useState([]);
+  const [listCancel, setListCancel] = useState([]);
+
   const [visible, setVisible] = useState(false);
   const [dataModal, setDataModal] = useState({ idpro: "Fake" });
   const [note, setNote] = useState(Number);
@@ -51,6 +57,22 @@ export default function ScreenListSoignants(props) {
       const filtre = body.courseList.filter((id) => id.idUser == iduser);
 
       setList(filtre);
+      const filtreEnAttente = body.courseList.filter(
+        (id) => id.idUser == iduser && id.status === "dispo"
+      );
+      setListEnAttente(filtreEnAttente);
+      const filtreEnCours = body.courseList.filter(
+        (id) => id.idUser == iduser && id.status === "encours"
+      );
+      setListEnCours(filtreEnCours);
+      const filtreEnd = body.courseList.filter(
+        (id) => id.idUser == iduser && id.status === "cloturé"
+      );
+      setListEnd(filtreEnd);
+      const filtreCancel = body.courseList.filter(
+        (id) => id.idUser == iduser && id.status === "annulé"
+      );
+      setListCancel(filtreCancel);
     };
 
     findList();
@@ -92,7 +114,21 @@ export default function ScreenListSoignants(props) {
   function noteChange(value) {
     setNote(value);
   }
-
+  function callback(key) {
+    console.log(key);
+    if (key == "1") {
+      setList(listEnAttente);
+    }
+    if (key == "2") {
+      setList(listEnCours);
+    }
+    if (key == "3") {
+      setList(listEnd);
+    }
+    if (key == "4") {
+      setList(listCancel);
+    }
+  }
   return (
     <Layout>
       <Affix>
@@ -101,8 +137,14 @@ export default function ScreenListSoignants(props) {
 
       <Layout>
         <Header />
-        <Content className="site-layout-background" >
-        <Title level={2}>Vos réservations</Title>
+        <Content className="site-layout-background">
+          <Tabs onChange={callback} type="card">
+            <TabPane tab="Transports en attente" key="1"></TabPane>
+            <TabPane tab="Transports en cours" key="2"></TabPane>
+            <TabPane tab="Transports terminés" key="3"></TabPane>
+            <TabPane tab="Transports annulés" key="4"></TabPane>
+          </Tabs>
+          <Title level={2}>Vos réservations</Title>
           <Table dataSource={list}>
             <Column
               title="Status"
@@ -161,28 +203,12 @@ export default function ScreenListSoignants(props) {
             />
 
             <Column title="Arrivée" dataIndex="arrivalLocation" key="arrival" />
-            <Column
-              title="Date et heure"
-              dataIndex=""
-              key="dateArrival"
-              render={(text, record) => (
-                <Space size="middle">
-                  {moment(record.dateArrival).locale("fr").format("LLL")}
-                </Space>
-              )}
-            />
+
             <Column
               title="Date et heure"
               key="status"
               render={(text, record) => (
                 <Space size="middle">
-                  {record.status === "annulé"
-                    ? "Annulé"
-                    : record.status === "dispo"
-                    ? "Disponible"
-                    : record.status === "cloturé"
-                    ? "Transport effectué"
-                    : "Transport accepté (en cours)"}
                   {moment(record.dateArrival).locale("fr").format("L")}
                   {moment(record.timeArrival).locale("fr").format("LT")}
                 </Space>
@@ -222,7 +248,7 @@ export default function ScreenListSoignants(props) {
             onCancel={() => setVisible(false)}
           >
             <center>
-              <p>Comment a été le transport ?</p>
+              <h4>Comment a été le transport ?</h4>
               <Rate onChange={noteChange} />
               <br />
 

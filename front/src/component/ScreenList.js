@@ -18,6 +18,9 @@ import {
   Affix,
   notification,
   Typography,
+  Row,
+  Col,
+  Tabs,
 } from "antd";
 import { useSelector } from "react-redux";
 import { SmileOutlined } from "@ant-design/icons";
@@ -28,14 +31,19 @@ import FooterDash from "../component/Footer";
 
 import socketIOClient from "socket.io-client";
 
-
-var socket = socketIOClient("https://healthcar31.herokuapp.com/");
+var socket = socketIOClient("https://healthcar-31.herokuapp.com/");
 
 const { Content } = Layout;
 const { Title } = Typography;
+const { TabPane } = Tabs;
 
 export default function ScreenList(props) {
   const [list, setList] = useState([]);
+  const [listEnAttente, setListEnAttente] = useState([]);
+  const [listEnCours, setListEnCours] = useState([]);
+  const [listEnd, setListEnd] = useState([]);
+  const [listCancel, setListCancel] = useState([]);
+
   const [visible, setVisible] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState();
   const [dataModal, setDataModal] = useState({
@@ -90,9 +98,27 @@ export default function ScreenList(props) {
         (id) => id.idPro === iduser || id.status === "dispo"
       );
       setList(filtre);
+      const filtreEnAttente = body.courseList.filter(
+        (id) => id.status === "dispo"
+      );
+      setListEnAttente(filtreEnAttente);
+      const filtreEnCours = body.courseList.filter(
+        (id) => id.idPro === iduser && id.status === "encours"
+      );
+      setListEnCours(filtreEnCours);
+      const filtreEnd = body.courseList.filter(
+        (id) => id.idPro === iduser && id.status === "cloturé"
+      );
+      setListEnd(filtreEnd);
+      const filtreCancel = body.courseList.filter(
+        (id) => id.idPro === iduser && id.status === "annulé"
+      );
+      setListCancel(filtreCancel);
+
       if (dataModal._id === "fake") {
         setDataModal(body.courseList[0]);
       }
+      callback("10");
     };
 
     findList();
@@ -131,6 +157,25 @@ export default function ScreenList(props) {
     const body = await result.json();
   };
 
+  function callback(key) {
+    console.log(key);
+    if (key == "1") {
+      setList(listEnAttente);
+    }
+    if (key == "2") {
+      setList(listEnCours);
+    }
+    if (key == "3") {
+      setList(listEnd);
+    }
+    if (key == "4") {
+      setList(listCancel);
+    }
+    if (key == "10") {
+      setList(list);
+    }
+  }
+
   return (
     <Layout>
       <Affix>
@@ -140,8 +185,13 @@ export default function ScreenList(props) {
       <Layout>
         <Header />
         <Content className="site-layout-background">
+          <Tabs onChange={callback} type="card">
+            <TabPane tab="Transports en attente" key="1"></TabPane>
+            <TabPane tab="Transports en cours" key="2"></TabPane>
+            <TabPane tab="Transports terminés" key="3"></TabPane>
+            <TabPane tab="Transports annulés" key="4"></TabPane>
+          </Tabs>
           <Title level={2}>Liste des transports</Title>
-
           <Table dataSource={list}>
             <Column
               title="Status"
@@ -150,19 +200,19 @@ export default function ScreenList(props) {
                 <Space size="middle">
                   {record.status === "annulé" ? (
                     <CloseCircleOutlined
-                      style={{ color: "#EE7D52", borderBlockColor: 'none' }}
+                      style={{ color: "#EE7D52", fontSize: "30px" }}
                     />
                   ) : record.status === "dispo" ? (
                     <HistoryOutlined
-                      style={{ color: "#6793FF", borderBlockColor: 'none' }}
+                      style={{ color: "#6793FF", fontSize: "30px" }}
                     />
                   ) : record.status === "cloturé" ? (
                     <CheckCircleOutlined
-                      style={{ color: "#5CC689", borderBlockColor: 'none' }}
+                      style={{ color: "#5CC689", fontSize: "30px" }}
                     />
                   ) : (
                     <SyncOutlined
-                      style={{ color: "#FFAE80", borderBlockColor: 'none'}}
+                      style={{ color: "#FFAE80", fontSize: "30px" }}
                     />
                   )}
                 </Space>
@@ -200,28 +250,12 @@ export default function ScreenList(props) {
             />
 
             <Column title="Arrivée" dataIndex="arrivalLocation" key="arrival" />
-            <Column
-              title="Date et heure"
-              dataIndex=""
-              key="dateArrival"
-              render={(text, record) => (
-                <Space size="middle">
-                  {moment(record.dateArrival).locale("fr").format("LLL")}
-                </Space>
-              )}
-            />
+
             <Column
               title="Date et heure"
               key="status"
               render={(text, record) => (
                 <Space size="middle">
-                  {record.status === "annulé"
-                    ? "Annulé"
-                    : record.status === "dispo"
-                    ? "Disponible"
-                    : record.status === "cloturé"
-                    ? "Transport effectué"
-                    : "Transport accepté (en cours)"}
                   {moment(record.dateArrival).locale("fr").format("L")}
                   {moment(record.timeArrival).locale("fr").format("LT")}
                 </Space>
@@ -235,47 +269,66 @@ export default function ScreenList(props) {
                 <Space size="middle">
                   {record.status === "annulé" ? (
                     <Button
-                    type="primary"
-                    onClick={() => {
-                      setDataModal(record);
-                      setVisible(true);
-                    }}
-                      style={{ backgroundColor: "#EE7D52" }}
-                    >Détails </Button>
+                      type="primary"
+                      onClick={() => {
+                        setDataModal(record);
+                        setVisible(true);
+                      }}
+                      style={{
+                        backgroundColor: "#EE7D52",
+                        borderColor: "#EE7D52",
+                      }}
+                    >
+                      Détails{" "}
+                    </Button>
                   ) : record.status === "dispo" ? (
                     <Button
-                    type="primary"
-                    onClick={() => {
-                      setDataModal(record);
-                      setVisible(true);
-                    }}
-                      style={{ backgroundColor: "#6793FF"}}
-                    >Détails </Button>
+                      type="primary"
+                      onClick={() => {
+                        setDataModal(record);
+                        setVisible(true);
+                      }}
+                      style={{
+                        backgroundColor: "#6793FF",
+                        borderColor: "#6793FF",
+                      }}
+                    >
+                      Détails{" "}
+                    </Button>
                   ) : record.status === "cloturé" ? (
                     <Button
-                    type="primary"
-                    onClick={() => {
-                      setDataModal(record);
-                      setVisible(true);
-                    }}
-                      style={{ backgroundColor: "#5CC689", borderColor: "#5CC689"}}
-                    >Détails </Button>
+                      type="primary"
+                      onClick={() => {
+                        setDataModal(record);
+                        setVisible(true);
+                      }}
+                      style={{
+                        backgroundColor: "#5CC689",
+                        borderColor: "#5CC689",
+                      }}
+                    >
+                      Détails{" "}
+                    </Button>
                   ) : (
                     <Button
-                    value="large"
-                    type="primary"
-                    onClick={() => {
-                      setDataModal(record);
-                      setVisible(true);
-                    }}
-                      style={{ backgroundColor: "#FFAE80"}}
-                    >Détails </Button>
+                      value="large"
+                      type="primary"
+                      onClick={() => {
+                        setDataModal(record);
+                        setVisible(true);
+                      }}
+                      style={{
+                        backgroundColor: "#FFAE80",
+                        borderColor: "#FFAE80",
+                      }}
+                    >
+                      Détails{" "}
+                    </Button>
                   )}
                 </Space>
               )}
             />
           </Table>
-
           <Modal
             title="Détails du transport"
             centered
@@ -284,51 +337,69 @@ export default function ScreenList(props) {
             footer={null}
             onCancel={() => setVisible(false)}
           >
-            <p>Référence : {dataModal.ref}</p>
-            <p>Nom : {dataModal.patient[0].lastname}</p>
-            <p>Prénom : {dataModal.patient[0].firstname}</p>
-            <p>
-              Départ de {dataModal.departureLocation} à déstination de{" "}
-              {dataModal.arrivalLocation}
-            </p>
-            <p>
-              Date du RDV :{" "}
-              {moment(dataModal.dateArrival).locale("fr").format("L")}
-            </p>
-            <p>
-              Heure du RDV prévue :{" "}
-              {moment(dataModal.timeArrival).locale("fr").format("LT")}
-            </p>
+            <h5>Référence : {dataModal.ref}</h5>
+            <Row gutter={[16, 16]}>
+              <Col sm={12} md={6}>
+                <h4>Nom :</h4> <p>{dataModal.patient[0].lastname}</p>
+                <h4>Prénom :</h4> <p>{dataModal.patient[0].firstname}</p>
+              </Col>
+              <Col sm={12} md={6}>
+                <h4>Date du RDV :</h4>
+                <p>{moment(dataModal.dateArrival).locale("fr").format("L")}</p>
+                <h4>Heure du RDV :</h4>
+                <p>{moment(dataModal.timeArrival).locale("fr").format("LT")}</p>
+              </Col>
+              <Col sm={12} md={6}>
+                <h4>Départ de</h4>
+                <p>{dataModal.departureLocation}</p>
+                <h4>à destination de</h4>
+                <p>{dataModal.arrivalLocation}</p>
+              </Col>
 
-            <p>
-              Note de course : {dataModal.message ? dataModal.message : "Vide"}
-            </p>
-            <p>
-              Status :{" "}
-              {dataModal.status === "annulé"
-                ? "Annulé"
-                : dataModal.status === "dispo"
-                ? "Disponible"
-                : dataModal.status === "cloturé"
-                ? "Transport effectué"
-                : "Transport accepté (en cours)"}
-            </p>
+              <Col>
+                <h4>Adresse de départ :</h4>
+                <p>
+                  {dataModal.addressDeparture[0].address},
+                  <br />
+                  {dataModal.addressDeparture[0].postalCode},
+                  <br />
+                  {dataModal.addressDeparture[0].city}
+                </p>
 
-            <p>
-              Type de transport :{" "}
-              {dataModal.type === true ? "Ambulance" : "VSL"}
-            </p>
+                <h4>Adresse d'arrivée : </h4>
+                <p>
+                  {dataModal.addressArrival[0].address},
+                  <br />
+                  {dataModal.addressArrival[0].postalCode},
+                  <br />
+                  {dataModal.addressArrival[0].city}
+                </p>
+              </Col>
+            </Row>
 
-            <p>
-              Adresse de départ : {dataModal.addressDeparture[0].address},{" "}
-              {dataModal.addressDeparture[0].postalCode},{" "}
-              {dataModal.addressDeparture[0].city}
-            </p>
-            <p>
-              Adresse de départ : {dataModal.addressArrival[0].address},{" "}
-              {dataModal.addressArrival[0].postalCode},{" "}
-              {dataModal.addressArrival[0].city}
-            </p>
+            <Row gutter={[16, 16]}>
+              <Col sm={24} md={8}>
+                <h4>Note de course :</h4>
+                <p>{dataModal.message ? dataModal.message : "Vide"}</p>
+              </Col>
+              <Col sm={24} md={8}>
+                <h4>Type de transport :</h4>
+                <p>{dataModal.type === true ? "Ambulance" : "VSL"}</p>
+              </Col>
+              <Col sm={24} md={8}>
+                <h3>
+                  Status :{" "}
+                  {dataModal.status === "annulé"
+                    ? " Annulé"
+                    : dataModal.status === "dispo"
+                    ? " Disponible"
+                    : dataModal.status === "cloturé"
+                    ? " Transport effectué"
+                    : " Transport accepté (en cours)"}
+                </h3>
+              </Col>
+            </Row>
+
             <Button
               onClick={() => {
                 validation(dataModal._id, "encours");
@@ -355,7 +426,7 @@ export default function ScreenList(props) {
               onClick={() => {
                 validation(dataModal._id, "annulé");
                 setVisible(false);
-                socket.emit("sendValidation", "Votre course a été annulé !");
+                socket.emit("sendValidation", "Votre course a été annulée !");
               }}
               type="primary"
               hidden={
@@ -374,7 +445,7 @@ export default function ScreenList(props) {
               onClick={() => {
                 validation(dataModal._id, "cloturé");
                 setVisible(false);
-                socket.emit("sendValidation", "Votre course a été clôturé !");
+                socket.emit("sendValidation", "Votre course a été clôturée !");
               }}
               type="primary"
               hidden={dataModal.status === "encours" ? false : true}
@@ -388,4 +459,3 @@ export default function ScreenList(props) {
     </Layout>
   );
 }
-

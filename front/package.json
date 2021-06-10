@@ -15,6 +15,7 @@
     "filename-regex": "^2.0.1",
     "geoportal-access-lib": "^2.1.8",
     "inquirer": "^8.0.0",
+    "jest": "^27.0.4",
     "leaflet": "^1.7.1",
     "moment": "^2.29.1",
     "object.omit": "^3.0.0",

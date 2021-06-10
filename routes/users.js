@@ -196,29 +196,22 @@ router.post("/sign-up-ambulance", async function (req, res, next) {
 //   res.json({ userProfil });
 // });
 
-router.put("/update-profil", async (req, res, next) => {
+router.post("/update-profil", async (req, res, next) => {
+
   const userProfil = await userModel.updateOne(
     {
       token: req.body.token,
     },
     {
-      lastname: req.body.lastname,
-      firstname: req.body.firstname,
-      monEntreprise: req.body.nomEntreprise,
+      nomEntreprise: req.body.nomEntreprise,
       siret: req.body.siret,
-      responsable_name: req.body.responableName,
-      firstname: req.body.firstname,
       email: req.body.email,
       phone: req.body.phone,
-      password: req.body.password,
-      adresse: {
-        adresse: req.body.adresse,
-        postalCode: req.body.postalCode,
-        city: req.body.city,
-      },
+      role : req.body.poste,
+      firstname : req.body.firstname,
+      lastname : req.body.lastname,
     }
   );
-
   res.json({ userProfil });
 });
 

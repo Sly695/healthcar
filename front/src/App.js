@@ -41,7 +41,7 @@ export default function App() {
           <Route
             exact
             path="/list-soignants"
-            component={ListeTransportSoignants}
+            component={ListeTransportSoignants}git 
           />
         </Switch>
       </Router>

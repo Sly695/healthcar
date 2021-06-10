@@ -14,24 +14,15 @@ import "moment/locale/fr";
 import { useSelector } from "react-redux";
 import "leaflet/dist/leaflet.css";
 import { Icon } from "leaflet";
-import {
-  Layout,
-  Affix,
-  Card,
-  Button,
-  Typography,
-  notification,
-} from "antd";
-import {
-  SmileOutlined,
-} from "@ant-design/icons";
+import { Layout, Affix, Card, Button, Typography, notification } from "antd";
+import { SmileOutlined } from "@ant-design/icons";
 //import * as Gp from "chemin/vers/GpServices.js";
 import Nav from "./Nav";
 import FooterDash from "./Footer";
 import Header from "./Header";
 import socketIOClient from "socket.io-client";
 
-var socket = socketIOClient("https://healthcar31.herokuapp.com/");
+var socket = socketIOClient("https://healthcar-31.herokuapp.com/");
 
 const { Content } = Layout;
 
@@ -207,7 +198,6 @@ function Map(props) {
             </div>
             <br />
             <Button
-              style={{ color: "#6693fe" }}
               danger
               onClick={() => {
                 validation(marker._id, "encours");
