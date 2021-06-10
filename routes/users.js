@@ -40,14 +40,14 @@ router.post("/sign-up-nurse", async function (req, res, next) {
   }
 
   if (error.length == 0) {
-    var hash = bcrypt.hashSync(req.body.passwordFromFront, 10);
+    // var hash = bcrypt.hashSync(req.body.passwordFromFront, 10);
     var newUser = new userModel({
       lastname: req.body.lastnameFromFront,
       firstname: req.body.firstnameFromFront,
       email: req.body.emailFromFront,
       phone: req.body.phoneFromFront,
       role: "soignant",
-      password: hash,
+      password: req.body.password,
       token: uid2(32),
       date_inscrit: new Date(),
     });
@@ -172,29 +172,6 @@ router.post("/sign-up-ambulance", async function (req, res, next) {
 //          UPDATE PROFIL  |
 //----------------------------------------
 
-// router.put("/update-profil-carestaff", async (req, res, next) => {
-//   let token = "gx38g6PBoxyMMVn2sstOUQvlIj7iOGUr";
-
-//   const userProfil = await userModel.updateOne(
-//     {
-//       token: token,
-//     },
-//     {
-//       lastname: req.body.lastname,
-//       firstname: req.body.firstname,
-//       email: req.body.email,
-//       avatar: req.body.avatar,
-//       password: req.body.password,
-//       phone: req.body.phone,
-//       adresse: {
-//         adresse: req.body.adresse,
-//         postalCode: req.body.postalCode,
-//         city: req.body.city,
-//       },
-//     }
-//   );
-//   res.json({ userProfil });
-// });
 
 router.post("/update-profil", async (req, res, next) => {
 
