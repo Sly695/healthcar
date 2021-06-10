@@ -26,8 +26,6 @@ var AddressArrivalSchema = mongoose.Schema({
 
 var transportSchema = mongoose.Schema({
   ref: String,
-  latitude : String,
-  longitude : String,
   departureLocation: String,
   addressDeparture: [AddressDepartureSchema],
   arrivalLocation: String,

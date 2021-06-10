@@ -17,7 +17,6 @@ import {
 import Nav from '../component/Nav'
 import Header from "../component/Header";
 import FooterDash from '../component/Footer';
-import { update } from '../../../models/users';
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -51,8 +50,6 @@ export default function Profil(props) {
   const userData = useSelector((state) => state.userData);
   const dispatch = useDispatch();
 
-  console.log(userData);
-
   const { handleSubmit, pristine, submitting } = props;
 
 
@@ -60,36 +57,38 @@ export default function Profil(props) {
   // UpdateProfil 
 
   const [nomEntreprise, setEntreprise] = useState(userData.nomEntreprise);
-
-
   const [siret, setSiret] = useState(userData.siret);
   const [occupation, setOccupation] = useState(userData.occupation);
   const [lastname, setLastname] = useState(userData.lastname);
   const [firstname, setFirstname] = useState(userData.firstname);
   const [password, setPassword] = useState(userData.password);
+  const [role, setRole] = useState(userData.role);
   const [email, setEmail] = useState(userData.email);
   const [phone, setPhone] = useState(userData.phone);
-  const [adresse, setAdresse] = useState(userData.adresse.adresse);
-  const [postalCode, setCodePostal] = useState(userData.adresse.postalCode);
-  const [city, setCity] = useState(userData.adresse.city);
-  const [updateProfil, setUpdateProfil] = useState([])
+  const [adresse, setAdresse] = useState(userData.role == "ambulance" ? userData.adresse[0].address : null );
+  const [postalCode, setCodePostal] = useState(userData.role == "ambulance" ? userData.adresse[0].postalCode : null );
+  const [city, setCity] = useState(userData.role == "ambulance" ? userData.adresse[0].city : null );
+  ///}
+  
 
 
   async function UpdateProfil() {
     var request = await fetch("/users/update-profil", {
-      method: "PUT",
+      method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `lastname=${lastname}&firstname=${firstname}&email=${email}&phone=${phone}&password=${password}&adresse=${adresse}&postalCode=${postalCode}&city=${city}&nomEntreprise=${nomEntreprise}&siret=${siret}&occupation=${occupation}`,
+      body: `token=${userData.token}&lastname=${lastname}&firstname=${firstname}&email=${email}&phone=${phone}&password=${password}&adresse=${adresse}&postalCode=${postalCode}&city=${city}&nomEntreprise=${nomEntreprise}&siret=${siret}&occupation=${occupation}`,
     });
     let response = await request.json();
-    setUpdateProfil(response.userProfil)
+
+    if (response) {
+      successUpdate();
+    } else {
+      errorUpdate();
+    }
+
   };
 
-  if (updateProfil) {
-    successUpdate();
-  } else {
-    errorUpdate();
-  }
+  
 
   const successUpdate = () => {
     message.success({
@@ -111,13 +110,17 @@ export default function Profil(props) {
     });
   };
 
-  const onChange = e => {
-    setValue(e.target.value);
-    setEntreprise(e.target.value)
-    console.log(nomEntreprise);
-    console.log(siret);
+  console.log(userData)
 
-  };
+  
+
+  // const onChange = e => {
+  //   setValue(e.target.value);
+  //   setEntreprise(e.target.value)
+  //   console.log(nomEntreprise);
+  //   console.log(siret);
+
+  // };
 
   return (
     <Layout>
@@ -180,9 +183,10 @@ export default function Profil(props) {
 
                 <Form.Item label="Poste">
                   <Input
+                    value={role}
                     name="occupation"
                     style={styleInput}
-                    onChange={(e) => setOccupation(e.target.value)} />
+                    onChange={(e) => setRole(e.target.value)} />
                 </Form.Item>
 
               </Col>
@@ -198,7 +202,6 @@ export default function Profil(props) {
 
                 <Form.Item label="Code Postal">
                   <Input
-                    value={postalCode}
                     style={styleInput}
                     onChange={(e) => setCodePostal(e.target.value)} />
                 </Form.Item >

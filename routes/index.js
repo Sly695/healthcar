@@ -1,7 +1,5 @@
 var express = require("express");
 var router = express.Router();
-
-
 var request = require("sync-request");
 var uid2 = require("uid2");
 const usersModel = require("../models/users");
@@ -211,11 +209,5 @@ router.get("/getRoute", async (req, res, next) => {
     },
   });
 });
-
-router.post("/test", async (req, res, next) => {
-  var name = req.body.name;
-  console.log(name)
-  res.json({result : name})
-})
 
 module.exports = router;
