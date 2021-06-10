@@ -266,6 +266,7 @@ export default function Profil(props) {
 
         </Content>
         <FooterDash />
+
       </Layout>
     </Layout>
   )

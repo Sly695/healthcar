@@ -166,10 +166,9 @@ export default function Booking(props) {
                     <Radio.Button value={false}>VSL</Radio.Button>
                   </Radio.Group>
                 </Form.Item>
-                <Form.Item>
+                <Form.Item label="Nom du patient">
                   <Input
                     style={styleBooking.Input}
-                    label="Nom du patient"
                     placeholder="Nom"
                     onChange={(e) => setLastname(e.target.value)}
                   />
@@ -288,7 +287,13 @@ export default function Booking(props) {
 
                 <Button
                   type="primary"
-                  style={{ backgroundColor: "#FFAE80", borderColor: "#FFAE80" }}
+                  style={{ 
+                    backgroundColor: "#FFAE80", 
+                    borderColor: "#FFAE80",
+                    fontSize: "17px",
+                    height: "40px",
+                    borderRadius: "10px",
+                    width: "100%" }}
                   onClick={() => booking()}
                 >
                   Valider la réservation
