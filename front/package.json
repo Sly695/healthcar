@@ -1,6 +1,10 @@
 {
   "name": "healthcar",
   "version": "0.1.0",
+  "engines": {
+    "node": "6.11.3",
+    "npm": "3.10.10"
+  },
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
